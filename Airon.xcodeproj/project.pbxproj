@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 55;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,9 +12,12 @@
 		26A40D502977F9DE00C67A23 /* TopicsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D4F2977F9DE00C67A23 /* TopicsVC.swift */; };
 		26A40D552977F9DF00C67A23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26A40D542977F9DF00C67A23 /* Assets.xcassets */; };
 		26A40D582977F9DF00C67A23 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 26A40D562977F9DF00C67A23 /* LaunchScreen.storyboard */; };
+		26A40D602978104400C67A23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 26A40D5F2978104400C67A23 /* GoogleService-Info.plist */; };
+		C34A1F0782FC7EB0F708AB3A /* Pods_Airon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837716A49C0C4513C8DD880F /* Pods_Airon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		21CEABFB422F5AE4B7A0FDA3 /* Pods-Airon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Airon.debug.xcconfig"; path = "Target Support Files/Pods-Airon/Pods-Airon.debug.xcconfig"; sourceTree = "<group>"; };
 		26A40D482977F9DE00C67A23 /* Airon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Airon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26A40D4B2977F9DE00C67A23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		26A40D4D2977F9DE00C67A23 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -22,6 +25,9 @@
 		26A40D542977F9DF00C67A23 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		26A40D572977F9DF00C67A23 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		26A40D592977F9DF00C67A23 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		26A40D5F2978104400C67A23 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		837716A49C0C4513C8DD880F /* Pods_Airon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Airon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD7721896B89AA82B1291B5F /* Pods-Airon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Airon.release.xcconfig"; path = "Target Support Files/Pods-Airon/Pods-Airon.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C34A1F0782FC7EB0F708AB3A /* Pods_Airon.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +47,8 @@
 			children = (
 				26A40D4A2977F9DE00C67A23 /* Airon */,
 				26A40D492977F9DE00C67A23 /* Products */,
+				39823C79AEA4911F5800C767 /* Pods */,
+				95D0079D2ED0704823CE2720 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,8 +69,26 @@
 				26A40D542977F9DF00C67A23 /* Assets.xcassets */,
 				26A40D562977F9DF00C67A23 /* LaunchScreen.storyboard */,
 				26A40D592977F9DF00C67A23 /* Info.plist */,
+				26A40D5F2978104400C67A23 /* GoogleService-Info.plist */,
 			);
 			path = Airon;
+			sourceTree = "<group>";
+		};
+		39823C79AEA4911F5800C767 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				21CEABFB422F5AE4B7A0FDA3 /* Pods-Airon.debug.xcconfig */,
+				CD7721896B89AA82B1291B5F /* Pods-Airon.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		95D0079D2ED0704823CE2720 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				837716A49C0C4513C8DD880F /* Pods_Airon.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +98,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 26A40D5C2977F9DF00C67A23 /* Build configuration list for PBXNativeTarget "Airon" */;
 			buildPhases = (
+				9778263800856223819BE655 /* [CP] Check Pods Manifest.lock */,
 				26A40D442977F9DE00C67A23 /* Sources */,
 				26A40D452977F9DE00C67A23 /* Frameworks */,
 				26A40D462977F9DE00C67A23 /* Resources */,
+				EDD1D6A2369F69482DC947E7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -100,7 +129,7 @@
 				};
 			};
 			buildConfigurationList = 26A40D432977F9DE00C67A23 /* Build configuration list for PBXProject "Airon" */;
-			compatibilityVersion = "Xcode 14.0";
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -124,10 +153,53 @@
 			files = (
 				26A40D582977F9DF00C67A23 /* LaunchScreen.storyboard in Resources */,
 				26A40D552977F9DF00C67A23 /* Assets.xcassets in Resources */,
+				26A40D602978104400C67A23 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		9778263800856223819BE655 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Airon-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EDD1D6A2369F69482DC947E7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Airon/Pods-Airon-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Airon/Pods-Airon-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Airon/Pods-Airon-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		26A40D442977F9DE00C67A23 /* Sources */ = {
@@ -270,6 +342,7 @@
 		};
 		26A40D5D2977F9DF00C67A23 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 21CEABFB422F5AE4B7A0FDA3 /* Pods-Airon.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -298,6 +371,7 @@
 		};
 		26A40D5E2977F9DF00C67A23 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CD7721896B89AA82B1291B5F /* Pods-Airon.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
