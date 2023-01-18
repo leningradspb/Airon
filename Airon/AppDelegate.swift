@@ -13,7 +13,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+//        FirebaseApp.configure()
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithTransparentBackground()
+        tabBarAppearance.backgroundColor = UIColor.clear
+        tabBarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
+        tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.white]
+        tabBarAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
+        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = UIColor.white
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = UIColor.white
+
+        UITabBar.appearance().tintColor = .white
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+//        UITabBarItem.appearance().setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 14)], for: .normal)
+//        UITabBarItem.appearance().setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 14)], for: .selected)
+        
+//        UINavigationBar.appearance().backgroundColor = .red
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = UIColor.clear
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        appearance.backgroundEffect = UIBlurEffect(style: .dark)
+        
+        let scrollingAppearance = UINavigationBarAppearance()
+        scrollingAppearance.configureWithTransparentBackground()
+        scrollingAppearance.backgroundColor = .clear
+        scrollingAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        scrollingAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+
+        UINavigationBar.appearance().tintColor = .white
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = scrollingAppearance
+        UINavigationBar.appearance().compactAppearance = scrollingAppearance
         return true
     }
 
