@@ -12,6 +12,14 @@ class TopicsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(hex: "#121212")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+            let nc = PurchaseNC()
+            let firstStepVC = PurchaseStepOneVC()
+            nc.viewControllers = [firstStepVC]
+            nc.modalPresentationStyle = .fullScreen
+            self.present(nc, animated: true)
+        })
     }
 
 
