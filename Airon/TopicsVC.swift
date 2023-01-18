@@ -11,7 +11,7 @@ class TopicsVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .orange
+        view.backgroundColor = UIColor(hex: "#121212")
     }
 
 
