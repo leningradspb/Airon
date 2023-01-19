@@ -30,6 +30,10 @@ class PurchaseService: NSObject {
         let payment = SKPayment(product: subscriptionToPurchase)
         paymentQueue.add(payment)
     }
+    
+    func restorePurchase() {
+        paymentQueue.restoreCompletedTransactions()
+    }
 }
 
 extension PurchaseService: SKProductsRequestDelegate {
