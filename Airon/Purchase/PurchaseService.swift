@@ -49,6 +49,10 @@ extension PurchaseService: SKPaymentTransactionObserver {
         //Handle transaction states here.
         transactions.forEach {
             print($0.transactionState.status(), $0.payment.productIdentifier)
+            switch $0.transactionState {
+            case .purchasing: break
+            default: queue.finishTransaction($0)
+            }
         }
     }
 }

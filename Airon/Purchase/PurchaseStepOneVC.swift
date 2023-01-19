@@ -35,10 +35,12 @@ class PurchaseStepOneVC: UIViewController {
     
 
     @objc private func yearTapped() {
+        // TODO: loader
         PurchaseService.shared.purchase(subscription: .year)
     }
     
     @objc private func weekTapped() {
+        // TODO: loader
         PurchaseService.shared.purchase(subscription: .week)
     }
 
