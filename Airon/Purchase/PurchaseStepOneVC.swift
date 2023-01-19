@@ -13,6 +13,7 @@ class PurchaseStepOneVC: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemGreen
+        PurchaseService.shared.getSubscriptions()
     }
     
 
