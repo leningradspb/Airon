@@ -8,23 +8,38 @@
 import UIKit
 
 class PurchaseStepOneVC: UIViewController {
+    private let yearButton = VioletButton(text: "1 year")
+    private let weekButton = VioletButton(text: "week")
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemGreen
+        view.addSubviews([yearButton, weekButton])
         PurchaseService.shared.getSubscriptions()
+        
+        yearButton.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.equalTo(100)
+        }
+        
+        weekButton.snp.makeConstraints {
+            $0.top.equalTo(yearButton.snp.bottom).offset(15)
+            $0.centerX.equalToSuperview()
+            $0.width.equalTo(100)
+        }
+        
+        yearButton.addTarget(self, action: #selector(yearTapped), for: .touchUpInside)
+        weekButton.addTarget(self, action: #selector(weekTapped), for: .touchUpInside)
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @objc private func yearTapped() {
+        PurchaseService.shared.purchase(subscription: .year)
     }
-    */
+    
+    @objc private func weekTapped() {
+        PurchaseService.shared.purchase(subscription: .week)
+    }
 
 }
