@@ -96,12 +96,18 @@ class PurchaseModal: UIViewController {
     private let plansStack = VerticalStackView(spacing: 12)
     private let yearView = RoundedView()
     private let weekView = RoundedView()
-    
+    private let switchView = UIView()
+    private let switchTopLabel = BlackLabel(text: "FREE TRIAL ENABLED", fontSize: 20, fontWeight: .regular)
+    private let freeTrialSwitch = UISwitch()
+    private let lastBenefitLabel = BlackLabel(text: "💸 cancel any time", fontSize: 26)
     
     private var isFreeTrial = true {
         didSet {
             weekView.isSelected = isFreeTrial
             yearView.isSelected = !isFreeTrial
+            freeTrialSwitch.isOn = isFreeTrial
+            updateSwitchView()
+            lastBenefitLabel.text = isFreeTrial ? "💸 cancel any time" : "🤑 super SALE %"
         }
     }
     
@@ -113,8 +119,8 @@ class PurchaseModal: UIViewController {
     private func setupUI() {
         view.backgroundColor = .clear
         view.addSubview(modalView)
-        modalView.startColor = .white.withAlphaComponent(0.4)
-        modalView.endColor = .white.withAlphaComponent(0.8)
+        modalView.startColor = .white.withAlphaComponent(0.6)
+        modalView.endColor = .white.withAlphaComponent(0.95)
         modalView.roundOnlyTopCorners(radius: 30)
         modalView.snp.makeConstraints {
             $0.top.equalToSuperview()
@@ -141,7 +147,7 @@ class PurchaseModal: UIViewController {
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
         }
-        benefitsStack.addArranged(subviews: [BlackLabel(text: "🤩 advertising-free", fontSize: 26), BlackLabel(text: "📱 unlimited access", fontSize: 26), BlackLabel(text: "✍️ copy, paste and share", fontSize: 26)])
+        benefitsStack.addArranged(subviews: [BlackLabel(text: "🤩 advertising-free", fontSize: 26), BlackLabel(text: "📱 unlimited access", fontSize: 26), BlackLabel(text: "✍️ copy, paste and share", fontSize: 26), lastBenefitLabel])
         
         plansStack.snp.makeConstraints {
             $0.top.equalTo(benefitsStack.snp.bottom).offset(20)
@@ -150,7 +156,7 @@ class PurchaseModal: UIViewController {
             $0.bottom.equalToSuperview().offset(-120)
         }
         
-        plansStack.addArranged(subviews: [yearView, weekView])
+        plansStack.addArranged(subviews: [switchView, yearView, weekView])
         
         isFreeTrial = true
         
@@ -168,6 +174,45 @@ class PurchaseModal: UIViewController {
         weekView.topText = "3-DAY FREE TRIAL"
         weekView.bottomText = "then 4,99 $/week"
         
+        
+        switchView.addSubviews([switchTopLabel, freeTrialSwitch])
+        switchView.snp.makeConstraints {
+            $0.height.equalTo(55)
+        }
+        
+        switchTopLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(20)
+        }
+        
+        freeTrialSwitch.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+        freeTrialSwitch.isOn = true
+        freeTrialSwitch.addTarget(self, action: #selector(switchTapped), for: .touchUpInside)
+        updateSwitchView()
+    }
+    
+    private func updateSwitchView() {
+        if freeTrialSwitch.isOn {
+            switchView.layer.cornerRadius = 12
+            switchView.layer.borderWidth = 2
+            switchView.backgroundColor = UIColor(hex: "F2F5C8").withAlphaComponent(0.7)
+            switchView.layer.borderColor = UIColor.systemGreen.cgColor
+            switchTopLabel.text = "FREE TRIAL ENABLED"
+            switchTopLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        } else {
+            switchView.layer.borderWidth = 0
+            switchView.backgroundColor = .violetLight.withAlphaComponent(0.45) //UIColor(hex: "65647C").withAlphaComponent(0.8)
+            switchTopLabel.text = "ENABLE FREE TRIAL"
+            switchTopLabel.font = .systemFont(ofSize: 17, weight: .regular)
+        }
+    }
+    
+    @objc private func switchTapped() {
+        updateSwitchView()
+        isFreeTrial = freeTrialSwitch.isOn
     }
 }
 
@@ -228,7 +273,7 @@ class RoundedView: UIView {
             layer.borderColor = UIColor.systemGreen.cgColor
         } else {
             layer.borderWidth = 0
-            backgroundColor = UIColor(hex: "65647C").withAlphaComponent(0.8) //.violetLight.withAlphaComponent(0.7)
+            backgroundColor = .violetLight.withAlphaComponent(0.45)
         }
     }
     
