@@ -55,6 +55,12 @@ class PurchaseService: NSObject {
                         print(currentTime, expires_date_ms)
                         if currentTime < ms {
                             print("ACTIVE")
+                            // тут нужно ввести помплишн с флагом актив или нет, чтобы понмать показывать экрна с подпиской или нет
+                            // ввести флаг на время жизни приложения чтобы не запрашивать больше экран с подпиской если подкиска была куплена
+                            // сворачивать после подписки
+                            // лоадеры при нажатии купить
+                            // запрсо нужна ли подписка при каждом запросе если фаг отрицательный
+                            // остльтные экрнаы онбординга сверстать
                         } else {
                             print("EXPIRED")
                         }
@@ -63,8 +69,16 @@ class PurchaseService: NSObject {
             } catch {
                 
             }
+        } else {
+//            refreshReceipt()
         }
     }
+    
+//    private func refreshReceipt() {
+//        let request = SKReceiptRefreshRequest(receiptProperties: nil)
+//        request.delegate = self
+//        request.start()
+//    }
 }
 
 extension PurchaseService: SKProductsRequestDelegate {
@@ -76,6 +90,13 @@ extension PurchaseService: SKProductsRequestDelegate {
 //            print($0)
 //        }
     }
+    
+//    func requestDidFinish(_ request: SKRequest) {
+//        if request is SKReceiptRefreshRequest {
+//            checkIsPurchased()
+////            refreshSubscriptionsStatus(callback: self.successBlock ?? {}, failure: self.failureBlock ?? {\_ in})
+//        }
+//    }
 }
 
 extension PurchaseService: SKPaymentTransactionObserver {
