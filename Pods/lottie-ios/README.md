@@ -33,10 +33,20 @@ You can pull the [Lottie Github Repo](https://github.com/airbnb/lottie-ios/) and
 
 ### Swift Package Manager
 
-To install Lottie using [Swift Package Manager](https://github.com/apple/swift-package-manager)  you can follow the [tutorial published by Apple](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app) using the URL for the Lottie repo with the current version:
+To install Lottie using [Swift Package Manager](https://github.com/apple/swift-package-manager) you can follow the [tutorial published by Apple](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app) using the URL for the Lottie repo with the current version:
 
-1. In Xcode, select “File” → “Swift Packages” → “Add Package Dependency”
-1. Enter https://github.com/airbnb/lottie-ios.git
+1. In Xcode, select “File” → “Add Packages...”
+1. Enter https://github.com/airbnb/lottie-spm.git
+
+or you can add the following dependency to your `Package.swift`:
+
+```swift
+.package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.1.0")
+```
+
+When using Swift Package Manager we recommend using the [lottie-spm](https://github.com/airbnb/lottie-spm) repo instead of the main lottie-ios repo.  The main git repository for [lottie-ios](https://github.com/airbnb/lottie-ios) is somewhat large (300+ MB), and Swift Package Manager always downloads the full repository with all git hsitory. The [lottie-spm](https://github.com/airbnb/lottie-spm) repo is much smaller (less than 500kb), so can be downloaded much more quickly. 
+
+Instead of downloading the full git history of Lottie and building it from source, the lottie-spm repo just contains a pointer to the precompiled XCFramework included in the [latest lottie-ios release](https://github.com/airbnb/lottie-ios/releases/latest) (typically ~8MB). If you prefer to include Lottie source directly your project, you can directly depend on the main lottie-ios repo by referencing `https://github.com/airbnb/lottie-ios.git` instead.
 
 ### CocoaPods
 Add the pod to your Podfile:
@@ -52,6 +62,7 @@ After installing the cocoapod into your project import Lottie with
 ```swift
 import Lottie
 ```
+
 ### Carthage
 Add Lottie to your Cartfile:
 ```

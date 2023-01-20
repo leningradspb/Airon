@@ -13,5 +13,6 @@ pod 'Firebase/Crashlytics'
   pod 'Kingfisher'
   pod 'SnapKit'
 pod 'lottie-ios'
+pod 'FloatingPanel', '1.7.6'
 
 end
