@@ -158,16 +158,35 @@ class PurchaseModal: UIViewController {
             guard let self = self else { return }
             self.isFreeTrial = false
         }
+        yearView.topText = "ONE-YEAR ACCESS"
+        yearView.bottomText = "29,99 $/year"
         
         weekView.tapCompletion = { [weak self] in
             guard let self = self else { return }
             self.isFreeTrial = true
         }
+        weekView.topText = "3-DAY FREE TRIAL"
+        weekView.bottomText = "then 4,99 $/week"
         
     }
 }
 
 class RoundedView: UIView {
+    private let topLabel = BlackLabel(text: "", fontSize: 20, fontWeight: .regular)
+    private let bottomLabel = BlackLabel(text: "", fontSize: 20)
+    
+    var topText: String = "" {
+        didSet {
+            topLabel.text = topText
+        }
+    }
+    
+    var bottomText: String = "" {
+        didSet {
+            bottomLabel.text = bottomText
+        }
+    }
+    
     var isSelected: Bool = false {
         didSet {
             update()
@@ -178,12 +197,22 @@ class RoundedView: UIView {
     
     init() {
         super.init(frame: .zero)
+        addSubviews([topLabel, bottomLabel])
         layer.cornerRadius = 12
         layer.borderWidth = 2
         self.snp.makeConstraints {
             $0.height.equalTo(70)
         }
         
+        topLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(6)
+            $0.leading.equalToSuperview().offset(20)
+        }
+        
+        bottomLabel.snp.makeConstraints {
+            $0.bottom.equalToSuperview().offset(-6)
+            $0.leading.equalToSuperview().offset(20)
+        }
         
         addTapGesture(target: self, action: #selector(tapped))
     }

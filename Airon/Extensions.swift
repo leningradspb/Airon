@@ -709,9 +709,9 @@ extension Date {
 }
 
 class BlackLabel: UILabel {
-    init(text: String, fontSize: CGFloat, numberOfLines: Int = 0) {
+    init(text: String, fontSize: CGFloat, fontWeight: UIFont.Weight = .semibold, numberOfLines: Int = 0) {
         super.init(frame: .zero)
-        self.font = .futura(withSize: fontSize)
+        self.font = .systemFont(ofSize: fontSize, weight: fontWeight)
         self.text = text
         self.textColor = .textBlack
         self.numberOfLines = numberOfLines
