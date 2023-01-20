@@ -8,6 +8,7 @@
 import UIKit
 
 class PurchaseStepOneVC: UIViewController {
+    private let imageView = UIImageView(image: UIImage(named: "airon-girl"))
     private let yearButton = VioletButton(text: "1 year")
     private let weekButton = VioletButton(text: "week")
 
@@ -15,8 +16,16 @@ class PurchaseStepOneVC: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = .systemGreen
-        view.addSubviews([yearButton, weekButton])
+        view.addSubviews([imageView, yearButton, weekButton])
         PurchaseService.shared.getSubscriptions()
+        
+        imageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        imageView.contentMode = .scaleAspectFill
         
         yearButton.snp.makeConstraints {
             $0.center.equalToSuperview()
