@@ -12,13 +12,12 @@ class PurchaseStepOneVC: UIViewController {
     private let imageView = UIImageView(image: UIImage(named: "airon-girl"))
     private let yearButton = VioletButton(text: "1 year")
     private let weekButton = VioletButton(text: "week")
-    private let modalView = GradientView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemGreen
-        view.addSubviews([imageView, modalView, yearButton, weekButton])
+        view.addSubviews([imageView, yearButton, weekButton])
         PurchaseService.shared.getSubscriptions()
         
         imageView.snp.makeConstraints {
@@ -28,15 +27,6 @@ class PurchaseStepOneVC: UIViewController {
             $0.bottom.equalToSuperview()
         }
         imageView.contentMode = .scaleAspectFill
-        
-        modalView.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview()
-        }
-        modalView.startColor = .white.withAlphaComponent(0.2)
-        modalView.endColor = .white.withAlphaComponent(0.8)
-        modalView.roundOnlyTopCorners(radius: 30)
         
         yearButton.snp.makeConstraints {
             $0.center.equalToSuperview()
@@ -61,7 +51,7 @@ class PurchaseStepOneVC: UIViewController {
     
     @objc private func weekTapped() {
         // TODO: loader
-        let vc = PurchaseStepTwoVC()
+        let vc = PurchaseModal()
         let fpc = FloatingPanelController()
         
         fpc.delegate = self
@@ -94,6 +84,45 @@ extension PurchaseStepOneVC: FloatingPanelControllerDelegate
     
     func floatingPanelDidEndRemove(_ vc: FloatingPanelController) {
 //        startScanner()
-        weekTapped()
+//        weekTapped()
+    }
+}
+
+
+class PurchaseModal: UIViewController {
+    private let modalView = GradientView()
+    private let choosePlanLabel = UILabel()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+    }
+    
+    private func setupUI() {
+        view.backgroundColor = .clear
+        view.addSubview(modalView)
+        modalView.startColor = .white.withAlphaComponent(0.2)
+        modalView.endColor = .white.withAlphaComponent(0.8)
+        modalView.roundOnlyTopCorners(radius: 30)
+        modalView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+//            $0.height.equalTo(200)
+            $0.bottom.equalToSuperview()
+        }
+        
+        modalView.addSubviews([choosePlanLabel])
+        
+        choosePlanLabel.text = "Choose your plan"
+        choosePlanLabel.textColor = .textBlack
+        choosePlanLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(4)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-120)
+        }
+        choosePlanLabel.textAlignment = .center
+        choosePlanLabel.font = .systemFont(ofSize: 36, weight: .bold)
     }
 }
