@@ -100,6 +100,7 @@ class PurchaseModal: UIViewController {
     private let switchTopLabel = BlackLabel(text: "FREE TRIAL ENABLED", fontSize: 20, fontWeight: .regular)
     private let freeTrialSwitch = UISwitch()
     private let lastBenefitLabel = BlackLabel(text: "💸 cancel any time", fontSize: 26)
+    private let buyButton = UIButton()
     
     private var isFreeTrial = true {
         didSet {
@@ -108,6 +109,9 @@ class PurchaseModal: UIViewController {
             freeTrialSwitch.isOn = isFreeTrial
             updateSwitchView()
             lastBenefitLabel.text = isFreeTrial ? "💸 cancel any time" : "🤑 super SALE %"
+            let title = isFreeTrial ? "🚀 START TRIAL" : "🚀 GET A SALE"
+            buyButton.setTitle(title, for: .normal)
+            buyButton.setTitle(title, for: .selected)
         }
     }
     
@@ -135,7 +139,7 @@ class PurchaseModal: UIViewController {
         choosePlanLabel.text = "Choose your plan"
         choosePlanLabel.textColor = .textBlack
         choosePlanLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(4)
+            $0.top.equalToSuperview().offset(10)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
         }
@@ -156,7 +160,7 @@ class PurchaseModal: UIViewController {
             $0.bottom.equalToSuperview().offset(-120)
         }
         
-        plansStack.addArranged(subviews: [switchView, yearView, weekView])
+        plansStack.addArranged(subviews: [switchView, yearView, weekView, buyButton])
         
         isFreeTrial = true
         
@@ -192,6 +196,18 @@ class PurchaseModal: UIViewController {
         freeTrialSwitch.isOn = true
         freeTrialSwitch.addTarget(self, action: #selector(switchTapped), for: .touchUpInside)
         updateSwitchView()
+        
+        buyButton.layer.cornerRadius = 10
+        
+        buyButton.setTitleColor(.white, for: .normal)
+        buyButton.setTitleColor(.white, for: .selected)
+        buyButton.titleLabel?.font = .systemFont(ofSize: 30, weight: .bold)
+        buyButton.backgroundColor = .systemGreen
+        
+        buyButton.snp.makeConstraints {
+            $0.height.equalTo(70)
+        }
+        buyButton.addTarget(self, action: #selector(buyTapped), for: .touchUpInside)
     }
     
     private func updateSwitchView() {
@@ -213,6 +229,14 @@ class PurchaseModal: UIViewController {
     @objc private func switchTapped() {
         updateSwitchView()
         isFreeTrial = freeTrialSwitch.isOn
+    }
+    
+    @objc private func buyTapped() {
+        if isFreeTrial {
+            PurchaseService.shared.purchase(subscription: .week)
+        } else {
+            PurchaseService.shared.purchase(subscription: .year)
+        }
     }
 }
 
