@@ -14,8 +14,8 @@
             filePath = "Airon/Purchase/PurchaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "45"
-            endingLineNumber = "45"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
             landmarkName = "productsRequest(_:didReceive:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "Airon/Purchase/PurchaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "43"
-            endingLineNumber = "43"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
             landmarkName = "productsRequest(_:didReceive:)"
             landmarkType = "7">
             <Locations>
@@ -81,7 +81,7 @@
             startingLineNumber = "23"
             endingLineNumber = "23"
             landmarkName = "getSubscriptions()"
-            landmarkType = "9">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -94,8 +94,8 @@
             filePath = "Airon/Purchase/PurchaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
+            startingLineNumber = "72"
+            endingLineNumber = "72"
             landmarkName = "paymentQueue(_:updatedTransactions:)"
             landmarkType = "7">
             <Locations>
@@ -142,8 +142,8 @@
             filePath = "Airon/Purchase/PurchaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "42"
-            endingLineNumber = "42"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
             landmarkName = "productsRequest(_:didReceive:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -174,8 +174,8 @@
             filePath = "Airon/Purchase/PurchaseStepOneVC.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
             landmarkName = "floatingPanelDidEndRemove(_:)"
             landmarkType = "7">
          </BreakpointContent>

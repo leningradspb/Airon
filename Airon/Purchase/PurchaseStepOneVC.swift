@@ -7,6 +7,7 @@
 
 import UIKit
 import FloatingPanel
+import SafariServices
 
 class PurchaseStepOneVC: UIViewController {
     private let imageView = UIImageView(image: UIImage(named: "airon-girl"))
@@ -101,6 +102,8 @@ class PurchaseModal: UIViewController {
     private let freeTrialSwitch = UISwitch()
     private let lastBenefitLabel = BlackLabel(text: "💸 cancel any time", fontSize: 26)
     private let buyButton = UIButton()
+    private let restorePurchase = UIButton()
+    private let privacyButton = UIButton()
     
     private var isFreeTrial = true {
         didSet {
@@ -118,6 +121,7 @@ class PurchaseModal: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        PurchaseService.shared.checkIsPurchased()
     }
     
     private func setupUI() {
@@ -134,7 +138,7 @@ class PurchaseModal: UIViewController {
             $0.bottom.equalToSuperview()
         }
         
-        modalView.addSubviews([choosePlanLabel, benefitsStack, plansStack])
+        modalView.addSubviews([choosePlanLabel, benefitsStack, plansStack, restorePurchase, privacyButton])
         
         choosePlanLabel.text = "Choose your plan"
         choosePlanLabel.textColor = .textBlack
@@ -157,7 +161,6 @@ class PurchaseModal: UIViewController {
             $0.top.equalTo(benefitsStack.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
-            $0.bottom.equalToSuperview().offset(-120)
         }
         
         plansStack.addArranged(subviews: [switchView, yearView, weekView, buyButton])
@@ -201,13 +204,35 @@ class PurchaseModal: UIViewController {
         
         buyButton.setTitleColor(.white, for: .normal)
         buyButton.setTitleColor(.white, for: .selected)
-        buyButton.titleLabel?.font = .systemFont(ofSize: 30, weight: .bold)
-        buyButton.backgroundColor = .systemGreen
+        buyButton.titleLabel?.font = .systemFont(ofSize: 26, weight: .bold)
+        buyButton.backgroundColor = .systemGreen.withAlphaComponent(0.8)
         
         buyButton.snp.makeConstraints {
             $0.height.equalTo(70)
         }
         buyButton.addTarget(self, action: #selector(buyTapped), for: .touchUpInside)
+        
+        restorePurchase.snp.makeConstraints {
+            $0.top.equalTo(plansStack.snp.bottom).offset(12)
+            $0.bottom.equalToSuperview().offset(-20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+        restorePurchase.setTitle("Restore purchase", for: .normal)
+        restorePurchase.setTitleColor(.commonGrey, for: .normal)
+        restorePurchase.titleLabel?.textAlignment = .center
+        restorePurchase.addTarget(self, action: #selector(restoreTapped), for: .touchUpInside)
+        
+        
+        
+        privacyButton.snp.makeConstraints {
+            $0.top.equalTo(plansStack.snp.bottom).offset(12)
+            $0.bottom.equalToSuperview().offset(-20)
+            $0.leading.equalToSuperview().offset(20)
+        }
+        privacyButton.setTitle("Privacy Policy", for: .normal)
+        privacyButton.setTitleColor(.commonGrey, for: .normal)
+        privacyButton.titleLabel?.textAlignment = .center
+        privacyButton.addTarget(self, action: #selector(privacyTapped), for: .touchUpInside)
     }
     
     private func updateSwitchView() {
@@ -237,6 +262,18 @@ class PurchaseModal: UIViewController {
         } else {
             PurchaseService.shared.purchase(subscription: .year)
         }
+    }
+    
+    @objc private func restoreTapped() {
+        PurchaseService.shared.restorePurchase()
+    }
+    
+    @objc private func privacyTapped() {
+        let vc = SFSafariViewController(url: URL(string: "https://docs.google.com/document/d/1IEVqpzrH7jBk-e0faJp0UnHXns2b5yJ2ljzhdm0aH0k/edit?usp=sharing")!)
+        
+        vc.isModalInPresentation = true
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: true, completion: nil)
     }
 }
 

@@ -26,13 +26,31 @@ class PurchaseService: NSObject {
     }
     
     func purchase(subscription: SubscriptionProduct) {
-        guard let subscriptionToPurchase = products.first(where: { $0.productIdentifier == subscription.rawValue }) else { return }
+        guard SKPaymentQueue.canMakePayments(), let subscriptionToPurchase = products.first(where: { $0.productIdentifier == subscription.rawValue }) else {
+            let alert = UIAlertController(title: "You are can't make payments", message: "", preferredStyle: .alert)
+            //TODO: ERROR CAN NOT MAKE PAYMENTS
+            return
+        }
         let payment = SKPayment(product: subscriptionToPurchase)
         paymentQueue.add(payment)
     }
     
     func restorePurchase() {
         paymentQueue.restoreCompletedTransactions()
+    }
+    
+    func checkIsPurchased() {
+        if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
+           FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
+            print(appStoreReceiptURL)
+            do {
+                let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
+                let receiptString = receiptData.base64EncodedString(options: [])
+                print(receiptString)
+            } catch {
+                
+            }
+        }
     }
 }
 
