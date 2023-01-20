@@ -8,11 +8,22 @@
 import UIKit
 
 class PurchaseStepTwoVC: UIViewController {
+    private let l = UILabel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .orange
+        view.addSubview(l)
+        l.text = "125125"
+        l.font = .systemFont(ofSize: 80)
+        
+        l.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-120)
+        }
     }
     
 

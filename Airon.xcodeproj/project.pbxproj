@@ -22,6 +22,7 @@
 		26A40D6F29782D4F00C67A23 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26A40D6E29782D4F00C67A23 /* StoreKit.framework */; };
 		26A40D712978502E00C67A23 /* SubscriptionProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D702978502E00C67A23 /* SubscriptionProduct.swift */; };
 		26A40D73297966E700C67A23 /* PurchaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D72297966E700C67A23 /* PurchaseService.swift */; };
+		26A40D75297A8F3A00C67A23 /* RoutingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D74297A8F3A00C67A23 /* RoutingHelper.swift */; };
 		C34A1F0782FC7EB0F708AB3A /* Pods_Airon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837716A49C0C4513C8DD880F /* Pods_Airon.framework */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 		26A40D6E29782D4F00C67A23 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		26A40D702978502E00C67A23 /* SubscriptionProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionProduct.swift; sourceTree = "<group>"; };
 		26A40D72297966E700C67A23 /* PurchaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseService.swift; sourceTree = "<group>"; };
+		26A40D74297A8F3A00C67A23 /* RoutingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingHelper.swift; sourceTree = "<group>"; };
 		837716A49C0C4513C8DD880F /* Pods_Airon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Airon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD7721896B89AA82B1291B5F /* Pods-Airon.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Airon.release.xcconfig"; path = "Target Support Files/Pods-Airon/Pods-Airon.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -87,6 +89,7 @@
 				26A40D4F2977F9DE00C67A23 /* TopicsVC.swift */,
 				26A40D6D2978167200C67A23 /* Purchase */,
 				26A40D61297812BD00C67A23 /* Extensions.swift */,
+				26A40D74297A8F3A00C67A23 /* RoutingHelper.swift */,
 				26A40D63297812DC00C67A23 /* FirebaseManager.swift */,
 				26A40D542977F9DF00C67A23 /* Assets.xcassets */,
 				26A40D562977F9DF00C67A23 /* LaunchScreen.storyboard */,
@@ -244,6 +247,7 @@
 			files = (
 				26A40D502977F9DE00C67A23 /* TopicsVC.swift in Sources */,
 				26A40D6C297814A900C67A23 /* PurchaseStepThreeVC.swift in Sources */,
+				26A40D75297A8F3A00C67A23 /* RoutingHelper.swift in Sources */,
 				26A40D712978502E00C67A23 /* SubscriptionProduct.swift in Sources */,
 				26A40D4C2977F9DE00C67A23 /* AppDelegate.swift in Sources */,
 				26A40D73297966E700C67A23 /* PurchaseService.swift in Sources */,

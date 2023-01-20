@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FloatingPanel
 
 class PurchaseStepOneVC: UIViewController {
     private let imageView = UIImageView(image: UIImage(named: "airon-girl"))
@@ -60,7 +61,39 @@ class PurchaseStepOneVC: UIViewController {
     
     @objc private func weekTapped() {
         // TODO: loader
-        PurchaseService.shared.purchase(subscription: .week)
+        let vc = PurchaseStepTwoVC()
+        let fpc = FloatingPanelController()
+        
+        fpc.delegate = self
+        fpc.surfaceView.cornerRadius = 22
+        fpc.backdropView.backgroundColor = UIColor(hex: "#001326")
+        fpc.surfaceView.backgroundColor = .clear
+        fpc.contentInsetAdjustmentBehavior = .never
+        fpc.surfaceView.grabberHandle.barColor = UIColor.black.withAlphaComponent(0.08)
+        fpc.isRemovalInteractionEnabled = true
+        fpc.set(contentViewController: vc)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handlePreviewModalBackdropTap))
+//        fpc.backdropView.addGestureRecognizer(tapGesture)
+        
+        DispatchQueue.main.async {
+            fpc.addPanel(toParent: self, animated: true)
+            fpc.updateLayout()
+            fpc.updateLayout()
+        }
+//        PurchaseService.shared.purchase(subscription: .week)
     }
 
+}
+
+extension PurchaseStepOneVC: FloatingPanelControllerDelegate
+{
+    func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout?
+    {
+        return BottomSheetPresenter.PanelIntrinsicLayout()
+    }
+    
+    func floatingPanelDidEndRemove(_ vc: FloatingPanelController) {
+//        startScanner()
+        weekTapped()
+    }
 }
