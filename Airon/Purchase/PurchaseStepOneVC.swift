@@ -11,12 +11,13 @@ class PurchaseStepOneVC: UIViewController {
     private let imageView = UIImageView(image: UIImage(named: "airon-girl"))
     private let yearButton = VioletButton(text: "1 year")
     private let weekButton = VioletButton(text: "week")
+    private let modalView = GradientView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .systemGreen
-        view.addSubviews([imageView, yearButton, weekButton])
+        view.addSubviews([imageView, modalView, yearButton, weekButton])
         PurchaseService.shared.getSubscriptions()
         
         imageView.snp.makeConstraints {
@@ -26,6 +27,15 @@ class PurchaseStepOneVC: UIViewController {
             $0.bottom.equalToSuperview()
         }
         imageView.contentMode = .scaleAspectFill
+        
+        modalView.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+        modalView.startColor = .white.withAlphaComponent(0.2)
+        modalView.endColor = .white.withAlphaComponent(0.8)
+        modalView.roundOnlyTopCorners(radius: 30)
         
         yearButton.snp.makeConstraints {
             $0.center.equalToSuperview()
