@@ -92,6 +92,7 @@ extension PurchaseStepOneVC: FloatingPanelControllerDelegate
 class PurchaseModal: UIViewController {
     private let modalView = GradientView()
     private let choosePlanLabel = UILabel()
+    private let benefitsStack = VerticalStackView(spacing: 12)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,7 +102,7 @@ class PurchaseModal: UIViewController {
     private func setupUI() {
         view.backgroundColor = .clear
         view.addSubview(modalView)
-        modalView.startColor = .white.withAlphaComponent(0.2)
+        modalView.startColor = .white.withAlphaComponent(0.4)
         modalView.endColor = .white.withAlphaComponent(0.8)
         modalView.roundOnlyTopCorners(radius: 30)
         modalView.snp.makeConstraints {
@@ -112,7 +113,7 @@ class PurchaseModal: UIViewController {
             $0.bottom.equalToSuperview()
         }
         
-        modalView.addSubviews([choosePlanLabel])
+        modalView.addSubviews([choosePlanLabel, benefitsStack])
         
         choosePlanLabel.text = "Choose your plan"
         choosePlanLabel.textColor = .textBlack
@@ -120,9 +121,17 @@ class PurchaseModal: UIViewController {
             $0.top.equalToSuperview().offset(4)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(-120)
         }
         choosePlanLabel.textAlignment = .center
         choosePlanLabel.font = .systemFont(ofSize: 36, weight: .bold)
+        
+        benefitsStack.snp.makeConstraints {
+            $0.top.equalTo(choosePlanLabel.snp.bottom).offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalToSuperview().offset(-120)
+        }
+        benefitsStack.addArranged(subviews: [BlackLabel(text: "🤩 advertising-free", fontSize: 26), BlackLabel(text: "📱 unlimited access", fontSize: 26), BlackLabel(text: "✍️ copy, paste and share", fontSize: 26)])
     }
 }
+

@@ -707,3 +707,17 @@ extension Date {
         return Int64(self.timeIntervalSince1970 * 1000)
     }
 }
+
+class BlackLabel: UILabel {
+    init(text: String, fontSize: CGFloat, numberOfLines: Int = 0) {
+        super.init(frame: .zero)
+        self.font = .futura(withSize: fontSize)
+        self.text = text
+        self.textColor = .textBlack
+        self.numberOfLines = numberOfLines
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
