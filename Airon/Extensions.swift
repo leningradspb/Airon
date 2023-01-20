@@ -92,8 +92,8 @@ extension UIColor {
     static let commonGrey = UIColor(hex: "#5b5b5b")
     /// 370258
     static let violet = UIColor(hex: "#370258")
-    /// #920CE5
-    static let violetLight = UIColor(hex: "#920CE5")
+    /// #876dc1
+    static let violetLight = UIColor(hex: "#876dc1")
     
     /// #1c202c
     static let textBlack = UIColor(hex: "#1c202c")

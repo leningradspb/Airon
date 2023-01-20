@@ -93,6 +93,17 @@ class PurchaseModal: UIViewController {
     private let modalView = GradientView()
     private let choosePlanLabel = UILabel()
     private let benefitsStack = VerticalStackView(spacing: 12)
+    private let plansStack = VerticalStackView(spacing: 12)
+    private let yearView = RoundedView()
+    private let weekView = RoundedView()
+    
+    
+    private var isFreeTrial = true {
+        didSet {
+            weekView.isSelected = isFreeTrial
+            yearView.isSelected = !isFreeTrial
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,7 +124,7 @@ class PurchaseModal: UIViewController {
             $0.bottom.equalToSuperview()
         }
         
-        modalView.addSubviews([choosePlanLabel, benefitsStack])
+        modalView.addSubviews([choosePlanLabel, benefitsStack, plansStack])
         
         choosePlanLabel.text = "Choose your plan"
         choosePlanLabel.textColor = .textBlack
@@ -129,9 +140,70 @@ class PurchaseModal: UIViewController {
             $0.top.equalTo(choosePlanLabel.snp.bottom).offset(20)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
-            $0.bottom.equalToSuperview().offset(-120)
         }
         benefitsStack.addArranged(subviews: [BlackLabel(text: "🤩 advertising-free", fontSize: 26), BlackLabel(text: "📱 unlimited access", fontSize: 26), BlackLabel(text: "✍️ copy, paste and share", fontSize: 26)])
+        
+        plansStack.snp.makeConstraints {
+            $0.top.equalTo(benefitsStack.snp.bottom).offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalToSuperview().offset(-120)
+        }
+        
+        plansStack.addArranged(subviews: [yearView, weekView])
+        
+        isFreeTrial = true
+        
+        yearView.tapCompletion = { [weak self] in
+            guard let self = self else { return }
+            self.isFreeTrial = false
+        }
+        
+        weekView.tapCompletion = { [weak self] in
+            guard let self = self else { return }
+            self.isFreeTrial = true
+        }
+        
     }
 }
 
+class RoundedView: UIView {
+    var isSelected: Bool = false {
+        didSet {
+            update()
+        }
+    }
+    
+    var tapCompletion: (()->())?
+    
+    init() {
+        super.init(frame: .zero)
+        layer.cornerRadius = 12
+        layer.borderWidth = 2
+        self.snp.makeConstraints {
+            $0.height.equalTo(70)
+        }
+        
+        
+        addTapGesture(target: self, action: #selector(tapped))
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func update() {
+        if isSelected {
+            layer.borderWidth = 2
+            backgroundColor = UIColor(hex: "F2F5C8").withAlphaComponent(0.7)
+            layer.borderColor = UIColor.systemGreen.cgColor
+        } else {
+            layer.borderWidth = 0
+            backgroundColor = UIColor(hex: "65647C").withAlphaComponent(0.8) //.violetLight.withAlphaComponent(0.7)
+        }
+    }
+    
+    @objc private func tapped() {
+        tapCompletion?()
+    }
+}
