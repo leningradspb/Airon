@@ -97,6 +97,7 @@ extension TopicsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TopicCell.identifier, for: indexPath) as! TopicCell
+        cell.update(isOdd: indexPath.row % 2 == 0)
         return cell
     }
     
@@ -137,6 +138,16 @@ class TopicCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func update(isOdd: Bool) {
+        if isOdd {
+            realContentView.startColor = .violetUltraLight
+            realContentView.endColor = .violetLight
+        } else {
+            realContentView.startColor = UIColor(hex: "EDCDBB") //.violetUltraLight
+            realContentView.endColor = UIColor(hex: "E3B7A0") //.violetLight
+        }
+    }
+    
     private func setupUI() {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
@@ -147,9 +158,6 @@ class TopicCell: UITableViewCell {
         realContentView.startLocation = 0
         realContentView.endLocation = 0.8
         realContentView.diagonalMode = true
-        
-        realContentView.startColor = .violetUltraLight
-        realContentView.endColor = .violetLight
         
         realContentView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(6)
