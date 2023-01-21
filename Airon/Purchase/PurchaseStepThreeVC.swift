@@ -239,13 +239,13 @@ class PurchaseModal: UIViewController {
         if freeTrialSwitch.isOn {
             switchView.layer.cornerRadius = 12
             switchView.layer.borderWidth = 2
-            switchView.backgroundColor = UIColor(hex: "F2F5C8").withAlphaComponent(0.7)
+            switchView.backgroundColor = UIColor(hex: "F2F5C8")
             switchView.layer.borderColor = UIColor.grass.cgColor
             switchTopLabel.text = "FREE TRIAL ENABLED"
             switchTopLabel.font = .systemFont(ofSize: 20, weight: .semibold)
         } else {
             switchView.layer.borderWidth = 0
-            switchView.backgroundColor = .violetLight.withAlphaComponent(0.45) //UIColor(hex: "65647C").withAlphaComponent(0.8)
+            switchView.backgroundColor = .violetUltraLight //UIColor(hex: "65647C").withAlphaComponent(0.8)
             switchTopLabel.text = "ENABLE FREE TRIAL"
             switchTopLabel.font = .systemFont(ofSize: 17, weight: .regular)
         }
@@ -330,11 +330,11 @@ class RoundedView: UIView {
     private func update() {
         if isSelected {
             layer.borderWidth = 2
-            backgroundColor = UIColor(hex: "F2F5C8").withAlphaComponent(0.7)
+            backgroundColor = UIColor(hex: "F2F5C8")
             layer.borderColor = UIColor.grass.cgColor
         } else {
             layer.borderWidth = 0
-            backgroundColor = .violetLight.withAlphaComponent(0.45)
+            backgroundColor = .violetUltraLight
         }
     }
     
