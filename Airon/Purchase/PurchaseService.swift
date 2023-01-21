@@ -12,7 +12,7 @@ class PurchaseService: NSObject {
     private override init() {}
     
     static let shared = PurchaseService()
-    
+    var isActivated = false
     var products: [SKProduct] = []
     private let paymentQueue = SKPaymentQueue.default()
     
@@ -47,7 +47,8 @@ class PurchaseService: NSObject {
                 let receiptData = try Data(contentsOf: appStoreReceiptURL, options: .alwaysMapped)
                 let receiptString = receiptData.base64EncodedString(options: [])
                 print(receiptString)
-                APIService.validateReceipt(urlBase64: receiptString) { result, error in
+                APIService.validateReceipt(urlBase64: receiptString) { [weak self] result, error in
+                    guard let self = self else { return }
                     print(result, error)
                     
                     if let expires_date_ms = result?.latest_receipt_info?.first?.expires_date_ms, let ms = Int64(expires_date_ms) {
@@ -55,6 +56,7 @@ class PurchaseService: NSObject {
                         print(currentTime, expires_date_ms)
                         if currentTime < ms {
                             print("ACTIVE")
+                            self.isActivated = true
                             completion(true)
                             // тут нужно ввести помплишн с флагом актив или нет, чтобы понмать показывать экрна с подпиской или нет
                             // ввести флаг на время жизни приложения чтобы не запрашивать больше экран с подпиской если подкиска была куплена
@@ -64,17 +66,21 @@ class PurchaseService: NSObject {
                             // остльтные экрнаы онбординга сверстать
                         } else {
                             print("EXPIRED")
+                            self.isActivated = false
                             completion(false)
                         }
                     } else {
+                        self.isActivated = false
                         completion(false)
                     }
                 }
             } catch {
+                self.isActivated = false
                 completion(false)
             }
         } else {
 //            refreshReceipt()
+            self.isActivated = false
             completion(false)
         }
     }
