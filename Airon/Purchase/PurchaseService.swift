@@ -32,6 +32,8 @@ class PurchaseService: NSObject {
             //TODO: ERROR CAN NOT MAKE PAYMENTS
             return
         }
+        
+        ActivityHelper.showActivity(animation: ActivityView.Animations.plane)
         let payment = SKPayment(product: subscriptionToPurchase)
         paymentQueue.add(payment)
     }

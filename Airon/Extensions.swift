@@ -731,6 +731,26 @@ enum UserDefaultsKeys: String {
 
 
 
-class Activity {
-    
+class ActivityHelper {
+    static var window: UIWindow { UIApplication.shared.keyWindow ?? UIWindow() }
+
+    static func showActivity(animation: Animation?, withoutAppearAnimation: Bool = false) {
+        let activityView = ActivityView(animation: animation, frame: window.bounds, withoutAppearAnimation: withoutAppearAnimation)
+        activityView.play(isInitial: true)
+        window.addSubview(activityView)
+    }
+
+    static func removeActivity(withoutAnimation: Bool = false, completion: (() -> Void)? = nil) {
+        DispatchQueue.main.async {
+            let activity = self.window.subviews.first { $0 is ActivityView }
+            let duration: TimeInterval = withoutAnimation ? 0 : 1
+            UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
+                activity?.center.y += activity?.center.y ?? 0
+                activity?.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
+            } completion: { _ in
+                activity?.removeFromSuperview()
+                completion?()
+            }
+        }
+    }
 }
