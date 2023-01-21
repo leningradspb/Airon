@@ -20,8 +20,9 @@ class TopicsVC: UIViewController {
             if !isActivated {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
                     let nc = PurchaseNC()
-                    let firstStepVC = PurchaseStepOneVC()
-                    nc.viewControllers = [firstStepVC]
+                    let onboardingWasShown = UserDefaults.standard.bool(forKey: UserDefaultsKeys.onboardingWasShown.rawValue)
+                    let vc = onboardingWasShown ? PurchaseStepThreeVC() : PurchaseStepOneVC()
+                    nc.viewControllers = [vc]
                     nc.modalPresentationStyle = .fullScreen
                     self.present(nc, animated: true)
                 })

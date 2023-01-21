@@ -721,3 +721,8 @@ class BlackLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+
+enum UserDefaultsKeys: String {
+    case onboardingWasShown = "onboardingWasShown"
+}
