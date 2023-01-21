@@ -17,7 +17,7 @@ class PurchaseStepThreeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemGreen
+        view.backgroundColor = .black
         view.addSubviews([imageView, yearButton, weekButton])
         PurchaseService.shared.getSubscriptions()
         
@@ -196,6 +196,7 @@ class PurchaseModal: UIViewController {
             $0.trailing.equalToSuperview().offset(-20)
         }
         freeTrialSwitch.isOn = true
+        freeTrialSwitch.onTintColor = .grass
         freeTrialSwitch.addTarget(self, action: #selector(switchTapped), for: .touchUpInside)
         updateSwitchView()
         
@@ -204,7 +205,7 @@ class PurchaseModal: UIViewController {
         buyButton.setTitleColor(.white, for: .normal)
         buyButton.setTitleColor(.white, for: .selected)
         buyButton.titleLabel?.font = .systemFont(ofSize: 26, weight: .bold)
-        buyButton.backgroundColor = .systemGreen.withAlphaComponent(0.8)
+        buyButton.backgroundColor = .grass
         
         buyButton.snp.makeConstraints {
             $0.height.equalTo(70)
@@ -239,7 +240,7 @@ class PurchaseModal: UIViewController {
             switchView.layer.cornerRadius = 12
             switchView.layer.borderWidth = 2
             switchView.backgroundColor = UIColor(hex: "F2F5C8").withAlphaComponent(0.7)
-            switchView.layer.borderColor = UIColor.systemGreen.cgColor
+            switchView.layer.borderColor = UIColor.grass.cgColor
             switchTopLabel.text = "FREE TRIAL ENABLED"
             switchTopLabel.font = .systemFont(ofSize: 20, weight: .semibold)
         } else {
@@ -330,7 +331,7 @@ class RoundedView: UIView {
         if isSelected {
             layer.borderWidth = 2
             backgroundColor = UIColor(hex: "F2F5C8").withAlphaComponent(0.7)
-            layer.borderColor = UIColor.systemGreen.cgColor
+            layer.borderColor = UIColor.grass.cgColor
         } else {
             layer.borderWidth = 0
             backgroundColor = .violetLight.withAlphaComponent(0.45)
