@@ -19,6 +19,7 @@ class TopicsVC: UIViewController {
     }
     
     private func setupUI() {
+        title = "Topics"
         view.backgroundColor = UIColor(hex: "#121212")
         view.addSubview(tableView)
         tableView.backgroundColor = .clear
@@ -128,6 +129,9 @@ extension TopicsVC: UITableViewDelegate, UITableViewDataSource {
 
 class TopicCell: UITableViewCell {
     private let realContentView = GradientView()
+    private let titleLabel = BlackLabel(text: "Get translation help", fontSize: 22, fontWeight: .medium)
+    private let subtitleLabel = BlackLabel(text: "translate text into language", fontSize: 18, fontWeight: .medium)
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -164,6 +168,21 @@ class TopicCell: UITableViewCell {
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
             $0.bottom.equalToSuperview().offset(-6)
+        }
+        
+        realContentView.addSubviews([titleLabel, subtitleLabel])
+        subtitleLabel.textColor = UIColor(hex: "5A6066")
+        
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+        
+        subtitleLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
         }
     }
 }

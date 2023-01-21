@@ -16,12 +16,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         let window = UIWindow(windowScene: windowScene)
+        let nc = UINavigationController()
         let viewController = TopicsVC()
+        nc.viewControllers = [viewController]
 //        viewController.view.backgroundColor = .blue
         //                let navigation = UINavigationController(rootViewController: viewController)
         
         /// 4. Set the root view controller of the window with your view controller
-        window.rootViewController = viewController
+        window.rootViewController = nc
         
         /// 5. Set the window and call makeKeyAndVisible()
         self.window = window
