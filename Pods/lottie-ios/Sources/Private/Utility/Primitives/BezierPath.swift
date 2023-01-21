@@ -388,6 +388,7 @@ extension BezierPath: Codable {
       try inPointsContainer.encode(element.vertex.inTangentRelative)
       try outPointsContainer.encode(element.vertex.outTangentRelative)
     }
+
   }
 }
 
@@ -468,7 +469,7 @@ extension BezierPath {
     var previousElement: PathElement?
     for element in elements {
       if let previous = previousElement {
-        if previous.vertex.outTangentRelative.isZero, element.vertex.inTangentRelative.isZero {
+        if previous.vertex.outTangentRelative.isZero && element.vertex.inTangentRelative.isZero {
           cgPath.addLine(to: element.vertex.point)
         } else {
           cgPath.addCurve(to: element.vertex.point, control1: previous.vertex.outTangent, control2: element.vertex.inTangent)

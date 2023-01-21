@@ -789,7 +789,7 @@ PODS:
   - Libuv-gRPC/Implementation (0.0.10):
     - Libuv-gRPC/Interface (= 0.0.10)
   - Libuv-gRPC/Interface (0.0.10)
-  - lottie-ios (4.1.0)
+  - lottie-ios (3.4.0)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
     - nanopb/encode (= 2.30909.0)
@@ -806,7 +806,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - FloatingPanel (= 1.7.6)
   - Kingfisher
-  - lottie-ios
+  - lottie-ios (= 3.4.0)
   - SnapKit
 
 SPEC REPOS:
@@ -865,11 +865,11 @@ SPEC CHECKSUMS:
   Kingfisher: b9c2a4a4af2990a768445c277359b27bde287d71
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   Libuv-gRPC: 55e51798e14ef436ad9bc45d12d43b77b49df378
-  lottie-ios: a6f86a8f141484c7d4ed1b8b206ad0aa76fec0bd
+  lottie-ios: 69495122151a378fdc7d1bb4c5930347e37baf1f
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: 30b74b4e789d793aeb43f2d0f6f2581ec2b4ffa8
+PODFILE CHECKSUM: 554b8c3d766d53689f4429a60e1242a98506becc
 
 COCOAPODS: 1.11.3

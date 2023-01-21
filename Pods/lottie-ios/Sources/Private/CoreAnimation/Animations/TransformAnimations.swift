@@ -10,39 +10,39 @@ import QuartzCore
 /// both transform types to share the same animation implementation.
 protocol TransformModel {
   /// The anchor point of the transform.
-  var anchorPoint: KeyframeGroup<LottieVector3D> { get }
+  var anchorPoint: KeyframeGroup<Vector3D> { get }
 
   /// The position of the transform. This is nil if the position data was split.
-  var _position: KeyframeGroup<LottieVector3D>? { get }
+  var _position: KeyframeGroup<Vector3D>? { get }
 
   /// The positionX of the transform. This is nil if the position property is set.
-  var _positionX: KeyframeGroup<LottieVector1D>? { get }
+  var _positionX: KeyframeGroup<Vector1D>? { get }
 
   /// The positionY of the transform. This is nil if the position property is set.
-  var _positionY: KeyframeGroup<LottieVector1D>? { get }
+  var _positionY: KeyframeGroup<Vector1D>? { get }
 
   /// The scale of the transform
-  var scale: KeyframeGroup<LottieVector3D> { get }
+  var scale: KeyframeGroup<Vector3D> { get }
 
   /// The rotation of the transform. Note: This is single dimensional rotation.
-  var rotation: KeyframeGroup<LottieVector1D> { get }
+  var rotation: KeyframeGroup<Vector1D> { get }
 }
 
 // MARK: - Transform + TransformModel
 
 extension Transform: TransformModel {
-  var _position: KeyframeGroup<LottieVector3D>? { position }
-  var _positionX: KeyframeGroup<LottieVector1D>? { positionX }
-  var _positionY: KeyframeGroup<LottieVector1D>? { positionY }
+  var _position: KeyframeGroup<Vector3D>? { position }
+  var _positionX: KeyframeGroup<Vector1D>? { positionX }
+  var _positionY: KeyframeGroup<Vector1D>? { positionY }
 }
 
 // MARK: - ShapeTransform + TransformModel
 
 extension ShapeTransform: TransformModel {
-  var anchorPoint: KeyframeGroup<LottieVector3D> { anchor }
-  var _position: KeyframeGroup<LottieVector3D>? { position }
-  var _positionX: KeyframeGroup<LottieVector1D>? { nil }
-  var _positionY: KeyframeGroup<LottieVector1D>? { nil }
+  var anchorPoint: KeyframeGroup<Vector3D> { anchor }
+  var _position: KeyframeGroup<Vector3D>? { position }
+  var _positionX: KeyframeGroup<Vector1D>? { nil }
+  var _positionY: KeyframeGroup<Vector1D>? { nil }
 }
 
 // MARK: - CALayer + TransformModel
@@ -55,28 +55,11 @@ extension CALayer {
   ///  - This _doesn't_ apply `transform.opacity`, which has to be handled separately
   ///    since child layers don't inherit the `opacity` of their parent.
   @nonobjc
-  func addTransformAnimations(
-    for transformModel: TransformModel,
-    context: LayerAnimationContext)
-    throws
-  {
-    // CALayers don't support animating skew with its own set of keyframes.
-    // If the transform includes a skew, we have to combine all of the transform
-    // components into a single set of keyframes.
-    // Only `ShapeTransform` supports skews.
-    if
-      let shapeTransform = transformModel as? ShapeTransform,
-      shapeTransform.hasSkew
-    {
-      try addCombinedTransformAnimation(for: shapeTransform, context: context)
-    }
-
-    else {
-      try addPositionAnimations(from: transformModel, context: context)
-      try addAnchorPointAnimation(from: transformModel, context: context)
-      try addScaleAnimations(from: transformModel, context: context)
-      try addRotationAnimation(from: transformModel, context: context)
-    }
+  func addTransformAnimations(for transformModel: TransformModel, context: LayerAnimationContext) throws {
+    try addPositionAnimations(from: transformModel, context: context)
+    try addAnchorPointAnimation(from: transformModel, context: context)
+    try addScaleAnimations(from: transformModel, context: context)
+    try addRotationAnimation(from: transformModel, context: context)
   }
 
   // MARK: Private
@@ -163,42 +146,17 @@ extension CALayer {
       },
       context: context)
 
-    /// iOS 14 and earlier doesn't properly support rendering transforms with
-    /// negative `scale.x` values: https://github.com/airbnb/lottie-ios/issues/1882
-    let osSupportsNegativeScaleValues: Bool = {
-      #if os(iOS) || os(tvOS)
-      if #available(iOS 15.0, tvOS 15.0, *) {
-        return true
-      } else {
-        return false
-      }
-      #else
-      // We'll assume this works correctly on macOS until told otherwise
-      return true
-      #endif
-    }()
-
-    lazy var hasNegativeXScaleValues = transformModel.scale.keyframes.contains(where: { $0.value.x < 0 })
-
     // When `scale.x` is negative, we have to rotate the view
     // half way around the y axis to flip it horizontally.
     //  - We don't do this in snapshot tests because it breaks the tests
     //    in surprising ways that don't happen at runtime. Definitely not ideal.
-    //  - This isn't supported on iOS 14 and earlier either, so we have to
-    //    log a compatibility error on devices running older OSs.
     if TestHelpers.snapshotTestsAreRunning {
-      if hasNegativeXScaleValues {
+      if transformModel.scale.keyframes.contains(where: { $0.value.x < 0 }) {
         context.logger.warn("""
           Negative `scale.x` values are not displayed correctly in snapshot tests
           """)
       }
     } else {
-      if !osSupportsNegativeScaleValues, hasNegativeXScaleValues {
-        try context.logCompatibilityIssue("""
-          iOS 14 and earlier does not support rendering negative `scale.x` values
-          """)
-      }
-
       try addAnimation(
         for: .rotationY,
         keyframes: transformModel.scale.keyframes,
@@ -241,39 +199,6 @@ extension CALayer {
         // values expected by Core Animation (e.g. π/2, π, 2π)
         rotationDegrees.cgFloatValue * .pi / 180
       },
-      context: context)
-  }
-
-  /// Adds an animation for the entire `transform` key by combining all of the
-  /// position / size / rotation / skew animations into a single set of keyframes.
-  /// This is necessary when there's a skew animation, since skew can only
-  /// be applied via a transform.
-  private func addCombinedTransformAnimation(
-    for transformModel: ShapeTransform,
-    context: LayerAnimationContext)
-    throws
-  {
-    let combinedTransformKeyframes = Keyframes.combined(
-      transformModel.anchor,
-      transformModel.position,
-      transformModel.scale,
-      transformModel.rotation,
-      transformModel.skew,
-      transformModel.skewAxis,
-      makeCombinedResult: { anchor, position, scale, rotation, skew, skewAxis in
-        CATransform3D.makeTransform(
-          anchor: anchor.pointValue,
-          position: position.pointValue,
-          scale: scale.sizeValue,
-          rotation: rotation.cgFloatValue,
-          skew: skew.cgFloatValue,
-          skewAxis: skewAxis.cgFloatValue)
-      })
-
-    try addAnimation(
-      for: .transform,
-      keyframes: combinedTransformKeyframes.keyframes,
-      value: { $0 },
       context: context)
   }
 

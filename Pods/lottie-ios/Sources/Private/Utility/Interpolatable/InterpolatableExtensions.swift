@@ -8,12 +8,13 @@
 import CoreGraphics
 import Foundation
 
-extension LottieColor {
+extension Color {
 
   // MARK: Lifecycle
 
   /// Initialize a new color with Hue Saturation and Value
   init(h: Double, s: Double, v: Double, a: Double) {
+
     let i = floor(h * 6)
     let f = h * 6 - i
     let p = v * (1 - s);

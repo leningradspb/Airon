@@ -344,6 +344,7 @@ extension CGPoint {
     var closestPoint = 0
 
     while previousAmount < 1 {
+
       previousAmount = previousAmount + step
 
       if previousAmount < amount {
@@ -428,7 +429,7 @@ extension CGPoint {
   func colinear(_ a: CGPoint, _ b: CGPoint) -> Bool {
     let area = x * (a.y - b.y) + a.x * (b.y - y) + b.x * (y - a.y);
     let accuracy: CGFloat = 0.05
-    if area < accuracy, area > -accuracy {
+    if area < accuracy && area > -accuracy {
       return true
     }
     return false

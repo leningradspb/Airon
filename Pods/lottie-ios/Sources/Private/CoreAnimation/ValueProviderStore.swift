@@ -6,7 +6,7 @@ import QuartzCore
 // MARK: - ValueProviderStore
 
 /// Registration and storage for `AnyValueProvider`s that can dynamically
-/// provide custom values for `AnimationKeypath`s within a `LottieAnimation`.
+/// provide custom values for `AnimationKeypath`s within an `Animation`.
 final class ValueProviderStore {
 
   // MARK: Lifecycle
@@ -40,7 +40,8 @@ final class ValueProviderStore {
     of customizableProperty: CustomizableProperty<Value>,
     for keypath: AnimationKeypath,
     context: LayerAnimationContext)
-    throws -> KeyframeGroup<Value>?
+    throws
+    -> KeyframeGroup<Value>?
   {
     if context.logHierarchyKeypaths {
       context.logger.info(keypath.fullPath)

@@ -15,9 +15,8 @@ final class CoreAnimationLayer: BaseAnimationLayer {
   ///  - This initializer is throwing, but will only throw when using
   ///    `CompatibilityTracker.Mode.abort`.
   init(
-    animation: LottieAnimation,
+    animation: Animation,
     imageProvider: AnimationImageProvider,
-    textProvider: AnimationTextProvider,
     fontProvider: AnimationFontProvider,
     compatibilityTrackerMode: CompatibilityTracker.Mode,
     logger: LottieLogger)
@@ -25,13 +24,12 @@ final class CoreAnimationLayer: BaseAnimationLayer {
   {
     self.animation = animation
     self.imageProvider = imageProvider
-    self.textProvider = textProvider
     self.fontProvider = fontProvider
     self.logger = logger
     compatibilityTracker = CompatibilityTracker(mode: compatibilityTrackerMode, logger: logger)
     valueProviderStore = ValueProviderStore(logger: logger)
     super.init()
-    masksToBounds = true
+
     setup()
     try setupChildLayers()
   }
@@ -46,7 +44,6 @@ final class CoreAnimationLayer: BaseAnimationLayer {
     animation = typedLayer.animation
     currentAnimationConfiguration = typedLayer.currentAnimationConfiguration
     imageProvider = typedLayer.imageProvider
-    textProvider = typedLayer.textProvider
     fontProvider = typedLayer.fontProvider
     didSetUpAnimation = typedLayer.didSetUpAnimation
     compatibilityTracker = typedLayer.compatibilityTracker
@@ -93,16 +90,6 @@ final class CoreAnimationLayer: BaseAnimationLayer {
   /// referenced by name in the animation json.
   var imageProvider: AnimationImageProvider {
     didSet { reloadImages() }
-  }
-
-  /// The `AnimationTextProvider` that `TextLayer`'s use to retrieve texts,
-  /// that they should use to render their text context
-  var textProvider: AnimationTextProvider {
-    didSet {
-      // We need to rebuild the current animation after updating the text provider,
-      // since this is used in `TextLayer.setupAnimations(context:)`
-      rebuildCurrentAnimation()
-    }
   }
 
   /// The `FontProvider` that `TextLayer`s use to retrieve the `CTFont`
@@ -156,7 +143,7 @@ final class CoreAnimationLayer: BaseAnimationLayer {
       } catch {
         if case CompatibilityTracker.Error.encounteredCompatibilityIssue(let compatibilityIssue) = error {
           // Even though the animation setup failed, we still update the layer's playback state
-          // so it can be read by the parent `LottieAnimationView` when handling this error
+          // so it can be read by the parent `AnimationView` when handling this error
           currentPlaybackState = pendingAnimationConfiguration.playbackState
 
           didSetUpAnimation?([compatibilityIssue])
@@ -187,7 +174,7 @@ final class CoreAnimationLayer: BaseAnimationLayer {
   /// which is also the realtime animation progress of this layer's animation
   @objc private var animationProgress: CGFloat = 0
 
-  private let animation: LottieAnimation
+  private let animation: Animation
   private let valueProviderStore: ValueProviderStore
   private let compatibilityTracker: CompatibilityTracker
   private let logger: LottieLogger
@@ -216,7 +203,6 @@ final class CoreAnimationLayer: BaseAnimationLayer {
     LayerContext(
       animation: animation,
       imageProvider: imageProvider,
-      textProvider: textProvider,
       fontProvider: fontProvider,
       compatibilityTracker: compatibilityTracker,
       layerName: "root layer")
@@ -248,7 +234,6 @@ final class CoreAnimationLayer: BaseAnimationLayer {
       compatibilityTracker: compatibilityTracker,
       logger: logger,
       currentKeypath: AnimationKeypath(keys: []),
-      textProvider: textProvider,
       logHierarchyKeypaths: configuration.logHierarchyKeypaths)
 
     // Perform a layout pass if necessary so all of the sublayers
@@ -279,11 +264,6 @@ final class CoreAnimationLayer: BaseAnimationLayer {
 
     let timedProgressAnimation = animationProgressTracker.timed(with: context, for: self)
     timedProgressAnimation.delegate = currentAnimationConfiguration?.animationContext.closure
-
-    // Remove the progress animation once complete so we know when the animation
-    // has finished playing (if it doesn't loop infinitely)
-    timedProgressAnimation.isRemovedOnCompletion = true
-
     add(timedProgressAnimation, forKey: #keyPath(animationProgress))
   }
 
@@ -329,40 +309,21 @@ extension CoreAnimationLayer: RootAnimationLayer {
   }
 
   var isAnimationPlaying: Bool? {
-    switch pendingAnimationConfiguration?.playbackState {
+    switch playbackState {
     case .playing:
       return true
-    case .paused:
+    case nil, .paused:
       return false
-    case nil:
-      switch playbackState {
-      case .playing:
-        return animation(forKey: #keyPath(animationProgress)) != nil
-      case nil, .paused:
-        return false
-      }
     }
   }
 
   var currentFrame: AnimationFrameTime {
     get {
       switch playbackState {
+      case .playing, nil:
+        return animation.frameTime(forProgress: (presentation() ?? self).animationProgress)
       case .paused(let frame):
         return frame
-
-      case .playing, nil:
-        // When in the `playing` state, the animation is either actively playing
-        // or is completed on the final frame of a non-repeating animation.
-        // When a non-repeating animation is complete, `animation(forKey: #keyPath(animationProgress))`
-        // is no longer present and the Core-Animation-managed `animationProgress` value is just 0.
-        // In that case, since the animation is complete, we just return the final frame that was played to.
-        let animationCurrentlyPlaying = animation(forKey: #keyPath(animationProgress)) != nil
-
-        if !animationCurrentlyPlaying, let configuration = currentAnimationConfiguration {
-          return configuration.animationContext.playTo
-        } else {
-          return animation.frameTime(forProgress: (presentation() ?? self).animationProgress)
-        }
       }
     }
     set {
@@ -415,6 +376,15 @@ extension CoreAnimationLayer: RootAnimationLayer {
 
   var _animationLayers: [CALayer] {
     (sublayers ?? []).filter { $0 is AnimationLayer }
+  }
+
+  var textProvider: AnimationTextProvider {
+    get { DictionaryTextProvider([:]) }
+    set {
+      logger.assertionFailure("""
+        The Core Animation rendering engine currently doesn't support `textProvider`s")
+        """)
+    }
   }
 
   func reloadImages() {

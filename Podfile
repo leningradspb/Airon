@@ -12,7 +12,7 @@ target 'Airon' do
 pod 'Firebase/Crashlytics'
   pod 'Kingfisher'
   pod 'SnapKit'
-pod 'lottie-ios'
+pod 'lottie-ios', '3.4.0'
 pod 'FloatingPanel', '1.7.6'
 
 end

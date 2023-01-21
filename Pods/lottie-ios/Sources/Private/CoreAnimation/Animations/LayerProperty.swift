@@ -10,38 +10,25 @@ import QuartzCore
 /// Supported key paths and their expected value types are described
 /// at https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreAnimation_guide/AnimatableProperties/AnimatableProperties.html#//apple_ref/doc/uid/TP40004514-CH11-SW1
 /// and https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreAnimation_guide/Key-ValueCodingExtensions/Key-ValueCodingExtensions.html
-struct LayerProperty<ValueRepresentation> {
+struct LayerProperty<ValueRepresentation: Equatable> {
   /// The `CALayer` KVC key path that this value should be assigned to
   let caLayerKeypath: String
 
-  /// Whether or not the given value is the default value for this property
+  /// The default value of this property on a `CALayer`
   ///  - If the keyframe values are just equal to the default value,
   ///    then we can improve performance a bit by just not creating
   ///    a CAAnimation (since it would be redundant).
-  let isDefaultValue: (ValueRepresentation?) -> Bool
+  let defaultValue: ValueRepresentation?
 
   /// A description of how this property can be customized dynamically
   /// at runtime using `AnimationView.setValueProvider(_:keypath:)`
   let customizableProperty: CustomizableProperty<ValueRepresentation>?
 }
 
-extension LayerProperty where ValueRepresentation: Equatable {
-  init(
-    caLayerKeypath: String,
-    defaultValue: ValueRepresentation?,
-    customizableProperty: CustomizableProperty<ValueRepresentation>?)
-  {
-    self.init(
-      caLayerKeypath: caLayerKeypath,
-      isDefaultValue: { $0 == defaultValue },
-      customizableProperty: customizableProperty)
-  }
-}
-
 // MARK: - CustomizableProperty
 
 /// A description of how a `CALayer` property can be customized dynamically
-/// at runtime using `LottieAnimationView.setValueProvider(_:keypath:)`
+/// at runtime using `AnimationView.setValueProvider(_:keypath:)`
 struct CustomizableProperty<ValueRepresentation> {
   /// The name that `AnimationKeypath`s can use to refer to this property
   ///  - When building an animation for this property that will be applied
@@ -71,56 +58,56 @@ extension LayerProperty {
     .init(
       caLayerKeypath: "transform.translation",
       defaultValue: CGPoint(x: 0, y: 0),
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var positionX: LayerProperty<CGFloat> {
     .init(
       caLayerKeypath: "transform.translation.x",
       defaultValue: 0,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var positionY: LayerProperty<CGFloat> {
     .init(
       caLayerKeypath: "transform.translation.y",
       defaultValue: 0,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var scale: LayerProperty<CGFloat> {
     .init(
       caLayerKeypath: "transform.scale",
       defaultValue: 1,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var scaleX: LayerProperty<CGFloat> {
     .init(
       caLayerKeypath: "transform.scale.x",
       defaultValue: 1,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var scaleY: LayerProperty<CGFloat> {
     .init(
       caLayerKeypath: "transform.scale.y",
       defaultValue: 1,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var rotation: LayerProperty<CGFloat> {
     .init(
       caLayerKeypath: "transform.rotation",
       defaultValue: 0,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var rotationY: LayerProperty<CGFloat> {
     .init(
       caLayerKeypath: "transform.rotation.y",
       defaultValue: 0,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var anchorPoint: LayerProperty<CGPoint> {
@@ -129,24 +116,14 @@ extension LayerProperty {
       // This is intentionally not `GGPoint(x: 0.5, y: 0.5)` (the actual default)
       // to opt `anchorPoint` out of the KVC `setValue` flow, which causes issues.
       defaultValue: nil,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var opacity: LayerProperty<CGFloat> {
     .init(
       caLayerKeypath: #keyPath(CALayer.opacity),
       defaultValue: 1,
-      customizableProperty: nil /* currently unsupported */ )
-  }
-
-  static var transform: LayerProperty<CATransform3D> {
-    .init(
-      caLayerKeypath: #keyPath(CALayer.transform),
-      isDefaultValue: { transform in
-        guard let transform = transform else { return false }
-        return CATransform3DIsIdentity(transform)
-      },
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 }
 
@@ -157,7 +134,7 @@ extension LayerProperty {
     .init(
       caLayerKeypath: #keyPath(CAShapeLayer.path),
       defaultValue: nil,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var fillColor: LayerProperty<CGColor> {
@@ -171,14 +148,14 @@ extension LayerProperty {
     .init(
       caLayerKeypath: #keyPath(CAShapeLayer.lineWidth),
       defaultValue: 1,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var lineDashPhase: LayerProperty<CGFloat> {
     .init(
       caLayerKeypath: #keyPath(CAShapeLayer.lineDashPhase),
       defaultValue: 0,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var strokeColor: LayerProperty<CGColor> {
@@ -192,14 +169,14 @@ extension LayerProperty {
     .init(
       caLayerKeypath: #keyPath(CAShapeLayer.strokeStart),
       defaultValue: 0,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var strokeEnd: LayerProperty<CGFloat> {
     .init(
       caLayerKeypath: #keyPath(CAShapeLayer.strokeEnd),
       defaultValue: 1,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 }
 
@@ -210,28 +187,28 @@ extension LayerProperty {
     .init(
       caLayerKeypath: #keyPath(CAGradientLayer.colors),
       defaultValue: nil,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var locations: LayerProperty<[CGFloat]> {
     .init(
       caLayerKeypath: #keyPath(CAGradientLayer.locations),
       defaultValue: nil,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var startPoint: LayerProperty<CGPoint> {
     .init(
       caLayerKeypath: #keyPath(CAGradientLayer.startPoint),
       defaultValue: nil,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 
   static var endPoint: LayerProperty<CGPoint> {
     .init(
       caLayerKeypath: #keyPath(CAGradientLayer.endPoint),
       defaultValue: nil,
-      customizableProperty: nil /* currently unsupported */ )
+      customizableProperty: nil /* currently unsupported */)
   }
 }
 
@@ -242,7 +219,7 @@ extension CustomizableProperty {
     .init(
       name: [.color],
       conversion: { typeErasedValue in
-        guard let color = typeErasedValue as? LottieColor else {
+        guard let color = typeErasedValue as? Color else {
           return nil
         }
 

@@ -29,6 +29,7 @@ public class FilepathImageProvider: AnimationImageProvider {
   // MARK: Public
 
   public func imageForAsset(asset: ImageAsset) -> CGImage? {
+
     if
       asset.name.hasPrefix("data:"),
       let url = URL(string: asset.name),
@@ -48,7 +49,7 @@ public class FilepathImageProvider: AnimationImageProvider {
       return UIImage(contentsOfFile: pathWithDirectory)?.cgImage
     }
 
-    LottieLogger.shared.warn("Could not find image \"\(asset.name)\" in bundle")
+    LottieLogger.shared.assertionFailure("Could not find image \"\(asset.name)\" in bundle")
     return nil
   }
 

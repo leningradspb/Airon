@@ -18,7 +18,7 @@ open class AnimatedSwitch: AnimatedControl {
   // MARK: Lifecycle
 
   public override init(
-    animation: LottieAnimation,
+    animation: Animation,
     configuration: LottieConfiguration = .shared)
   {
     /// Generate a haptic generator if available.
@@ -32,8 +32,8 @@ open class AnimatedSwitch: AnimatedControl {
     hapticGenerator = NullHapticGenerator()
     #endif
     super.init(animation: animation, configuration: configuration)
-    isAccessibilityElement = true
     updateOnState(isOn: _isOn, animated: false, shouldFireHaptics: false)
+    accessibilityTraits = UIAccessibilityTraits.button
   }
 
   public override init() {
@@ -48,8 +48,8 @@ open class AnimatedSwitch: AnimatedControl {
     hapticGenerator = NullHapticGenerator()
     #endif
     super.init()
-    isAccessibilityElement = true
     updateOnState(isOn: _isOn, animated: false, shouldFireHaptics: false)
+    accessibilityTraits = UIAccessibilityTraits.button
   }
 
   required public init?(coder aDecoder: NSCoder) {
@@ -64,19 +64,7 @@ open class AnimatedSwitch: AnimatedControl {
     hapticGenerator = NullHapticGenerator()
     #endif
     super.init(coder: aDecoder)
-    isAccessibilityElement = true
-  }
-
-  // MARK: Open
-
-  open override func animationDidSet() {
-    updateOnState(isOn: _isOn, animated: animateUpdateWhenChangingAnimation, shouldFireHaptics: false)
-  }
-
-  open override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
-    super.endTracking(touch, with: event)
-    updateOnState(isOn: !_isOn, animated: true, shouldFireHaptics: true)
-    sendActions(for: .valueChanged)
+    accessibilityTraits = UIAccessibilityTraits.button
   }
 
   // MARK: Public
@@ -90,14 +78,6 @@ open class AnimatedSwitch: AnimatedControl {
 
   /// The cancel behavior for the switch. See CancelBehavior for options
   public var cancelBehavior: CancelBehavior = .reverse
-
-  /// If `false` the switch will not play the animation when changing between animations.
-  public var animateUpdateWhenChangingAnimation = true
-
-  public override var accessibilityTraits: UIAccessibilityTraits {
-    set { super.accessibilityTraits = newValue }
-    get { super.accessibilityTraits.union(.button) }
-  }
 
   /// The current state of the switch.
   public var isOn: Bool {
@@ -132,6 +112,16 @@ open class AnimatedSwitch: AnimatedControl {
     }
 
     updateOnState(isOn: _isOn, animated: false, shouldFireHaptics: false)
+  }
+
+  public override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
+    super.endTracking(touch, with: event)
+    updateOnState(isOn: !_isOn, animated: true, shouldFireHaptics: true)
+    sendActions(for: .valueChanged)
+  }
+
+  public override func animationDidSet() {
+    updateOnState(isOn: _isOn, animated: true, shouldFireHaptics: false)
   }
 
   // MARK: Internal
@@ -213,7 +203,9 @@ protocol ImpactGenerator {
 // MARK: - NullHapticGenerator
 
 class NullHapticGenerator: ImpactGenerator {
-  func generateImpact() { }
+  func generateImpact() {
+
+  }
 }
 
 #if os(iOS)

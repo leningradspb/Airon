@@ -31,10 +31,10 @@ open class AnimatedControl: UIControl {
   // MARK: Initializers
 
   public init(
-    animation: LottieAnimation,
+    animation: Animation,
     configuration: LottieConfiguration = .shared)
   {
-    animationView = LottieAnimationView(
+    animationView = AnimationView(
       animation: animation,
       configuration: configuration)
 
@@ -43,13 +43,13 @@ open class AnimatedControl: UIControl {
   }
 
   public init() {
-    animationView = LottieAnimationView()
+    animationView = AnimationView()
     super.init(frame: .zero)
     commonInit()
   }
 
   required public init?(coder aDecoder: NSCoder) {
-    animationView = LottieAnimationView()
+    animationView = AnimationView()
     super.init(coder: aDecoder)
     commonInit()
   }
@@ -100,15 +100,17 @@ open class AnimatedControl: UIControl {
     super.cancelTracking(with: event)
   }
 
-  open func animationDidSet() { }
+  open func animationDidSet() {
+
+  }
 
   // MARK: Public
 
   /// The animation view in which the animation is rendered.
-  public let animationView: LottieAnimationView
+  public let animationView: AnimationView
 
   /// The animation backing the animated control.
-  public var animation: LottieAnimation? {
+  public var animation: Animation? {
     didSet {
       animationView.animation = animation
       animationView.bounds = animation?.bounds ?? .zero
@@ -156,9 +158,9 @@ open class AnimatedControl: UIControl {
     }
   }
 
-  // MARK: Private
+  // MARK: Fileprivate
 
-  private func commonInit() {
+  fileprivate func commonInit() {
     animationView.clipsToBounds = false
     clipsToBounds = true
     animationView.translatesAutoresizingMaskIntoConstraints = false

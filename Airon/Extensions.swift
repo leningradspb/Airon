@@ -328,108 +328,108 @@ extension UIViewController
 }
 
 
-//class ActivityView: UIView {
-//    private let animationView = AnimationView()
-//    private let timerLabel = UILabel()
-//    private var estimatedTime: Int = 20
-//    private var countdownTimer: Timer?
-//
-//    init(animation: Animation?, frame: CGRect, withoutAppearAnimation: Bool) {
-//        super.init(frame: frame)
-//        addSubview(animationView)
-//        addSubview(timerLabel)
-//
-//        timerLabel.snp.makeConstraints {
-//            $0.top.equalToSuperview().offset(90)
-//            $0.leading.equalToSuperview().offset(Layout.leading)
-//            $0.trailing.equalToSuperview().offset(-Layout.leading)
-//        }
-//        timerLabel.textColor = .white
-//        timerLabel.textAlignment = .center
-//        timerLabel.font = .futura(withSize: 30)
-//        timerLabel.numberOfLines = 0
-//        timerLabel.text = "estimated time \(estimatedTime) sec"
-//
-//        animationView.animation = animation
-//        backgroundColor = .black
-//        animationView.frame = self.frame
-//        animationView.center = center
-//        let window = UIApplication.shared.keyWindow ?? UIWindow()
-////        let c = window.center
-//        self.center.y += window.center.y
-//        self.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
-//        let duration: Double = withoutAppearAnimation ? 0 : 1
-//        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
-//            self.center.y -= window.center.y
-//            self.transform = .identity
-//        }
-//    }
-//
-//    func play(isInitial: Bool = false) {
-//        if isInitial {
-//            countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-//                guard let self = self else { return }
-//                self.updateLabel()
-//            }
-//
-//            countdownTimer?.fire()
-//        }
-//        animationView.play { [weak self] isComplete in
-//            self?.play()
-//        }
-//    }
-//
-//    func stopTimer() {
-//        countdownTimer?.invalidate()
-//        countdownTimer = nil
-//    }
-//
-//    private func updateLabel() {
-//        estimatedTime -= 1
-//        if estimatedTime > 0 {
-//            timerLabel.text = "estimated time \(estimatedTime) sec"
-//        } else {
-//            timerLabel.text = "we need a little bit more time..."
-//        }
-//
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//
-//    struct Animations {
-//        static let plane = Animation.named("plane")
-//    }
-//
-//    deinit {
-//        stopTimer()
-//    }
-//}
+class ActivityView: UIView {
+    private let animationView = AnimationView()
+    private let timerLabel = UILabel()
+    private var estimatedTime: Int = 20
+    private var countdownTimer: Timer?
 
-//extension UIViewController {
-//    var window: UIWindow { UIApplication.shared.keyWindow ?? UIWindow() }
-//
-//    func showActivity(animation: Animation?, withoutAppearAnimation: Bool = false) {
-//        let activityView = ActivityView(animation: animation, frame: window.bounds, withoutAppearAnimation: withoutAppearAnimation)
-//        activityView.play(isInitial: true)
-//        window.addSubview(activityView)
-//    }
-//
-//    func removeActivity(withoutAnimation: Bool = false, completion: (() -> Void)? = nil) {
-//        DispatchQueue.main.async {
-//            let activity = self.window.subviews.first { $0 is ActivityView }
-//            let duration: TimeInterval = withoutAnimation ? 0 : 1
-//            UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
-//                activity?.center.y += activity?.center.y ?? 0
-//                activity?.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
-//            } completion: { _ in
-//                activity?.removeFromSuperview()
-//                completion?()
-//            }
-//        }
-//    }
-//}
+    init(animation: Animation?, frame: CGRect, withoutAppearAnimation: Bool) {
+        super.init(frame: frame)
+        addSubview(animationView)
+        addSubview(timerLabel)
+
+        timerLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(90)
+            $0.leading.equalToSuperview().offset(Layout.leading)
+            $0.trailing.equalToSuperview().offset(-Layout.leading)
+        }
+        timerLabel.textColor = .white
+        timerLabel.textAlignment = .center
+        timerLabel.font = .futura(withSize: 30)
+        timerLabel.numberOfLines = 0
+        timerLabel.text = "estimated time \(estimatedTime) sec"
+
+        animationView.animation = animation
+        backgroundColor = .black
+        animationView.frame = self.frame
+        animationView.center = center
+        let window = UIApplication.shared.keyWindow ?? UIWindow()
+//        let c = window.center
+        self.center.y += window.center.y
+        self.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
+        let duration: Double = withoutAppearAnimation ? 0 : 1
+        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
+            self.center.y -= window.center.y
+            self.transform = .identity
+        }
+    }
+
+    func play(isInitial: Bool = false) {
+        if isInitial {
+            countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateLabel()
+            }
+
+            countdownTimer?.fire()
+        }
+        animationView.play { [weak self] isComplete in
+            self?.play()
+        }
+    }
+
+    func stopTimer() {
+        countdownTimer?.invalidate()
+        countdownTimer = nil
+    }
+
+    private func updateLabel() {
+        estimatedTime -= 1
+        if estimatedTime > 0 {
+            timerLabel.text = "estimated time \(estimatedTime) sec"
+        } else {
+            timerLabel.text = "we need a little bit more time..."
+        }
+
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    struct Animations {
+        static let plane = Animation.named("plane")
+    }
+
+    deinit {
+        stopTimer()
+    }
+}
+
+extension UIViewController {
+    var window: UIWindow { UIApplication.shared.keyWindow ?? UIWindow() }
+
+    func showActivity(animation: Animation?, withoutAppearAnimation: Bool = false) {
+        let activityView = ActivityView(animation: animation, frame: window.bounds, withoutAppearAnimation: withoutAppearAnimation)
+        activityView.play(isInitial: true)
+        window.addSubview(activityView)
+    }
+
+    func removeActivity(withoutAnimation: Bool = false, completion: (() -> Void)? = nil) {
+        DispatchQueue.main.async {
+            let activity = self.window.subviews.first { $0 is ActivityView }
+            let duration: TimeInterval = withoutAnimation ? 0 : 1
+            UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
+                activity?.center.y += activity?.center.y ?? 0
+                activity?.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
+            } completion: { _ in
+                activity?.removeFromSuperview()
+                completion?()
+            }
+        }
+    }
+}
 
 class ErrorModal: UIView {
     private let contentView = UIView()
@@ -727,4 +727,10 @@ class BlackLabel: UILabel {
 
 enum UserDefaultsKeys: String {
     case onboardingWasShown = "onboardingWasShown"
+}
+
+
+
+class Activity {
+    
 }

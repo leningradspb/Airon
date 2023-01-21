@@ -16,6 +16,7 @@ extension String {
   }
 
   func hexColorComponents() -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
+
     var cString: String = trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 
     if cString.hasPrefix("#") {

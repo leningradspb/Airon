@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// An item that define a a group of shape items
+/// An item that define an ellipse shape
 final class Group: ShapeItem {
 
   // MARK: Lifecycle
@@ -22,11 +22,6 @@ final class Group: ShapeItem {
     let itemDictionaries: [[String: Any]] = try dictionary.value(for: CodingKeys.items)
     items = try [ShapeItem].fromDictionaries(itemDictionaries)
     try super.init(dictionary: dictionary)
-  }
-
-  init(items: [ShapeItem], name: String) {
-    self.items = items
-    super.init(name: name, type: .group, hidden: false)
   }
 
   // MARK: Internal
