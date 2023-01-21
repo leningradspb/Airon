@@ -33,7 +33,7 @@ class PurchaseService: NSObject {
             return
         }
         
-        ActivityHelper.showActivity(animation: ActivityView.Animations.eight)
+        ActivityHelper.showActivity(animation: ActivityView.Animations.plane)
         let payment = SKPayment(product: subscriptionToPurchase)
         paymentQueue.add(payment)
     }

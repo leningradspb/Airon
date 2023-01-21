@@ -367,6 +367,52 @@ class ActivityView: UIView {
     }
 }
 
+class SmallActivityView: UIView {
+    private let animationView = AnimationView()
+
+    init(animation: Animation?, frame: CGRect, withoutAppearAnimation: Bool) {
+        super.init(frame: frame)
+        addSubview(animationView)
+
+        animationView.animation = animation
+        backgroundColor = .clear
+        animationView.backgroundColor = .black
+        animationView.layer.cornerRadius = 30
+        
+        animationView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.height.equalTo(240)
+        }
+//        animationView.frame = self.frame
+//        animationView.center = center
+        let window = UIApplication.shared.keyWindow ?? UIWindow()
+//        let c = window.center
+        self.center.y += window.center.y
+        self.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
+        let duration: Double = withoutAppearAnimation ? 0 : 1
+        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
+            self.center.y -= window.center.y
+            self.transform = .identity
+        }
+    }
+
+    func play(isInitial: Bool = false) {
+        
+        animationView.play { [weak self] isComplete in
+            self?.play()
+        }
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    struct Animations {
+        static let plane = Animation.named("plane")
+        static let eight = Animation.named("eight")
+    }
+}
+
 extension UIViewController {
     var window: UIWindow { UIApplication.shared.keyWindow ?? UIWindow() }
 
@@ -695,14 +741,14 @@ class ActivityHelper {
     static var window: UIWindow { UIApplication.shared.keyWindow ?? UIWindow() }
 
     static func showActivity(animation: Animation?, withoutAppearAnimation: Bool = false) {
-        let activityView = ActivityView(animation: animation, frame: window.bounds, withoutAppearAnimation: withoutAppearAnimation)
+        let activityView = SmallActivityView(animation: animation, frame: window.bounds, withoutAppearAnimation: withoutAppearAnimation)
         activityView.play(isInitial: true)
         window.addSubview(activityView)
     }
 
     static func removeActivity(withoutAnimation: Bool = false, completion: (() -> Void)? = nil) {
         DispatchQueue.main.async {
-            let activity = self.window.subviews.first { $0 is ActivityView }
+            let activity = self.window.subviews.first { $0 is SmallActivityView }
             let duration: TimeInterval = withoutAnimation ? 0 : 1
             UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
                 activity?.center.y += activity?.center.y ?? 0
