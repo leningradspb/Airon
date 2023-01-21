@@ -126,7 +126,7 @@ extension TopicsVC: UITableViewDelegate, UITableViewDataSource {
 
 
 class TopicCell: UITableViewCell {
-    private let realContentView = UIView()
+    private let realContentView = GradientView()
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -143,7 +143,13 @@ class TopicCell: UITableViewCell {
         selectionStyle = .none
         contentView.addSubview(realContentView)
         
-        realContentView.backgroundColor = .violetLight
+        realContentView.layer.cornerRadius = 8
+        realContentView.startLocation = 0
+        realContentView.endLocation = 0.8
+        realContentView.diagonalMode = true
+        
+        realContentView.startColor = .violetUltraLight
+        realContentView.endColor = .violetLight
         
         realContentView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(6)
