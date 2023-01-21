@@ -14,6 +14,7 @@ class PurchaseService: NSObject {
     static let shared = PurchaseService()
     var isActivated = false
     var products: [SKProduct] = []
+    var purchaseCompletion: (()->())?
     private let paymentQueue = SKPaymentQueue.default()
     
     func getSubscriptions() {
@@ -58,8 +59,6 @@ class PurchaseService: NSObject {
                             print("ACTIVE")
                             self.isActivated = true
                             completion(true)
-                            // тут нужно ввести помплишн с флагом актив или нет, чтобы понмать показывать экрна с подпиской или нет
-                            // ввести флаг на время жизни приложения чтобы не запрашивать больше экран с подпиской если подкиска была куплена
                             // сворачивать после подписки
                             // лоадеры при нажатии купить
                             // запрсо нужна ли подписка при каждом запросе если фаг отрицательный
@@ -122,6 +121,10 @@ extension PurchaseService: SKPaymentTransactionObserver {
             print($0.transactionState.status(), $0.payment.productIdentifier)
             switch $0.transactionState {
             case .purchasing: break
+            case .purchased, .restored:
+                queue.finishTransaction($0)
+                isActivated = true
+                purchaseCompletion?()
             default: queue.finishTransaction($0)
             }
         }
