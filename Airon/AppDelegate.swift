@@ -49,6 +49,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().compactAppearance = scrollingAppearance
         return true
     }
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        // Remove the observer.
+        PurchaseService.shared.removeObserver()
+    }
 
     // MARK: UISceneSession Lifecycle
 

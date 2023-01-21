@@ -74,6 +74,10 @@ class PurchaseService: NSObject {
         }
     }
     
+    func removeObserver() {
+        paymentQueue.remove(self)
+    }
+    
 //    private func refreshReceipt() {
 //        let request = SKReceiptRefreshRequest(receiptProperties: nil)
 //        request.delegate = self
