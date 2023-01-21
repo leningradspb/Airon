@@ -121,7 +121,6 @@ class PurchaseModal: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        PurchaseService.shared.checkIsPurchased()
     }
     
     private func setupUI() {

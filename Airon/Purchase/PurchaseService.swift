@@ -39,7 +39,7 @@ class PurchaseService: NSObject {
         paymentQueue.restoreCompletedTransactions()
     }
     
-    func checkIsPurchased() {
+    func checkIsPurchased(completion: @escaping (Bool) -> Void) {
         if let appStoreReceiptURL = Bundle.main.appStoreReceiptURL,
            FileManager.default.fileExists(atPath: appStoreReceiptURL.path) {
             print(appStoreReceiptURL)
@@ -55,6 +55,7 @@ class PurchaseService: NSObject {
                         print(currentTime, expires_date_ms)
                         if currentTime < ms {
                             print("ACTIVE")
+                            completion(true)
                             // тут нужно ввести помплишн с флагом актив или нет, чтобы понмать показывать экрна с подпиской или нет
                             // ввести флаг на время жизни приложения чтобы не запрашивать больше экран с подпиской если подкиска была куплена
                             // сворачивать после подписки
@@ -63,14 +64,18 @@ class PurchaseService: NSObject {
                             // остльтные экрнаы онбординга сверстать
                         } else {
                             print("EXPIRED")
+                            completion(false)
                         }
+                    } else {
+                        completion(false)
                     }
                 }
             } catch {
-                
+                completion(false)
             }
         } else {
 //            refreshReceipt()
+            completion(false)
         }
     }
     

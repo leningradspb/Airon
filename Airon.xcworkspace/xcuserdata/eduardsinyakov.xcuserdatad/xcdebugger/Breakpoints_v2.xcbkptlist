@@ -14,8 +14,8 @@
             filePath = "Airon/Purchase/PurchaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
             landmarkName = "productsRequest(_:didReceive:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "Airon/Purchase/PurchaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
             landmarkName = "productsRequest(_:didReceive:)"
             landmarkType = "7">
             <Locations>
@@ -94,8 +94,8 @@
             filePath = "Airon/Purchase/PurchaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
             landmarkName = "paymentQueue(_:updatedTransactions:)"
             landmarkType = "7">
             <Locations>
@@ -142,8 +142,8 @@
             filePath = "Airon/Purchase/PurchaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "91"
-            endingLineNumber = "91"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
             landmarkName = "productsRequest(_:didReceive:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -190,8 +190,8 @@
             filePath = "Airon/Purchase/PurchaseService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "100"
-            endingLineNumber = "100"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "PurchaseService"
             landmarkType = "21">
          </BreakpointContent>
@@ -208,7 +208,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "46"
             endingLineNumber = "46"
-            landmarkName = "checkIsPurchased()"
+            landmarkName = "checkIsPurchased(completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
