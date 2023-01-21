@@ -381,7 +381,7 @@ class SmallActivityView: UIView {
         
         animationView.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.width.height.equalTo(240)
+            $0.width.height.equalTo(120)
         }
 //        animationView.frame = self.frame
 //        animationView.center = center
