@@ -33,7 +33,7 @@ class PurchaseService: NSObject {
             return
         }
         
-        ActivityHelper.showActivity(animation: ActivityView.Animations.plane)
+        ActivityHelper.showActivity(animation: ActivityView.Animations.rainbowLoader)
         let payment = SKPayment(product: subscriptionToPurchase)
         paymentQueue.add(payment)
     }
@@ -125,9 +125,12 @@ extension PurchaseService: SKPaymentTransactionObserver {
             case .purchasing: break
             case .purchased, .restored:
                 queue.finishTransaction($0)
+                ActivityHelper.removeActivity()
                 isActivated = true
                 purchaseCompletion?()
-            default: queue.finishTransaction($0)
+            default:
+                ActivityHelper.removeActivity()
+                queue.finishTransaction($0)
             }
         }
     }

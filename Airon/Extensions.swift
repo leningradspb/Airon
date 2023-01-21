@@ -363,7 +363,7 @@ class ActivityView: UIView {
 
     struct Animations {
         static let plane = Animation.named("plane")
-        static let eight = Animation.named("eight")
+        static let rainbowLoader = Animation.named("rainbowLoader")
     }
 }
 
@@ -376,7 +376,7 @@ class SmallActivityView: UIView {
 
         animationView.animation = animation
         backgroundColor = .clear
-        animationView.backgroundColor = .black
+        animationView.backgroundColor = .black.withAlphaComponent(0.7)
         animationView.layer.cornerRadius = 30
         
         animationView.snp.makeConstraints {
