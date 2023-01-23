@@ -144,11 +144,13 @@ class TopicCell: UITableViewCell {
     
     func update(isOdd: Bool) {
         if isOdd {
-            realContentView.startColor = .violetUltraLight
-            realContentView.endColor = .violetLight
+            realContentView.startColor = .white //UIColor(hex: "920CE5")//.violetUltraLight
+            realContentView.endColor = .white.withAlphaComponent(0.9) //UIColor(hex: "370258")
+            titleLabel.textColor = .black
         } else {
-            realContentView.startColor = UIColor(hex: "EDCDBB") //.violetUltraLight
-            realContentView.endColor = UIColor(hex: "E3B7A0") //.violetLight
+            realContentView.startColor = UIColor(hex: "0021f3") //.violetUltraLight
+            realContentView.endColor = UIColor(hex: "020079") //.violetLight
+            titleLabel.textColor = .white
         }
     }
     
@@ -161,7 +163,7 @@ class TopicCell: UITableViewCell {
         realContentView.layer.cornerRadius = 8
         realContentView.startLocation = 0
         realContentView.endLocation = 0.8
-        realContentView.diagonalMode = true
+//        realContentView.diagonalMode = true
         
         realContentView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(6)
@@ -178,6 +180,7 @@ class TopicCell: UITableViewCell {
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
         }
+        titleLabel.textColor = .white
         
         subtitleLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(8)
