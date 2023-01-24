@@ -8,7 +8,15 @@
 import UIKit
 
 class TopicsVC: UIViewController {
-    private let tableView = UITableView(frame: .zero, style: .grouped)
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let minimumInteritemSpacingForSection: CGFloat = 6
+    private let numberOfCollectionViewColumns: CGFloat = 2
+    private let refreshControl = UIRefreshControl()
+//    private var usersHistory: [UserHistory] = []
+//    private var userModel: UserModel?
+//    private var lastDocument: DocumentSnapshot?
+    private let limit = 20
+    private var isNeedFetch = true
     let nc = PurchaseNC()
     
     override func viewDidLoad() {
@@ -21,21 +29,26 @@ class TopicsVC: UIViewController {
     private func setupUI() {
         title = "Topics"
         view.backgroundColor = UIColor(hex: "121416") //UIColor(hex: "#121212")
-        view.addSubview(tableView)
-        tableView.backgroundColor = .clear
-        tableView.separatorStyle = .none
-        tableView.showsVerticalScrollIndicator = false
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(TopicCell.self, forCellReuseIdentifier: TopicCell.identifier)
-    
-        tableView.estimatedSectionFooterHeight = 0
-        if #available(iOS 15.0, *) {
-            tableView.sectionHeaderTopPadding = 0
+        view.addSubview(collectionView)
+        collectionView.backgroundColor = .clear
+        collectionView.register(TopicCell.self, forCellWithReuseIdentifier: TopicCell.identifier)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.keyboardDismissMode = .onDrag
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.refreshControl = refreshControl
+        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: Layout.leading, bottom: Layout.leading, right: Layout.leading)
+//        collectionView.register(ProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ProfileHeader.identifier)
+        if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.scrollDirection = .vertical
+            flowLayout.minimumLineSpacing = 10
         }
-        
-        tableView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        collectionView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
     }
     
@@ -62,106 +75,105 @@ class TopicsVC: UIViewController {
         })
     }
     
+    @objc private func refresh() {
+//        usersHistory.removeAll()
+//        lastDocument = nil
+//        isNeedFetch = true
+//        loadData()
+//        refreshControl.endRefreshing()
+    }
+    
 }
 
-extension TopicsVC: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        1
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        20
-    }
-    
-//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        if section < sections.count {
-//            let v = UIView()
-//            let header = UILabel()
-//            header.text = sections[section].name
-//            v.addSubview(header)
-//            header.textColor = .white
-//            header.font = .systemFont(ofSize: 24, weight: .semibold)
-//
-//            header.snp.makeConstraints {
-//                $0.leading.equalToSuperview().offset(16)
-//                $0.trailing.equalToSuperview()
-//                $0.centerY.equalToSuperview()
+
+extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+//        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ProfileHeader.identifier, for: indexPath) as! ProfileHeader
+//        if let urlString = userModel?.profileImageURL, let url = URL(string: urlString) {
+//            header.configure(with: url, nickName: userModel?.nickName)
+//            header.imageClosure = { [weak self] image in
+//                guard let self = self else { return }
+//                self.headerImage = image
 //            }
-//            return v
 //        }
-//        return nil
+//
+//        if header.gestureRecognizers == nil {
+//            setupTapRecognizer(for: header, action: #selector(headerTapped))
+//        }
+//
+//        return header
 //    }
 //
-//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-//        return 60
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+//        return CGSize(width: view.bounds.width, height: 280)
 //    }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: TopicCell.identifier, for: indexPath) as! TopicCell
-        cell.update(isOdd: indexPath.row % 2 == 0)
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        30
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCell.identifier, for: indexPath) as! TopicCell
+        let row = indexPath.row
+//        if row < usersHistory.count, let photo = usersHistory[row].photo, let url = URL(string: photo) {
+//            cell.setImage(url: url)
+//        }
+        
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 140
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return CGSize(width: (view.bounds.width - (Layout.leading * 2) - minimumInteritemSpacingForSection) / numberOfCollectionViewColumns, height: 200)
+        return CGSize(width: (view.bounds.width - (Layout.leading * 2) - minimumInteritemSpacingForSection) / numberOfCollectionViewColumns, height: view.bounds.height / 4)
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        guard indexPath.section < sections.count, sections[indexPath.section].isRecommendation != true else { return }
-//        print("didSelectRowAt")
-//        let section = sections[indexPath.section]
-//        if let cells = section.cells, indexPath.row < cells.count, let name = cells[indexPath.row].cellName {
-//            let vc = CategoryVC(categoryName: name)
-//            navigationController?.pushViewController(vc, animated: true)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        minimumInteritemSpacingForSection
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        minimumInteritemSpacingForSection
+    }
+    
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        print("TAPPED IN collectionView ProfileVC")
+//        if let cell = collectionView.cellForItem(at: indexPath) as? FullContentViewImageCollectionViewCell {
+//            if let image = cell.recommendationImageView.image {
+//                let vc = FullSizeWallpaperVC(image: image)
+//                self.present(vc, animated: true)
+//            }
 //        }
-    }
+//    }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
-    }
-
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        .leastNormalMagnitude
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        guard usersHistory.count > 0, isNeedFetch else { return }
+//         if indexPath.row == usersHistory.count - 1 {
+//             loadData()
+//         }
+//    }
 }
 
 
-
-class TopicCell: UITableViewCell {
+class TopicCell: UICollectionViewCell {
     private let realContentView = GradientView()
-    private let titleLabel = BlackLabel(text: "Get translation help", fontSize: 22, fontWeight: .medium)
-    private let subtitleLabel = BlackLabel(text: "translate text into language", fontSize: 18, fontWeight: .medium)
+    private let cornerRadius: CGFloat = 20
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupUI()
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func update(isOdd: Bool) {
-        if isOdd {
-            realContentView.startColor = UIColor(hex: "212427") //UIColor(hex: "920CE5")//.violetUltraLight
-            realContentView.endColor = UIColor(hex: "1A1C1E") //UIColor(hex: "370258")
-//            titleLabel.textColor = .black
-        } else {
-            realContentView.startColor = .violetUltraLight
-            realContentView.endColor = .violetLight
-//            titleLabel.textColor = .white
-        }
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
     
     private func setupUI() {
         backgroundColor = .black
         contentView.backgroundColor = UIColor(hex: "121416")
-        selectionStyle = .none
         contentView.addSubview(realContentView)
         
         realContentView.layer.shadowOffset = CGSize(width: 3,
-                                          height: 8)
+                                                    height: 8)
         realContentView.layer.shadowRadius = 8
         realContentView.layer.shadowOpacity = 0.7
         realContentView.layer.shadowColor = UIColor(hex: "292B2F").cgColor
@@ -169,29 +181,16 @@ class TopicCell: UITableViewCell {
         realContentView.layer.cornerRadius = 8
         realContentView.startLocation = 0
         realContentView.endLocation = 0.9
-//        realContentView.diagonalMode = true
+        realContentView.startColor = UIColor(hex: "212427")
+        realContentView.endColor = UIColor(hex: "1A1C1E") //UIColor(hex: "370258")
+
+        //        realContentView.diagonalMode = true
         
         realContentView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(10)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.leading.equalToSuperview().offset(10)
+            $0.trailing.equalToSuperview().offset(-10)
             $0.bottom.equalToSuperview().offset(-10)
-        }
-        
-        realContentView.addSubviews([titleLabel, subtitleLabel])
-        subtitleLabel.textColor = UIColor(hex: "5A6066")
-        
-        titleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(20)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
-        }
-        titleLabel.textColor = .white
-        
-        subtitleLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(8)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
         }
     }
 }
