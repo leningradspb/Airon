@@ -20,7 +20,7 @@ class TopicsVC: UIViewController {
     
     private func setupUI() {
         title = "Topics"
-        view.backgroundColor = UIColor(hex: "#121212")
+        view.backgroundColor = UIColor(hex: "121416") //UIColor(hex: "#121212")
         view.addSubview(tableView)
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
@@ -144,32 +144,38 @@ class TopicCell: UITableViewCell {
     
     func update(isOdd: Bool) {
         if isOdd {
-            realContentView.startColor = .white //UIColor(hex: "920CE5")//.violetUltraLight
-            realContentView.endColor = .white.withAlphaComponent(0.9) //UIColor(hex: "370258")
-            titleLabel.textColor = .black
+            realContentView.startColor = UIColor(hex: "212427") //UIColor(hex: "920CE5")//.violetUltraLight
+            realContentView.endColor = UIColor(hex: "1A1C1E") //UIColor(hex: "370258")
+//            titleLabel.textColor = .black
         } else {
-            realContentView.startColor = UIColor(hex: "0021f3") //.violetUltraLight
-            realContentView.endColor = UIColor(hex: "020079") //.violetLight
-            titleLabel.textColor = .white
+            realContentView.startColor = .violetUltraLight
+            realContentView.endColor = .violetLight
+//            titleLabel.textColor = .white
         }
     }
     
     private func setupUI() {
-        backgroundColor = .clear
-        contentView.backgroundColor = .clear
+        backgroundColor = .black
+        contentView.backgroundColor = UIColor(hex: "121416")
         selectionStyle = .none
         contentView.addSubview(realContentView)
         
+        realContentView.layer.shadowOffset = CGSize(width: 3,
+                                          height: 8)
+        realContentView.layer.shadowRadius = 8
+        realContentView.layer.shadowOpacity = 0.7
+        realContentView.layer.shadowColor = UIColor(hex: "292B2F").cgColor
+        
         realContentView.layer.cornerRadius = 8
         realContentView.startLocation = 0
-        realContentView.endLocation = 0.8
+        realContentView.endLocation = 0.9
 //        realContentView.diagonalMode = true
         
         realContentView.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(6)
+            $0.top.equalToSuperview().offset(10)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
-            $0.bottom.equalToSuperview().offset(-6)
+            $0.bottom.equalToSuperview().offset(-10)
         }
         
         realContentView.addSubviews([titleLabel, subtitleLabel])
