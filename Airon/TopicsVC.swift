@@ -13,7 +13,7 @@ class TopicsVC: UIViewController {
     private let minimumInteritemSpacingForSection: CGFloat = 6
     private let numberOfCollectionViewColumns: CGFloat = 2
     private let refreshControl = UIRefreshControl()
-    private let topics = [TopicModel(id: "1", name: "Translate to any language", imageName: "book", message: "Type language"), TopicModel(id: "2", name: "Grammar Correction", imageName: "pencil.line", message: "Type your text"), TopicModel(id: "3", name: "Movie to Emoji ", imageName: "popcorn", message: "Type your movie")]
+    private let topics = [TopicModel(id: "1", name: "Translate to any language", imageName: "book", message: "Type language"), TopicModel(id: "2", name: "Grammar Correction", imageName: "pencil.and.outline", message: "Type your text"), TopicModel(id: "3", name: "Movie to Emoji ", imageName: "video", message: "Type your movie")]
 //    private var usersHistory: [UserHistory] = []
 //    private var userModel: UserModel?
 //    private var lastDocument: DocumentSnapshot?
