@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class TopicsVC: UIViewController {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -115,6 +116,7 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCell.identifier, for: indexPath) as! TopicCell
         let row = indexPath.row
+        cell.update(systemName: "book", title: "Translate to any language")
 //        if row < usersHistory.count, let photo = usersHistory[row].photo, let url = URL(string: photo) {
 //            cell.setImage(url: url)
 //        }
@@ -123,8 +125,8 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        return CGSize(width: (view.bounds.width - (Layout.leading * 2) - minimumInteritemSpacingForSection) / numberOfCollectionViewColumns, height: 200)
-        return CGSize(width: (view.bounds.width - (Layout.leading * 2) - minimumInteritemSpacingForSection) / numberOfCollectionViewColumns, height: view.bounds.height / 4)
+        return CGSize(width: (view.bounds.width - (Layout.leading * 2) - minimumInteritemSpacingForSection) / numberOfCollectionViewColumns, height: 200)
+//        return CGSize(width: (view.bounds.width - (Layout.leading * 2) - minimumInteritemSpacingForSection) / numberOfCollectionViewColumns, height: view.bounds.height / 4)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -156,6 +158,8 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
 
 class TopicCell: UICollectionViewCell {
     private let realContentView = GradientView()
+    private let iconImageView = UIImageView()
+    private let nameLabel = UILabel()
     private let cornerRadius: CGFloat = 20
     
     override init(frame: CGRect) {
@@ -167,12 +171,18 @@ class TopicCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
+    func update(systemName: String, title: String) {
+        iconImageView.image = UIImage(systemName: systemName)
+        nameLabel.text = title
+    }
+    
     private func setupUI() {
         backgroundColor = .black
         contentView.backgroundColor = UIColor(hex: "121416")
         contentView.addSubview(realContentView)
+        realContentView.addSubviews([iconImageView, nameLabel])
         
-        realContentView.layer.shadowOffset = CGSize(width: 3,
+        realContentView.layer.shadowOffset = CGSize(width: 8,
                                                     height: 8)
         realContentView.layer.shadowRadius = 8
         realContentView.layer.shadowOpacity = 0.7
@@ -191,6 +201,25 @@ class TopicCell: UICollectionViewCell {
             $0.leading.equalToSuperview().offset(10)
             $0.trailing.equalToSuperview().offset(-10)
             $0.bottom.equalToSuperview().offset(-10)
+        }
+        // 70C7F6
+        iconImageView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(30)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(50)
+        }
+        
+        nameLabel.textColor = .white
+        nameLabel.numberOfLines = 2
+        nameLabel.textAlignment = .center
+        nameLabel.font = .systemFont(ofSize: 22, weight: .medium)
+        nameLabel.adjustsFontSizeToFitWidth = true
+        nameLabel.minimumScaleFactor = 0.5
+        
+        nameLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalToSuperview().offset(-20)
         }
     }
 }
