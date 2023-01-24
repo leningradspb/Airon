@@ -13,6 +13,7 @@ class TopicsVC: UIViewController {
     private let minimumInteritemSpacingForSection: CGFloat = 6
     private let numberOfCollectionViewColumns: CGFloat = 2
     private let refreshControl = UIRefreshControl()
+    private let topics = [TopicModel(id: "1", name: "Translate to any language", imageName: "book", message: "Type language"), TopicModel(id: "2", name: "Grammar Correction", imageName: "pencil.line", message: "Type your text"), TopicModel(id: "3", name: "Movie to Emoji ", imageName: "popcorn", message: "Type your movie")]
 //    private var usersHistory: [UserHistory] = []
 //    private var userModel: UserModel?
 //    private var lastDocument: DocumentSnapshot?
@@ -110,13 +111,14 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
 //    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        30
+        topics.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCell.identifier, for: indexPath) as! TopicCell
         let row = indexPath.row
-        cell.update(systemName: "book", title: "Translate to any language")
+        let model = topics[row]
+        cell.update(systemName: model.imageName, title: model.name)
 //        if row < usersHistory.count, let photo = usersHistory[row].photo, let url = URL(string: photo) {
 //            cell.setImage(url: url)
 //        }
@@ -222,4 +224,10 @@ class TopicCell: UICollectionViewCell {
             $0.bottom.equalToSuperview().offset(-20)
         }
     }
+}
+
+struct TopicModel: Codable {
+    let id: String
+    let name, imageName: String
+    let message: String
 }
