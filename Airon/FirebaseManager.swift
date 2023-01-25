@@ -29,7 +29,9 @@ final class FirebaseManager {
 }
 
 struct ReferenceKeys {
-    static let categories = "categories"
+    static let topics = "topics"
+    static let isActive = "isActive"
+    static let position = "position"
     static let meSender = "meSender"
     static let aiSender = "aiSender"
 }

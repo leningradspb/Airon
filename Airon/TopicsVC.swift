@@ -7,16 +7,16 @@
 
 import UIKit
 import SnapKit
+import Firebase
 
 class TopicsVC: UIViewController {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let minimumInteritemSpacingForSection: CGFloat = 6
     private let numberOfCollectionViewColumns: CGFloat = 2
     private let refreshControl = UIRefreshControl()
-    private let topics = [TopicModel(id: "1", name: "Translate to any language", imageName: "translator", message: "Type language"), TopicModel(id: "2", name: "Grammar Correction", imageName: "grammarcorrector", message: "Type your text"), TopicModel(id: "3", name: "Movie to Emoji ", imageName: "movie", message: "Type your movie"), TopicModel(id: "4", name: "Chat with friend", imageName: "chatai", message: "What's up?")]
-//    private var usersHistory: [UserHistory] = []
-//    private var userModel: UserModel?
-//    private var lastDocument: DocumentSnapshot?
+    private var topics: [TopicModel] = []
+//    [TopicModel(id: "1", name: "Translate to any language", imageName: "translator", message: "Type language"), TopicModel(id: "2", name: "Grammar Correction", imageName: "grammarcorrector", message: "Type your text"), TopicModel(id: "3", name: "Movie to Emoji ", imageName: "movie", message: "Type your movie"), TopicModel(id: "4", name: "Chat with friend", imageName: "chatai", message: "What's up?")]
+    private var lastDocument: DocumentSnapshot?
     private let limit = 20
     private var isNeedFetch = true
     let nc = PurchaseNC()
@@ -25,6 +25,7 @@ class TopicsVC: UIViewController {
         super.viewDidLoad()
         
         setupUI()
+        loadData()
 //        purchaseCheck()
     }
     
@@ -77,12 +78,74 @@ class TopicsVC: UIViewController {
         })
     }
     
+    private func loadData() {
+        if let lastDocument = self.lastDocument {
+            FirebaseManager.shared.firestore.collection(ReferenceKeys.topics).whereField(ReferenceKeys.isActive, isEqualTo: true).order(by: ReferenceKeys.position, descending: false).limit(to: limit).start(afterDocument: lastDocument).getDocuments { [weak self] snapshot, error in
+                guard let self = self else { return }
+                print(snapshot?.documents.count, error)
+                if let error = error {
+                    self.view.showMessage(text: error.localizedDescription, isError: true)
+                    return
+                }
+                guard let documents = snapshot?.documents, !documents.isEmpty else {
+                    self.isNeedFetch = false
+                    return
+                }
+
+                documents.forEach {
+                    let snapshotData = $0.data()
+                    guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+                    do {
+                        let model = try JSONDecoder().decode(TopicModel.self, from: data)
+                        print(model)
+                        
+                        DispatchQueue.main.async {
+                            self.topics.append(model)
+                            self.lastDocument = documents.last
+                            self.collectionView.reloadData()
+                        }
+                    } catch let error {
+                    }
+                }
+            }
+        } else {
+            FirebaseManager.shared.firestore.collection(ReferenceKeys.topics).whereField(ReferenceKeys.isActive, isEqualTo: true).order(by: ReferenceKeys.position, descending: false).limit(to: limit).getDocuments { [weak self] snapshot, error in
+                guard let self = self else { return }
+                print(snapshot?.documents.count, error)
+                if let error = error {
+                    self.view.showMessage(text: error.localizedDescription, isError: true)
+                    return
+                }
+                guard let documents = snapshot?.documents, !documents.isEmpty else {
+                    self.isNeedFetch = false
+                    return
+                }
+
+                documents.forEach {
+                    let snapshotData = $0.data()
+                    guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+                    do {
+                        let model = try JSONDecoder().decode(TopicModel.self, from: data)
+                        print(model)
+                        
+                        DispatchQueue.main.async {
+                            self.topics.append(model)
+                            self.lastDocument = documents.last
+                            self.collectionView.reloadData()
+                        }
+                    } catch let error {
+                    }
+                }
+            }
+        }
+    }
+    
     @objc private func refresh() {
-//        usersHistory.removeAll()
-//        lastDocument = nil
-//        isNeedFetch = true
-//        loadData()
-//        refreshControl.endRefreshing()
+        topics.removeAll()
+        lastDocument = nil
+        isNeedFetch = true
+        loadData()
+        refreshControl.endRefreshing()
     }
     
 }
@@ -117,11 +180,13 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCell.identifier, for: indexPath) as! TopicCell
         let row = indexPath.row
-        let model = topics[row]
-        cell.update(imageName: model.imageName, title: model.name)
-//        if row < usersHistory.count, let photo = usersHistory[row].photo, let url = URL(string: photo) {
-//            cell.setImage(url: url)
-//        }
+        
+        if row < topics.count {
+            let model = topics[row]
+            let topicName = model.topicName
+            let imageUrlString = model.iconUrl ?? ""
+            cell.update(topicName: topicName, imageUrlString: imageUrlString)
+        }
         
         return cell
     }
@@ -152,12 +217,12 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
 //        }
     }
     
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        guard usersHistory.count > 0, isNeedFetch else { return }
-//         if indexPath.row == usersHistory.count - 1 {
-//             loadData()
-//         }
-//    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard topics.count > 0, isNeedFetch else { return }
+         if indexPath.row == topics.count - 1 {
+             loadData()
+         }
+    }
 }
 
 
@@ -176,12 +241,19 @@ class TopicCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
-    func update(imageName: String, title: String) {
-        iconImageView.image = UIImage(named: imageName)
-        nameLabel.text = title
-        let templateImage = iconImageView.image?.withRenderingMode(.alwaysTemplate)
-        iconImageView.image = templateImage
-        iconImageView.tintColor = .systemBlue //UIColor(hex: "65B9F6")
+    func update(topicName: String, imageUrlString: String) {
+        iconImageView.kf.indicatorType = .activity
+        (iconImageView.kf.indicator?.view as? UIActivityIndicatorView)?.color = .white
+        if let url = URL(string: imageUrlString) {
+            iconImageView.kf.setImage(with: url, options: [.transition(.fade(0.2))]) { [weak self] result in
+                guard let self = self else { return }
+                let templateImage = self.iconImageView.image?.withRenderingMode(.alwaysTemplate)
+                self.iconImageView.image = templateImage
+                self.iconImageView.tintColor = .systemBlue //UIColor(hex: "65B9F6")
+            }
+        }
+        
+        nameLabel.text = topicName
     }
     
     private func setupUI() {
@@ -233,7 +305,6 @@ class TopicCell: UICollectionViewCell {
 }
 
 struct TopicModel: Codable {
-    let id: String
-    let name, imageName: String
-    let message: String
+    let topicName, firstMessage: String
+    let iconUrl, secondMessage: String?
 }
