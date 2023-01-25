@@ -19,7 +19,7 @@ class MeSenderCell: UITableViewCell {
     
     private func setupMessageView() {
         contentView.addSubview(messageView)
-        messageView.backgroundColor = .scarlet
+        messageView.backgroundColor = .systemBlue
         messageView.layer.cornerRadius = 10
         messageView.addSubview(messageTextLabel)
         

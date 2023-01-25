@@ -142,7 +142,7 @@ class ChatVC: UIViewController {
         }
         let sentImage = UIImage(systemName: "arrow.up.circle.fill", withConfiguration: iconConfig)
         sentMessageButton.setImage(sentImage, for: .normal)
-        sentMessageButton.tintColor = .scarlet
+        sentMessageButton.tintColor = .systemBlue
         sentMessageButton.addTarget(self, action: #selector(sendTapped), for: .touchUpInside)
         
         messageTextView.delegate = self
