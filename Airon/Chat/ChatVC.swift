@@ -12,6 +12,7 @@ class ChatVC: UIViewController {
     private let placeholder = "Enter text"
     private let userImage = UIImageView()
     private let userNickName = UILabel()
+    private var firstMessageAnswer: String?
     
     private var model: ChatInitModel
     init(model: ChatInitModel) {
@@ -141,23 +142,26 @@ class ChatVC: UIViewController {
 //        let myID: String = self.myID!
         let message = Message(formID: ReferenceKeys.meSender, toID: ReferenceKeys.aiSender, message: text)
         messages.append(message)
+        tableView.reloadData()
+        if !self.messages.isEmpty {
+            self.tableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
+        }
+        
         if let secondMessage = model.secondMessage {
+            self.firstMessageAnswer = text
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
                 let secondMessageAI = Message(formID: ReferenceKeys.aiSender, toID: ReferenceKeys.meSender, message: secondMessage)
                 self.messages.append(secondMessageAI)
                 self.model.secondMessage = nil
+                self.messageTextView.text = ""
+//                self.messageTextView.endEditing(true)
                 self.tableView.reloadData()
                 if !self.messages.isEmpty {
                     self.tableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
                 }
             }
+            return
         }
-        
-        tableView.reloadData()
-        if !self.messages.isEmpty {
-            self.tableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
-        }
-        print("try send message", text)
         
         requestToAI()
     }
@@ -165,7 +169,13 @@ class ChatVC: UIViewController {
     private func requestToAI() {
         let text = messageTextView.text ?? ""
         let initPrompt = model.prompt ?? ""
-        let prompt = initPrompt + text
+        var prompt: String
+        if let firstMessageAnswer = firstMessageAnswer {
+            prompt = initPrompt + firstMessageAnswer + ":\n\n" + text
+        } else {
+            prompt = initPrompt + text
+        }
+        print("request prompt = \(prompt)")
         let requestModel = AIRequestModel(prompt: prompt)
         APIService.requestAI(model: requestModel) { [weak self] result, error in
             guard let self = self else { return }
@@ -176,6 +186,7 @@ class ChatVC: UIViewController {
                 
                 if let choice = result?.choices?.first, let text = choice.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
                     let message = Message(formID: ReferenceKeys.aiSender, toID: ReferenceKeys.meSender, message: text)
+                    self.firstMessageAnswer = nil
                     self.messages.append(message)
                     self.messageTextView.text = ""
                     self.messageTextView.endEditing(true)

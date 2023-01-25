@@ -53,7 +53,7 @@ extension URLRequest {
 class AuthenticationService {
     static let shared = AuthenticationService()
     
-    var accessToken = "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"
+    var accessToken = "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"
 }
 
 enum HttpMethod: String {
