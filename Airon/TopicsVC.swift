@@ -13,7 +13,7 @@ class TopicsVC: UIViewController {
     private let minimumInteritemSpacingForSection: CGFloat = 6
     private let numberOfCollectionViewColumns: CGFloat = 2
     private let refreshControl = UIRefreshControl()
-    private let topics = [TopicModel(id: "1", name: "Translate to any language", imageName: "translator", message: "Type language"), TopicModel(id: "2", name: "Grammar Correction", imageName: "grammarcorrector", message: "Type your text"), TopicModel(id: "3", name: "Movie to Emoji ", imageName: "movie", message: "Type your movie")]
+    private let topics = [TopicModel(id: "1", name: "Translate to any language", imageName: "translator", message: "Type language"), TopicModel(id: "2", name: "Grammar Correction", imageName: "grammarcorrector", message: "Type your text"), TopicModel(id: "3", name: "Movie to Emoji ", imageName: "movie", message: "Type your movie"), TopicModel(id: "4", name: "Chat with friend", imageName: "chatai", message: "What's up?")]
 //    private var usersHistory: [UserHistory] = []
 //    private var userModel: UserModel?
 //    private var lastDocument: DocumentSnapshot?
@@ -178,7 +178,7 @@ class TopicCell: UICollectionViewCell {
         nameLabel.text = title
         let templateImage = iconImageView.image?.withRenderingMode(.alwaysTemplate)
         iconImageView.image = templateImage
-        iconImageView.tintColor = UIColor(hex: "65B9F6")
+        iconImageView.tintColor = .systemBlue //UIColor(hex: "65B9F6")
     }
     
     private func setupUI() {
@@ -187,19 +187,19 @@ class TopicCell: UICollectionViewCell {
         contentView.addSubview(realContentView)
         realContentView.addSubviews([iconImageView, nameLabel])
         
-        realContentView.layer.shadowOffset = CGSize(width: 8,
-                                                    height: 8)
+        realContentView.layer.shadowOffset = CGSize(width: 6,
+                                                    height: 6)
         realContentView.layer.shadowRadius = 8
-        realContentView.layer.shadowOpacity = 0.7
+        realContentView.layer.shadowOpacity = 0.5
         realContentView.layer.shadowColor = UIColor(hex: "292B2F").cgColor
         
         realContentView.layer.cornerRadius = 8
         realContentView.startLocation = 0
         realContentView.endLocation = 0.9
-        realContentView.startColor = UIColor(hex: "212427")
-        realContentView.endColor = UIColor(hex: "1A1C1E") //UIColor(hex: "370258")
+        realContentView.startColor = UIColor(hex: "1A1C1E")  //.black.withAlphaComponent(0.8) //UIColor(hex: "1A1C1E")  //UIColor(hex: "212427")
+        realContentView.endColor =  UIColor(hex: "121416") //UIColor(hex: "370258")
 
-        //        realContentView.diagonalMode = true
+        realContentView.diagonalMode = true
         
         realContentView.snp.makeConstraints {
             $0.top.equalToSuperview().offset(10)
