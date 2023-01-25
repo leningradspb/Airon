@@ -139,15 +139,18 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         minimumInteritemSpacingForSection
     }
     
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        print("TAPPED IN collectionView ProfileVC")
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("TAPPED IN collectionView ProfileVC")
+        let model = ChatVC.ChatInitModel(partnerID: "ai", autoID: "12124", path: "")
+        let vc = ChatVC(model: model)
+        navigationController?.pushViewController(vc, animated: true)
 //        if let cell = collectionView.cellForItem(at: indexPath) as? FullContentViewImageCollectionViewCell {
 //            if let image = cell.recommendationImageView.image {
 //                let vc = FullSizeWallpaperVC(image: image)
 //                self.present(vc, animated: true)
 //            }
 //        }
-//    }
+    }
     
 //    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 //        guard usersHistory.count > 0, isNeedFetch else { return }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		266549D529813A51005DEA53 /* MeSenderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266549CE29813A50005DEA53 /* MeSenderCell.swift */; };
+		266549D829813A51005DEA53 /* PartnerSenderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266549D229813A50005DEA53 /* PartnerSenderCell.swift */; };
+		266549DA29813A51005DEA53 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266549D429813A50005DEA53 /* ChatVC.swift */; };
 		26A40D4C2977F9DE00C67A23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D4B2977F9DE00C67A23 /* AppDelegate.swift */; };
 		26A40D4E2977F9DE00C67A23 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D4D2977F9DE00C67A23 /* SceneDelegate.swift */; };
 		26A40D502977F9DE00C67A23 /* TopicsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D4F2977F9DE00C67A23 /* TopicsVC.swift */; };
@@ -31,6 +34,9 @@
 
 /* Begin PBXFileReference section */
 		21CEABFB422F5AE4B7A0FDA3 /* Pods-Airon.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Airon.debug.xcconfig"; path = "Target Support Files/Pods-Airon/Pods-Airon.debug.xcconfig"; sourceTree = "<group>"; };
+		266549CE29813A50005DEA53 /* MeSenderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeSenderCell.swift; sourceTree = "<group>"; };
+		266549D229813A50005DEA53 /* PartnerSenderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartnerSenderCell.swift; sourceTree = "<group>"; };
+		266549D429813A50005DEA53 /* ChatVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		26A40D482977F9DE00C67A23 /* Airon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Airon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26A40D4B2977F9DE00C67A23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		26A40D4D2977F9DE00C67A23 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -69,6 +75,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		266549CB29813A50005DEA53 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				266549CC29813A50005DEA53 /* View and cells */,
+				266549D429813A50005DEA53 /* ChatVC.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		266549CC29813A50005DEA53 /* View and cells */ = {
+			isa = PBXGroup;
+			children = (
+				266549CD29813A50005DEA53 /* MeSender */,
+				266549D129813A50005DEA53 /* PartnerSender */,
+			);
+			path = "View and cells";
+			sourceTree = "<group>";
+		};
+		266549CD29813A50005DEA53 /* MeSender */ = {
+			isa = PBXGroup;
+			children = (
+				266549CE29813A50005DEA53 /* MeSenderCell.swift */,
+			);
+			path = MeSender;
+			sourceTree = "<group>";
+		};
+		266549D129813A50005DEA53 /* PartnerSender */ = {
+			isa = PBXGroup;
+			children = (
+				266549D229813A50005DEA53 /* PartnerSenderCell.swift */,
+			);
+			path = PartnerSender;
+			sourceTree = "<group>";
+		};
 		26A40D3F2977F9DE00C67A23 = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +138,7 @@
 				26A40D74297A8F3A00C67A23 /* RoutingHelper.swift */,
 				26A40D63297812DC00C67A23 /* FirebaseManager.swift */,
 				26A40D76297ADDEF00C67A23 /* ApiService.swift */,
+				266549CB29813A50005DEA53 /* Chat */,
 				26A40D78297C741200C67A23 /* Animations */,
 				26A40D542977F9DF00C67A23 /* Assets.xcassets */,
 				26A40D562977F9DF00C67A23 /* LaunchScreen.storyboard */,
@@ -266,6 +307,7 @@
 			files = (
 				26A40D502977F9DE00C67A23 /* TopicsVC.swift in Sources */,
 				26A40D6C297814A900C67A23 /* PurchaseStepThreeVC.swift in Sources */,
+				266549DA29813A51005DEA53 /* ChatVC.swift in Sources */,
 				26A40D75297A8F3A00C67A23 /* RoutingHelper.swift in Sources */,
 				26A40D712978502E00C67A23 /* SubscriptionProduct.swift in Sources */,
 				26A40D4C2977F9DE00C67A23 /* AppDelegate.swift in Sources */,
@@ -274,6 +316,8 @@
 				26A40D77297ADDEF00C67A23 /* ApiService.swift in Sources */,
 				26A40D682978148700C67A23 /* PurchaseStepOneVC.swift in Sources */,
 				26A40D6A2978149400C67A23 /* PurchaseStepTwoVC.swift in Sources */,
+				266549D529813A51005DEA53 /* MeSenderCell.swift in Sources */,
+				266549D829813A51005DEA53 /* PartnerSenderCell.swift in Sources */,
 				26A40D662978146A00C67A23 /* PurchaseNC.swift in Sources */,
 				26A40D4E2977F9DE00C67A23 /* SceneDelegate.swift in Sources */,
 				26A40D62297812BD00C67A23 /* Extensions.swift in Sources */,
