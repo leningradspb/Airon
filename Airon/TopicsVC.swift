@@ -13,7 +13,7 @@ class TopicsVC: UIViewController {
     private let minimumInteritemSpacingForSection: CGFloat = 6
     private let numberOfCollectionViewColumns: CGFloat = 2
     private let refreshControl = UIRefreshControl()
-    private let topics = [TopicModel(id: "1", name: "Translate to any language", imageName: "book", message: "Type language"), TopicModel(id: "2", name: "Grammar Correction", imageName: "pencil.and.outline", message: "Type your text"), TopicModel(id: "3", name: "Movie to Emoji ", imageName: "video", message: "Type your movie")]
+    private let topics = [TopicModel(id: "1", name: "Translate to any language", imageName: "translator", message: "Type language"), TopicModel(id: "2", name: "Grammar Correction", imageName: "grammarcorrector", message: "Type your text"), TopicModel(id: "3", name: "Movie to Emoji ", imageName: "movie", message: "Type your movie")]
 //    private var usersHistory: [UserHistory] = []
 //    private var userModel: UserModel?
 //    private var lastDocument: DocumentSnapshot?
@@ -118,7 +118,7 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TopicCell.identifier, for: indexPath) as! TopicCell
         let row = indexPath.row
         let model = topics[row]
-        cell.update(systemName: model.imageName, title: model.name)
+        cell.update(imageName: model.imageName, title: model.name)
 //        if row < usersHistory.count, let photo = usersHistory[row].photo, let url = URL(string: photo) {
 //            cell.setImage(url: url)
 //        }
@@ -173,9 +173,12 @@ class TopicCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
-    func update(systemName: String, title: String) {
-        iconImageView.image = UIImage(systemName: systemName)
+    func update(imageName: String, title: String) {
+        iconImageView.image = UIImage(named: imageName)
         nameLabel.text = title
+        let templateImage = iconImageView.image?.withRenderingMode(.alwaysTemplate)
+        iconImageView.image = templateImage
+        iconImageView.tintColor = UIColor(hex: "65B9F6")
     }
     
     private func setupUI() {
