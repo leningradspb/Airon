@@ -160,6 +160,7 @@ class ChatVC: UIViewController {
     //    let timestamp: Double
         let firstMessage: String
         var secondMessage: String?
+        let prompt: String?
     }
     
 }

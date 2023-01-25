@@ -212,7 +212,8 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
             let model = topics[row]
             let firstMessage = model.firstMessage
             let secondMessage = model.secondMessage
-            let chatInitModel = ChatVC.ChatInitModel(firstMessage: firstMessage, secondMessage: secondMessage)
+            let prompt = model.prompt
+            let chatInitModel = ChatVC.ChatInitModel(firstMessage: firstMessage, secondMessage: secondMessage, prompt: prompt)
             let vc = ChatVC(model: chatInitModel)
             navigationController?.pushViewController(vc, animated: true)
         }
@@ -307,5 +308,5 @@ class TopicCell: UICollectionViewCell {
 
 struct TopicModel: Codable {
     let topicName, firstMessage: String
-    let iconUrl, secondMessage: String?
+    let iconUrl, secondMessage, prompt: String?
 }
