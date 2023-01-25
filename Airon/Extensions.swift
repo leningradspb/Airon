@@ -166,10 +166,10 @@ class InsetTextField: UITextField {
 }
 
 
-class VioletButton: UIButton {
+class BlueButton: UIButton {
     override var isEnabled: Bool {
         didSet {
-            backgroundColor = isEnabled ? .violetLight : .commonGrey
+            backgroundColor = isEnabled ? .systemBlue : .commonGrey
         }
     }
     override init(frame: CGRect) {
@@ -191,8 +191,8 @@ class VioletButton: UIButton {
         
         setTitleColor(.white, for: .normal)
         setTitleColor(.white, for: .selected)
-        titleLabel?.font = .futura(withSize: 20)
-        backgroundColor = .violetLight
+        titleLabel?.font = .systemFont(ofSize: 20, weight: .medium)
+        backgroundColor = .systemBlue
         
         self.snp.makeConstraints {
             $0.height.equalTo(52)
@@ -439,10 +439,10 @@ extension UIViewController {
 
 class ErrorModal: UIView {
     private let contentView = UIView()
-    private let headerLabel = FuturaLabel(text: "oooops!", fontSize: 35, numberOfLines: 1)
-    private let errorLabelText = FuturaLabel(text: "", fontSize: 20)
+    private let headerLabel = BlackLabel(text: "oooops!", fontSize: 30, fontWeight: .semibold, numberOfLines: 1)
+    private let errorLabelText = BlackLabel(text: "", fontSize: 20, fontWeight: .regular)
     private let buttonsStack = VerticalStackView(spacing: 0)
-    private let tryAgainButton = VioletButton(text: "try again")
+    private let tryAgainButton = BlueButton(text: "try again")
     private let cancelButton = UIButton()
     private let duration: Double = 0.7
     
@@ -535,7 +535,7 @@ class ErrorModal: UIView {
     @objc private func tryAgainTapped() {
         print("tryAgainTapped")
         if isForceUpdate {
-            let appId = "id1659903529"
+            let appId = "id1666222576"
 
             guard let url = URL(string : "itms-apps://itunes.apple.com/app/" + appId) else { return }
 

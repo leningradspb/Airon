@@ -34,4 +34,5 @@ struct ReferenceKeys {
     static let position = "position"
     static let meSender = "meSender"
     static let aiSender = "aiSender"
+    static let ForceUpdate = "ForceUpdate"
 }

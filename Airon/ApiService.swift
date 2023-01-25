@@ -39,6 +39,8 @@ extension URLRequest {
         _ method: HttpMethod,
         _ parameters: [String: Any?]? = nil
     ) {
+        self.addValue("Bearer \(AuthenticationService.shared.accessToken)",
+            forHTTPHeaderField: "Authorization")
         self.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         self.httpMethod = method.rawValue
@@ -47,6 +49,13 @@ extension URLRequest {
         }
     }
 }
+
+class AuthenticationService {
+    static let shared = AuthenticationService()
+    
+    var accessToken = "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"
+}
+
 enum HttpMethod: String {
     case post = "POST"
     case get = "GET"

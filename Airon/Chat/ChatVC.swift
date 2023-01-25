@@ -147,11 +147,56 @@ class ChatVC: UIViewController {
                 self.messages.append(secondMessageAI)
                 self.model.secondMessage = nil
                 self.tableView.reloadData()
+                if !self.messages.isEmpty {
+                    self.tableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
+                }
             }
         }
         
         tableView.reloadData()
+        if !self.messages.isEmpty {
+            self.tableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
+        }
         print("try send message", text)
+        
+        requestToAI()
+    }
+    
+    private func requestToAI() {
+        let text = messageTextView.text ?? ""
+        let initPrompt = model.prompt ?? ""
+        let prompt = initPrompt + text
+        let requestModel = AIRequestModel(prompt: prompt)
+        APIService.requestAI(model: requestModel) { [weak self] result, error in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                if let _ = error {
+                    self.showError()
+                }
+                
+                if let choice = result?.choices?.first, let text = choice.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
+                    let message = Message(formID: ReferenceKeys.aiSender, toID: ReferenceKeys.meSender, message: text)
+                    self.messages.append(message)
+                    self.messageTextView.text = ""
+                    self.messageTextView.endEditing(true)
+                    self.tableView.reloadData()
+                    if !self.messages.isEmpty {
+                        self.tableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
+                    }
+                } else {
+                    self.showError()
+                }
+            }
+        }
+    }
+    
+    private func showError() {
+        let modal = ErrorModal(errorText: "something went wrong🤯 we are terrible sorry🥺 if you see that message at first time please try again. if you see few times in a row please try later🙏")
+        modal.tryAgainCompletion = { [weak self] in
+            guard let self = self else { return }
+            self.requestToAI()
+        }
+        self.window.addSubview(modal)
     }
     
     struct ChatInitModel {
@@ -221,4 +266,76 @@ struct Message: Codable {
     let toID: String
 //    let timestamp: Double
     let message: String
+}
+
+extension APIService {
+    static func requestAI(model: AIRequestModel, completion: @escaping (_ result: AIResponseModel?, _ error: Error?) -> Void) {
+        
+        var request = URLRequest(url: URL(string: "https://api.openai.com/v1/completions")!)
+        request.configure(.post)
+        
+        do {
+            let data = try JSONEncoder().encode(model)
+            request.httpBody = data
+            print(data)
+            print(String(data: data, encoding: .utf8) as Any)
+        } catch {
+            print(error)
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            print("---------------------------------")
+            print("Server response:")
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            
+            guard let data = data else {
+                print("DATA NOT FOUND!!! 🤯")
+                completion(nil, error)
+                return
+            }
+            print(String(data: data, encoding: .utf8) as Any)
+//            print("JSON String: \(String(data: data, encoding: .utf8))")
+            do {
+                let history = try JSONDecoder().decode(AIResponseModel.self, from: data)
+                print(history as Any)
+                completion(history, nil)
+            } catch {
+                print(error)
+                completion(nil, error)
+            }
+        }
+        
+        task.resume()
+    }
+}
+
+struct AIRequestModel: Codable {
+    let prompt: String
+    let model = "text-davinci-003"
+    let temperature = 0.5
+    let max_tokens = 60
+    let top_p = 1
+    let frequency_penalty = 0.5
+    let presence_penalty = 0.0
+//        {
+//          "model": "text-davinci-003",
+//          "prompt": "Correct this to standard English:\n\noenter text you want to get correction",
+//          "temperature": 0.5,
+//          "max_tokens": 60,
+//          "top_p": 1.0,
+//          "frequency_penalty": 0.5,
+//          "presence_penalty": 0.0
+//        }
+}
+
+struct AIResponseModel: Codable {
+    let choices: [Choice]?
+    
+    struct Choice: Codable {
+        let text: String?
+    }
 }

@@ -140,6 +140,33 @@ class TopicsVC: UIViewController {
         }
     }
     
+    private func checkForceUpdate() {
+        guard let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String, let appVersionDouble = Double(appVersion) else {
+            return
+        }
+        
+        FirebaseManager.shared.firestore.collection(ReferenceKeys.ForceUpdate).document(ReferenceKeys.ForceUpdate).getDocument { [weak self] snapshot, error in
+            guard let self = self else { return }
+            guard let snapshotData = snapshot?.data() else { return }
+            guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+            
+            do {
+                let model = try JSONDecoder().decode(ForceUpdateModel.self, from: data)
+                if appVersionDouble < model.supportedVersion {
+                    DispatchQueue.main.async {
+                        let modal = ErrorModal(errorText: "force update required🤖 please update the app", isForceUpdate: true)
+                        self.window.addSubview(modal)
+                    }
+                } else {
+                    
+                }
+            } catch let error {
+                print(error)
+                
+            }
+        }
+    }
+    
     @objc private func refresh() {
         topics.removeAll()
         lastDocument = nil
@@ -309,4 +336,8 @@ class TopicCell: UICollectionViewCell {
 struct TopicModel: Codable {
     let topicName, firstMessage: String
     let iconUrl, secondMessage, prompt: String?
+}
+
+struct ForceUpdateModel: Codable {
+    let supportedVersion: Double
 }
