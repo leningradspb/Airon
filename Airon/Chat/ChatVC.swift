@@ -8,54 +8,25 @@ class ChatVC: UIViewController {
     private let inputMessageStack = HorizontalStackView(distribution: .fill, spacing: 10, alignment: .bottom)
     private let sentMessageButton = UIButton()
     private let messageTextView = UITextView()
-    private var model: ChatInitModel!
-    private var messages: [Message] = [Message(formID: "ai", message: "whats up", toID: "myid", timestamp: 12125, imageURL: nil)]
-    private let placeholder = "Введите текст"
+    private var messages: [Message] = []
+    private let placeholder = "Enter text"
     private let userImage = UIImageView()
     private let userNickName = UILabel()
     
-    private var isNeedCreateConversation = false
-    
-    private var partnerName: String?
-    private var partnerImageURL: String? {
-        didSet {
-            if let url = URL(string: partnerImageURL ?? "") {
-                DispatchQueue.main.async { [weak self] in
-                    self?.userImage.kf.setImage(with: url)
-                    self?.userNickName.text = self?.partnerName
-                }
-            }
-        }
-    }
-    
-    private var partnerID: String {
-        model.partnerID
-    }
-    
-    private var autoID: String? {
-        model.autoID
-    }
-    
-    private var path: String? {
-        model.path
-    }
-    
+    private var model: ChatInitModel
     init(model: ChatInitModel) {
-        super.init(nibName: nil, bundle: nil)
-        
         self.model = model
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        let message = Message(formID: ReferenceKeys.aiSender, toID: ReferenceKeys.meSender, message: model.firstMessage)
+        messages.append(message)
+        super.init(nibName: nil, bundle: nil)
         view.backgroundColor = .black
         setupNavigationBar()
         setupTableView()
         setupInputMessageView()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -164,16 +135,30 @@ class ChatVC: UIViewController {
     }
     
     private func sendMessage(imageURL: String? = nil, imageSize: CGSize? = nil) {
-        let timestamp: Double = Date().timeIntervalSince1970
+//        let timestamp: Double = Date().timeIntervalSince1970
         let text = messageTextView.text ?? ""
 //        let myID: String = self.myID!
+        let message = Message(formID: ReferenceKeys.meSender, toID: ReferenceKeys.aiSender, message: text)
+        messages.append(message)
+        if let secondMessage = model.secondMessage {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                let secondMessageAI = Message(formID: ReferenceKeys.aiSender, toID: ReferenceKeys.meSender, message: secondMessage)
+                self.messages.append(secondMessageAI)
+                self.model.secondMessage = nil
+                self.tableView.reloadData()
+            }
+        }
         
+        tableView.reloadData()
         print("try send message", text)
     }
     
     struct ChatInitModel {
-        let partnerID: String
-        let autoID, path: String?
+//        let formID: String
+//        let toID: String
+    //    let timestamp: Double
+        let firstMessage: String
+        var secondMessage: String?
     }
     
 }
@@ -188,16 +173,16 @@ extension ChatVC: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row < messages.count {
             let message = messages[indexPath.row]
             
-            if message.formID == myID {
+            if message.formID == ReferenceKeys.meSender {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: MeSenderCell.identifier, for: indexPath) as! MeSenderCell
-                cell.updateMeSenderCell(with: message.message ?? "")
+                cell.updateMeSenderCell(with: message.message)
                 return cell
             } else {
 
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: PartnerSenderCell.identifier, for: indexPath) as! PartnerSenderCell
-                cell.updatePartnerSenderCell(with: message.message ?? "")
+                cell.updatePartnerSenderCell(with: message.message)
                 return cell
             }
         }
@@ -231,8 +216,7 @@ extension Dictionary where Value: Equatable {
 
 struct Message: Codable {
     let formID: String
-    let message: String?
     let toID: String
-    let timestamp: Double?
-    let imageURL: String?
+//    let timestamp: Double
+    let message: String
 }

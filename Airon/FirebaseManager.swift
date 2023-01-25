@@ -30,5 +30,6 @@ final class FirebaseManager {
 
 struct ReferenceKeys {
     static let categories = "categories"
-    
+    static let meSender = "meSender"
+    static let aiSender = "aiSender"
 }

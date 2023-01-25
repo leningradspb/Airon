@@ -141,7 +141,7 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("TAPPED IN collectionView ProfileVC")
-        let model = ChatVC.ChatInitModel(partnerID: "ai", autoID: "12124", path: "")
+        let model = ChatVC.ChatInitModel(firstMessage: "whats up?", secondMessage: "me too")
         let vc = ChatVC(model: model)
         navigationController?.pushViewController(vc, animated: true)
 //        if let cell = collectionView.cellForItem(at: indexPath) as? FullContentViewImageCollectionViewCell {
