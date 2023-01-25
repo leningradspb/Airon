@@ -205,16 +205,17 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("TAPPED IN collectionView ProfileVC")
-        let model = ChatVC.ChatInitModel(firstMessage: "whats up?", secondMessage: "me too")
-        let vc = ChatVC(model: model)
-        navigationController?.pushViewController(vc, animated: true)
-//        if let cell = collectionView.cellForItem(at: indexPath) as? FullContentViewImageCollectionViewCell {
-//            if let image = cell.recommendationImageView.image {
-//                let vc = FullSizeWallpaperVC(image: image)
-//                self.present(vc, animated: true)
-//            }
-//        }
+        print("TAPPED IN collectionView TopicsVC")
+        let row = indexPath.row
+        
+        if row < topics.count {
+            let model = topics[row]
+            let firstMessage = model.firstMessage
+            let secondMessage = model.secondMessage
+            let chatInitModel = ChatVC.ChatInitModel(firstMessage: firstMessage, secondMessage: secondMessage)
+            let vc = ChatVC(model: chatInitModel)
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

@@ -85,6 +85,7 @@ class ChatVC: UIViewController {
         tableView.keyboardDismissMode = .onDrag
         tableView.backgroundColor = .black
         tableView.separatorStyle = .none
+        tableView.contentInset.top = 20
         tableView.register(MeSenderCell.self, forCellReuseIdentifier: MeSenderCell.identifier)
         tableView.register(PartnerSenderCell.self, forCellReuseIdentifier: PartnerSenderCell.identifier)
         tableView.delegate = self
