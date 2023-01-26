@@ -251,7 +251,8 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
             let firstMessage = model.firstMessage
             let secondMessage = model.secondMessage
             let prompt = model.prompt
-            let chatInitModel = ChatVC.ChatInitModel(firstMessage: firstMessage, secondMessage: secondMessage, prompt: prompt)
+            let topicName = model.topicName
+            let chatInitModel = ChatVC.ChatInitModel(firstMessage: firstMessage, secondMessage: secondMessage, prompt: prompt, topicName: topicName)
             let vc = ChatVC(model: chatInitModel)
             navigationController?.pushViewController(vc, animated: true)
         }

@@ -42,37 +42,37 @@ class ChatVC: UIViewController {
     
     private func setupNavigationBar() {
         //        guard let navBar = navigationController?.navigationBar else { return }
-        //        navigationItem.title = "Начать чат"
+        navigationItem.title = model.topicName
         //        navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.largeTitleDisplayMode = .never
-        let userBar = UIView()
-        //        userBar.backgroundColor = .green
-        navigationItem.titleView = userBar
-        userBar.addSubviews([userImage, userNickName])
-        
-        userImage.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(5)
-            $0.height.width.equalTo(54)
-            //            $0.bottom.equalToSuperview().offset(-5)
-        }
-        userImage.layer.cornerRadius = 27
-        userImage.contentMode = .scaleAspectFill
-        
-        userNickName.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalTo(userImage.snp.trailing)
-            $0.trailing.equalToSuperview().offset(-10)
-            $0.bottom.equalToSuperview()
-        }
-        userNickName.textColor = .white
-        userNickName.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        userBar.snp.makeConstraints {
-            //            $0.top.equalToSuperview()
-            //            $0.width.equalTo(150)
-            $0.height.equalTo(44)
-            //            $0.bottom.equalToSuperview()
-        }
+//        let userBar = UIView()
+//        //        userBar.backgroundColor = .green
+//        navigationItem.titleView = userBar
+//        userBar.addSubviews([userImage, userNickName])
+//
+//        userImage.snp.makeConstraints {
+//            $0.centerY.equalToSuperview()
+//            $0.leading.equalToSuperview().offset(5)
+//            $0.height.width.equalTo(54)
+//            //            $0.bottom.equalToSuperview().offset(-5)
+//        }
+//        userImage.layer.cornerRadius = 27
+//        userImage.contentMode = .scaleAspectFill
+//
+//        userNickName.snp.makeConstraints {
+//            $0.top.equalToSuperview()
+//            $0.leading.equalTo(userImage.snp.trailing)
+//            $0.trailing.equalToSuperview().offset(-10)
+//            $0.bottom.equalToSuperview()
+//        }
+//        userNickName.textColor = .white
+//        userNickName.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+//        userBar.snp.makeConstraints {
+//            //            $0.top.equalToSuperview()
+//            //            $0.width.equalTo(150)
+//            $0.height.equalTo(44)
+//            //            $0.bottom.equalToSuperview()
+//        }
     }
     
     private func setupTableView() {
@@ -217,6 +217,7 @@ class ChatVC: UIViewController {
         let firstMessage: String
         var secondMessage: String?
         let prompt: String?
+        let topicName: String
     }
     
 }
