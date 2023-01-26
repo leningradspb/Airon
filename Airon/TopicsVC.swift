@@ -30,7 +30,8 @@ class TopicsVC: UIViewController {
     }
     
     private func setupUI() {
-        title = "Topics"
+//        title = "Topics"
+        navigationController?.navigationBar.isHidden = true
         view.backgroundColor = UIColor(hex: "121416") //UIColor(hex: "#121212")
         view.addSubview(collectionView)
         collectionView.backgroundColor = .clear

@@ -2,6 +2,7 @@
 import UIKit
 
 class PartnerSenderCell: UITableViewCell {
+    private let partnerImageView = UIImageView(image: UIImage(named: "ai-girl-chat"))
     private let messageView = UIView()
     private let messageTextLabel = UILabel()
     
@@ -18,13 +19,23 @@ class PartnerSenderCell: UITableViewCell {
     }
     
     private func setupMessageView() {
+        contentView.addSubview(partnerImageView)
         contentView.addSubview(messageView)
+        
+        partnerImageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().offset(20)
+            $0.width.height.equalTo(40)
+        }
+        partnerImageView.layer.cornerRadius = 20
+        partnerImageView.clipsToBounds = true
+        
         messageView.backgroundColor = .darkGray
         messageView.layer.cornerRadius = 10
         messageView.addSubview(messageTextLabel)
         
         messageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20)
+            $0.leading.equalTo(partnerImageView.snp.trailing).offset(12)
             $0.bottom.equalToSuperview().offset(-20)
             $0.top.equalToSuperview()
             $0.trailing.lessThanOrEqualToSuperview().offset(-20)
