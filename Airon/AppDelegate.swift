@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
+        getAItoken()
         let tabBarAppearance = UITabBarAppearance()
         tabBarAppearance.configureWithTransparentBackground()
         tabBarAppearance.backgroundColor = UIColor.clear
@@ -69,6 +70,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    private func getAItoken() {
+        FirebaseManager.shared.firestore.collection(ReferenceKeys.AIauth).document(ReferenceKeys.AIauth).getDocument { [weak self] snapshot, error in
+            guard let self = self else { return }
+            guard let snapshotData = snapshot?.data() else { return }
+            guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+            
+            do {
+                let model = try JSONDecoder().decode(AIToken.self, from: data)
+                AuthenticationService.shared.accessToken = model.token
+            } catch let error {
+                print(error)
+                
+            }
+        }
+    }
 
 }
 

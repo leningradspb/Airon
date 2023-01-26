@@ -35,4 +35,10 @@ struct ReferenceKeys {
     static let meSender = "meSender"
     static let aiSender = "aiSender"
     static let ForceUpdate = "ForceUpdate"
+    static let AIauth = "AIauth"
+}
+
+
+struct AIToken: Codable {
+    let token: String
 }
