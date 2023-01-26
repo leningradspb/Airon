@@ -9,6 +9,7 @@ import UIKit
 import SafariServices
 
 class SettingsVC: UIViewController {
+    private let headerLabel = UILabel()
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let settingsContent = [SettingsModel.privacy(name: "Privacy", url: "https://docs.google.com/document/d/1IEVqpzrH7jBk-e0faJp0UnHXns2b5yJ2ljzhdm0aH0k/edit?usp=sharing"), SettingsModel.contactUs(name: "Contact us", url: "https://t.me/edkanevsky")]
     
@@ -20,8 +21,16 @@ class SettingsVC: UIViewController {
     
 
     private func setupTableView() {
-        view.backgroundColor = .black
-        view.addSubview(tableView)
+        view.backgroundColor = .mainBlack
+        view.addSubviews([headerLabel, tableView])
+        headerLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.centerX.equalToSuperview()
+        }
+        headerLabel.text = "Settings"
+        headerLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        headerLabel.textColor = .white
+        
         tableView.backgroundColor = .mainBlack
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
@@ -36,7 +45,8 @@ class SettingsVC: UIViewController {
         }
         
         tableView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.equalTo(headerLabel.snp.bottom).offset(20)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 
