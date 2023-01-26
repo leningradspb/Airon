@@ -247,6 +247,19 @@ extension ChatVC: UITableViewDelegate, UITableViewDataSource {
         
         return UITableViewCell()
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let row = indexPath.row
+        if row < messages.count {
+            let message = messages[row].message
+            UIPasteboard.general.string = message
+            let alert = UIAlertController(title: "Copied ✅", message: nil, preferredStyle: .alert)
+            let ok = UIAlertAction(title: "OK", style: .default)
+            alert.addAction(ok)
+            
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
 }
 
 extension ChatVC: UITextViewDelegate {
