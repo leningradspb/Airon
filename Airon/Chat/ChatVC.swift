@@ -10,8 +10,10 @@ class ChatVC: UIViewController {
     private let messageTextView = UITextView()
     private var messages: [Message] = []
     private let placeholder = "Enter text"
-    private let userImage = UIImageView()
-    private let userNickName = UILabel()
+    private let navigationBarStack = VerticalStackView(spacing: 1)
+    private let navigationTitleLabel = UILabel()
+    private let typingLabel = UILabel()
+    
     private var firstMessageAnswer: String?
     
     private var model: ChatInitModel
@@ -41,38 +43,20 @@ class ChatVC: UIViewController {
     }
     
     private func setupNavigationBar() {
-        //        guard let navBar = navigationController?.navigationBar else { return }
-        navigationItem.title = model.topicName
-        //        navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.largeTitleDisplayMode = .never
-//        let userBar = UIView()
-//        //        userBar.backgroundColor = .green
-//        navigationItem.titleView = userBar
-//        userBar.addSubviews([userImage, userNickName])
-//
-//        userImage.snp.makeConstraints {
-//            $0.centerY.equalToSuperview()
-//            $0.leading.equalToSuperview().offset(5)
-//            $0.height.width.equalTo(54)
-//            //            $0.bottom.equalToSuperview().offset(-5)
-//        }
-//        userImage.layer.cornerRadius = 27
-//        userImage.contentMode = .scaleAspectFill
-//
-//        userNickName.snp.makeConstraints {
-//            $0.top.equalToSuperview()
-//            $0.leading.equalTo(userImage.snp.trailing)
-//            $0.trailing.equalToSuperview().offset(-10)
-//            $0.bottom.equalToSuperview()
-//        }
-//        userNickName.textColor = .white
-//        userNickName.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-//        userBar.snp.makeConstraints {
-//            //            $0.top.equalToSuperview()
-//            //            $0.width.equalTo(150)
-//            $0.height.equalTo(44)
-//            //            $0.bottom.equalToSuperview()
-//        }
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "gov", style: .plain, target: self, action: #selector(sendTapped))
+        let config = UIImage.SymbolConfiguration(weight: .bold)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward", withConfiguration: config), style: .plain, target: self, action: #selector(popVC))
+        navigationTitleLabel.textColor = .white
+        navigationTitleLabel.font = .systemFont(ofSize: 16, weight: .medium)
+        navigationTitleLabel.text = model.topicName
+        navigationTitleLabel.textAlignment = .center
+        typingLabel.text = "typing"
+        typingLabel.font = .systemFont(ofSize: 12)
+        typingLabel.textColor = .systemBlue
+        typingLabel.textAlignment = .center
+        navigationBarStack.addArranged(subviews: [navigationTitleLabel, typingLabel])
+        navigationItem.titleView = navigationBarStack
     }
     
     private func setupTableView() {
@@ -122,9 +106,9 @@ class ChatVC: UIViewController {
         messageTextView.backgroundColor = .mainBlack
         messageTextView.layer.cornerRadius = 10
         messageTextView.layer.borderWidth = 1
-        messageTextView.layer.borderColor = UIColor.darkGray.cgColor
+        messageTextView.layer.borderColor = UIColor.white.cgColor
         messageTextView.text = placeholder
-        messageTextView.textColor = .darkGray
+        messageTextView.textColor = .white
         messageTextView.autocorrectionType = .no
         messageTextView.keyboardAppearance = .dark
         messageTextView.isScrollEnabled = false
@@ -134,6 +118,10 @@ class ChatVC: UIViewController {
     
     @objc private func sendTapped() {
         sendMessage()
+    }
+    
+    @objc private func popVC() {
+        navigationController?.popViewController(animated: true)
     }
     
     private func sendMessage(imageURL: String? = nil, imageSize: CGSize? = nil) {
@@ -167,7 +155,6 @@ class ChatVC: UIViewController {
     }
     
     private func requestToAI() {
-        ActivityHelper.showActivity(animation: ActivityView.Animations.rainbowLoader)
         let text = messageTextView.text ?? ""
         let initPrompt = model.prompt ?? ""
         var prompt: String
@@ -183,7 +170,6 @@ class ChatVC: UIViewController {
             DispatchQueue.main.async {
                 if let _ = error {
                     self.messageTextView.endEditing(true)
-                    ActivityHelper.removeActivity(withoutAnimation: true)
                     self.showError()
                 }
                 
@@ -200,7 +186,6 @@ class ChatVC: UIViewController {
                     }
                 } else {
                     self.messageTextView.endEditing(true)
-                    ActivityHelper.removeActivity(withoutAnimation: true)
                     self.showError()
                 }
             }
@@ -273,14 +258,12 @@ extension ChatVC: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == placeholder {
             messageTextView.text = ""
-            messageTextView.textColor = .white
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespaces).isEmpty {
             messageTextView.text = placeholder
-            messageTextView.textColor = .darkGray
         }
     }
 }
