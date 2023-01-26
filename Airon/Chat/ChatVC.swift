@@ -167,6 +167,7 @@ class ChatVC: UIViewController {
     }
     
     private func requestToAI() {
+        ActivityHelper.showActivity(animation: ActivityView.Animations.rainbowLoader)
         let text = messageTextView.text ?? ""
         let initPrompt = model.prompt ?? ""
         var prompt: String
@@ -181,20 +182,25 @@ class ChatVC: UIViewController {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 if let _ = error {
+                    self.messageTextView.endEditing(true)
+                    ActivityHelper.removeActivity(withoutAnimation: true)
                     self.showError()
                 }
                 
                 if let choice = result?.choices?.first, let text = choice.text?.trimmingCharacters(in: .whitespacesAndNewlines) {
                     let message = Message(formID: ReferenceKeys.aiSender, toID: ReferenceKeys.meSender, message: text)
-                    self.firstMessageAnswer = nil
+//                    self.firstMessageAnswer = nil
                     self.messages.append(message)
                     self.messageTextView.text = ""
                     self.messageTextView.endEditing(true)
+                    ActivityHelper.removeActivity(withoutAnimation: true)
                     self.tableView.reloadData()
                     if !self.messages.isEmpty {
                         self.tableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
                     }
                 } else {
+                    self.messageTextView.endEditing(true)
+                    ActivityHelper.removeActivity(withoutAnimation: true)
                     self.showError()
                 }
             }
