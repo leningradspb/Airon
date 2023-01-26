@@ -19,6 +19,7 @@ class TopicsVC: UIViewController {
     private var lastDocument: DocumentSnapshot?
     private let limit = 20
     private var isNeedFetch = true
+    private let iconConfig = UIImage.SymbolConfiguration(scale: .large)
     let nc = PurchaseNC()
     
     override func viewDidLoad() {
@@ -30,9 +31,12 @@ class TopicsVC: UIViewController {
     }
     
     private func setupUI() {
-//        title = "Topics"
-        navigationController?.navigationBar.isHidden = true
-        view.backgroundColor = UIColor(hex: "121416") //UIColor(hex: "#121212")
+        title = "Topics"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear", withConfiguration: iconConfig), style: .plain, target: self, action: #selector(settingsTapped))
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
+//        navigationController?.navigationBar.isHidden = true
+        view.backgroundColor = .mainBlack //UIColor(hex: "#121212")
         view.addSubview(collectionView)
         collectionView.backgroundColor = .clear
         collectionView.register(TopicCell.self, forCellWithReuseIdentifier: TopicCell.identifier)
@@ -174,6 +178,12 @@ class TopicsVC: UIViewController {
         isNeedFetch = true
         loadData()
         refreshControl.endRefreshing()
+    }
+    
+    @objc private func settingsTapped() {
+        let vc = SettingsVC()
+        self.present(vc, animated: true)
+//        navigationController?.pushViewController(vc, animated: true)
     }
     
 }

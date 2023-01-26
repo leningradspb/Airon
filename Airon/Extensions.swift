@@ -79,7 +79,7 @@ extension UIFont {
 
 struct Layout {
     /// 20
-    static let leading: CGFloat = 20
+    static let leading: CGFloat = 16
 }
 
 
@@ -99,6 +99,9 @@ extension UIColor {
     
     /// #1c202c
     static let textBlack = UIColor(hex: "#1c202c")
+    
+    /// 121416
+    static let mainBlack = UIColor(hex: "121416")
 }
 
 extension String {
