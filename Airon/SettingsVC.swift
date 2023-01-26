@@ -10,6 +10,10 @@ import SafariServices
 
 class SettingsVC: UIViewController {
     private let headerLabel = UILabel()
+    private let closeImageView: UIImageView = {
+        let iconConfig = UIImage.SymbolConfiguration(weight: .semibold)
+        return UIImageView(image: UIImage(systemName: "xmark", withConfiguration: iconConfig))
+    }()
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
     private let settingsContent = [SettingsModel.privacy(name: "Privacy", url: "https://docs.google.com/document/d/1IEVqpzrH7jBk-e0faJp0UnHXns2b5yJ2ljzhdm0aH0k/edit?usp=sharing"), SettingsModel.contactUs(name: "Contact us", url: "https://t.me/edkanevsky")]
     
@@ -22,7 +26,7 @@ class SettingsVC: UIViewController {
 
     private func setupTableView() {
         view.backgroundColor = .mainBlack
-        view.addSubviews([headerLabel, tableView])
+        view.addSubviews([headerLabel, closeImageView, tableView])
         headerLabel.snp.makeConstraints {
             $0.top.equalToSuperview().offset(20)
             $0.centerX.equalToSuperview()
@@ -30,6 +34,14 @@ class SettingsVC: UIViewController {
         headerLabel.text = "Settings"
         headerLabel.font = .systemFont(ofSize: 20, weight: .semibold)
         headerLabel.textColor = .white
+        
+        closeImageView.image = closeImageView.image?.withRenderingMode(.alwaysTemplate)
+        closeImageView.tintColor = .white
+        closeImageView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+        closeImageView.addTapGesture(target: self, action: #selector(closeTapped))
         
         tableView.backgroundColor = .mainBlack
         tableView.separatorStyle = .singleLine
@@ -48,6 +60,10 @@ class SettingsVC: UIViewController {
             $0.top.equalTo(headerLabel.snp.bottom).offset(20)
             $0.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    
+    @objc private func closeTapped() {
+        self.dismiss(animated: true)
     }
 
 }
