@@ -8,8 +8,8 @@ class PartnerSenderCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .black
-        contentView.backgroundColor = .black
+        backgroundColor = .mainBlack
+        contentView.backgroundColor = .mainBlack
         selectionStyle = .none
         setupMessageView()
     }

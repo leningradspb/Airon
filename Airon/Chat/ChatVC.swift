@@ -20,7 +20,7 @@ class ChatVC: UIViewController {
         let message = Message(formID: ReferenceKeys.aiSender, toID: ReferenceKeys.meSender, message: model.firstMessage)
         messages.append(message)
         super.init(nibName: nil, bundle: nil)
-        view.backgroundColor = .black
+        view.backgroundColor = .mainBlack
         setupNavigationBar()
         setupTableView()
         setupInputMessageView()
@@ -84,7 +84,7 @@ class ChatVC: UIViewController {
             //            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         tableView.keyboardDismissMode = .onDrag
-        tableView.backgroundColor = .black
+        tableView.backgroundColor = .mainBlack
         tableView.separatorStyle = .none
         tableView.contentInset.top = 20
         tableView.register(MeSenderCell.self, forCellReuseIdentifier: MeSenderCell.identifier)
@@ -119,7 +119,7 @@ class ChatVC: UIViewController {
         sentMessageButton.addTarget(self, action: #selector(sendTapped), for: .touchUpInside)
         
         messageTextView.delegate = self
-        messageTextView.backgroundColor = .black
+        messageTextView.backgroundColor = .mainBlack
         messageTextView.layer.cornerRadius = 10
         messageTextView.layer.borderWidth = 1
         messageTextView.layer.borderColor = UIColor.darkGray.cgColor
