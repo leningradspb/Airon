@@ -2,6 +2,7 @@
 
 import UIKit
 import FirebaseFirestore
+import Lottie
 
 class ChatVC: UIViewController {
     private let tableView = UITableView()
@@ -12,7 +13,10 @@ class ChatVC: UIViewController {
     private let placeholder = "Enter text"
     private let navigationBarStack = VerticalStackView(spacing: 1)
     private let navigationTitleLabel = UILabel()
+    private let typingView = UIView()
     private let typingLabel = UILabel()
+    private let animationView = AnimationView()
+    private var isNeedContinueTypingAnimation = true
     
     private var firstMessageAnswer: String?
     
@@ -47,6 +51,9 @@ class ChatVC: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "gov", style: .plain, target: self, action: #selector(sendTapped))
         let config = UIImage.SymbolConfiguration(weight: .bold)
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward", withConfiguration: config), style: .plain, target: self, action: #selector(popVC))
+        navigationBarStack.addArranged(subviews: [navigationTitleLabel, typingView])
+        navigationItem.titleView = navigationBarStack
+        typingView.addSubviews([typingLabel, animationView])
         navigationTitleLabel.textColor = .white
         navigationTitleLabel.font = .systemFont(ofSize: 16, weight: .medium)
         navigationTitleLabel.text = model.topicName
@@ -55,8 +62,37 @@ class ChatVC: UIViewController {
         typingLabel.font = .systemFont(ofSize: 12)
         typingLabel.textColor = .systemBlue
         typingLabel.textAlignment = .center
-        navigationBarStack.addArranged(subviews: [navigationTitleLabel, typingLabel])
-        navigationItem.titleView = navigationBarStack
+        typingLabel.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.centerY.equalToSuperview()
+            $0.centerX.equalTo(navigationTitleLabel.snp.centerX)
+            $0.bottom.equalToSuperview()
+        }
+
+        animationView.animation = ActivityView.Animations.dots
+//        animationView.logHierarchyKeypaths()
+        
+//        animationView.backgroundColor = .black.withAlphaComponent(0.7)
+        
+        let blue = Color(r: (14/255), g: (122/255), b: (254/255), a: 1)
+        let orangeColorValueProvider = ColorValueProvider(blue)
+
+        // Set color value provider to animation view
+        let keyPath = AnimationKeypath(keypath: "**.Shape Layer 2.Ellipse 1.Fill 1.Color")
+        let keyPath1 = AnimationKeypath(keypath: "**.Shape Layer 1.Ellipse 1.Fill 1.Color")
+        let keyPath3 = AnimationKeypath(keypath: "**.Shape Layer 3.Ellipse 1.Fill 1.Color")
+        animationView.setValueProvider(orangeColorValueProvider, keypath: keyPath)
+        animationView.setValueProvider(orangeColorValueProvider, keypath: keyPath1)
+        animationView.setValueProvider(orangeColorValueProvider, keypath: keyPath3)
+        
+        animationView.snp.makeConstraints {
+            $0.leading.equalTo(typingLabel.snp.trailing).offset(-10)
+            $0.centerY.equalTo(typingLabel.snp.centerY)
+            $0.height.equalTo(70)
+            $0.width.equalTo(40)
+        }
+        
+        typingView.isHidden = true
     }
     
     private func setupTableView() {
@@ -116,11 +152,39 @@ class ChatVC: UIViewController {
         messageTextView.textContainerInset = UIEdgeInsets(top: 13, left: 10, bottom: 10, right: 40)
     }
     
+    private func showTyping() {
+        isNeedContinueTypingAnimation = true
+        typingView.isHidden = false
+        playTypingAnimation()
+    }
+    
+    private func hideTyping() {
+        isNeedContinueTypingAnimation = false
+        typingView.isHidden = true
+//        stopTypingAnimation()
+    }
+    
+    private func playTypingAnimation() {
+        
+        animationView.play { [weak self] isComplete in
+            guard let self = self else { return }
+            if self.isNeedContinueTypingAnimation {
+                self.playTypingAnimation()
+            }
+        }
+    }
+    
+    private func stopTypingAnimation() {
+        isNeedContinueTypingAnimation = false
+        animationView.stop()
+    }
+    
     @objc private func sendTapped() {
         sendMessage()
     }
     
     @objc private func popVC() {
+        stopTypingAnimation()
         navigationController?.popViewController(animated: true)
     }
     
@@ -137,12 +201,14 @@ class ChatVC: UIViewController {
         
         if let secondMessage = model.secondMessage {
             self.firstMessageAnswer = text
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+            self.showTyping()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 let secondMessageAI = Message(formID: ReferenceKeys.aiSender, toID: ReferenceKeys.meSender, message: secondMessage)
                 self.messages.append(secondMessageAI)
                 self.model.secondMessage = nil
                 self.messageTextView.text = ""
 //                self.messageTextView.endEditing(true)
+                self.hideTyping()
                 self.tableView.reloadData()
                 if !self.messages.isEmpty {
                     self.tableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
@@ -155,6 +221,7 @@ class ChatVC: UIViewController {
     }
     
     private func requestToAI() {
+        self.showTyping()
         let text = messageTextView.text ?? ""
         let initPrompt = model.prompt ?? ""
         var prompt: String
@@ -169,6 +236,7 @@ class ChatVC: UIViewController {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 if let _ = error {
+                    self.hideTyping()
                     self.messageTextView.endEditing(true)
                     self.showError()
                 }
@@ -179,12 +247,13 @@ class ChatVC: UIViewController {
                     self.messages.append(message)
                     self.messageTextView.text = ""
                     self.messageTextView.endEditing(true)
-                    ActivityHelper.removeActivity(withoutAnimation: true)
+                    self.hideTyping()
                     self.tableView.reloadData()
                     if !self.messages.isEmpty {
                         self.tableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
                     }
                 } else {
+                    self.hideTyping()
                     self.messageTextView.endEditing(true)
                     self.showError()
                 }

@@ -367,6 +367,7 @@ class ActivityView: UIView {
     struct Animations {
         static let plane = Animation.named("plane")
         static let rainbowLoader = Animation.named("rainbowLoader")
+        static let dots = Animation.named("dots")
     }
 }
 
