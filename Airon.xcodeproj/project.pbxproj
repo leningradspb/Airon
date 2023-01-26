@@ -11,6 +11,7 @@
 		266549D829813A51005DEA53 /* PartnerSenderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266549D229813A50005DEA53 /* PartnerSenderCell.swift */; };
 		266549DA29813A51005DEA53 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266549D429813A50005DEA53 /* ChatVC.swift */; };
 		266549DC29829AEC005DEA53 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266549DB29829AEC005DEA53 /* SettingsVC.swift */; };
+		266549DE2982E38A005DEA53 /* dots.json in Resources */ = {isa = PBXBuildFile; fileRef = 266549DD2982E38A005DEA53 /* dots.json */; };
 		26A40D4C2977F9DE00C67A23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D4B2977F9DE00C67A23 /* AppDelegate.swift */; };
 		26A40D4E2977F9DE00C67A23 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D4D2977F9DE00C67A23 /* SceneDelegate.swift */; };
 		26A40D502977F9DE00C67A23 /* TopicsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D4F2977F9DE00C67A23 /* TopicsVC.swift */; };
@@ -39,6 +40,7 @@
 		266549D229813A50005DEA53 /* PartnerSenderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PartnerSenderCell.swift; sourceTree = "<group>"; };
 		266549D429813A50005DEA53 /* ChatVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		266549DB29829AEC005DEA53 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
+		266549DD2982E38A005DEA53 /* dots.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = dots.json; sourceTree = "<group>"; };
 		26A40D482977F9DE00C67A23 /* Airon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Airon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26A40D4B2977F9DE00C67A23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		26A40D4D2977F9DE00C67A23 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 		26A40D78297C741200C67A23 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				266549DD2982E38A005DEA53 /* dots.json */,
 				26A40D7F297C80B500C67A23 /* rainbowLoader.json */,
 				26A40D79297C741200C67A23 /* plane.json */,
 			);
@@ -252,6 +255,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				26A40D582977F9DF00C67A23 /* LaunchScreen.storyboard in Resources */,
+				266549DE2982E38A005DEA53 /* dots.json in Resources */,
 				26A40D552977F9DF00C67A23 /* Assets.xcassets in Resources */,
 				26A40D7A297C741200C67A23 /* plane.json in Resources */,
 				26A40D80297C80B500C67A23 /* rainbowLoader.json in Resources */,
