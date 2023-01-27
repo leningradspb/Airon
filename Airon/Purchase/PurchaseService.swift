@@ -111,8 +111,21 @@ extension PurchaseService: SKProductsRequestDelegate {
         ActivityHelper.removeActivity()
         if queue.transactions.isEmpty {
             AlertHelper.showAlert(title: "Nothing to restore 🤷‍♀️", subtitle: nil)
+        } else {
+            queue.transactions.forEach {
+                print($0.transactionState.status(), $0.payment.productIdentifier)
+                switch $0.transactionState {
+                case .purchasing: break
+                case .purchased, .restored:
+                    queue.finishTransaction($0)
+                    isActivated = true
+                    purchaseCompletion?()
+                default:
+                    queue.finishTransaction($0)
+                }
+            }
+
         }
-        print(queue.transactions.count)
     }
     
 //    func requestDidFinish(_ request: SKRequest) {
