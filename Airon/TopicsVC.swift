@@ -26,8 +26,9 @@ class TopicsVC: UIViewController {
         super.viewDidLoad()
         
         setupUI()
+        checkForceUpdate()
         loadData()
-//        purchaseCheck()
+        purchaseCheck()
     }
     
     private func setupUI() {
@@ -61,25 +62,25 @@ class TopicsVC: UIViewController {
     }
     
     private func purchaseCheck() {
-        PurchaseService.shared.purchaseCompletion = { [weak self] in
-            guard let self = self else { return }
-            self.nc.dismiss(animated: true)
-        }
+//        PurchaseService.shared.purchaseCompletion = { [weak self] in
+//            guard let self = self else { return }
+//            self.nc.dismiss(animated: true)
+//        }
         
         PurchaseService.shared.checkIsPurchased(completion: { [weak self] isActivated in
             guard let self = self else { return }
             print(isActivated)
             
-            if !isActivated {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
-                    
-                    let onboardingWasShown = UserDefaults.standard.bool(forKey: UserDefaultsKeys.onboardingWasShown.rawValue)
-                    let vc = onboardingWasShown ? PurchaseStepThreeVC() : PurchaseStepOneVC()
-                    self.nc.viewControllers = [vc]
-                    self.nc.modalPresentationStyle = .fullScreen
-                    self.present(self.nc, animated: true)
-                })
-            }
+//            if !isActivated {
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5, execute: {
+//
+//                    let onboardingWasShown = UserDefaults.standard.bool(forKey: UserDefaultsKeys.onboardingWasShown.rawValue)
+//                    let vc = onboardingWasShown ? PurchaseStepThreeVC() : PurchaseStepOneVC()
+//                    self.nc.viewControllers = [vc]
+//                    self.nc.modalPresentationStyle = .fullScreen
+//                    self.present(self.nc, animated: true)
+//                })
+//            }
         })
     }
     

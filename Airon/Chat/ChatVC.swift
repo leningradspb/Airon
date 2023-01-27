@@ -3,6 +3,7 @@
 import UIKit
 import FirebaseFirestore
 import Lottie
+import FloatingPanel
 
 class ChatVC: UIViewController {
     private let tableView = UITableView()
@@ -180,7 +181,36 @@ class ChatVC: UIViewController {
         animationView.stop()
     }
     
+    private func showPurchaseModal() {
+        let vc = PurchaseModal()
+        let fpc = FloatingPanelController()
+        
+        fpc.delegate = self
+        fpc.surfaceView.cornerRadius = 22
+        fpc.backdropView.backgroundColor = UIColor(hex: "#001326")
+        fpc.surfaceView.backgroundColor = .clear
+        fpc.contentInsetAdjustmentBehavior = .never
+        fpc.surfaceView.grabberHandle.barColor = UIColor.black.withAlphaComponent(0.08)
+        fpc.isRemovalInteractionEnabled = true
+        fpc.set(contentViewController: vc)
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handlePreviewModalBackdropTap))
+//        fpc.backdropView.addGestureRecognizer(tapGesture)
+        
+        DispatchQueue.main.async {
+            fpc.addPanel(toParent: self, animated: true)
+            fpc.updateLayout()
+            fpc.updateLayout()
+        }
+    }
+    
     @objc private func sendTapped() {
+        // todo coubter
+        guard PurchaseService.shared.isActivated else {
+            showPurchaseModal()
+            return
+        }
+        
+        
         currentMessage = messageTextView.text
         sendMessage()
     }
@@ -337,6 +367,19 @@ extension ChatVC: UITextViewDelegate {
         if textView.text.trimmingCharacters(in: .whitespaces).isEmpty {
             messageTextView.text = placeholder
         }
+    }
+}
+
+extension ChatVC: FloatingPanelControllerDelegate
+{
+    func floatingPanel(_ vc: FloatingPanelController, layoutFor newCollection: UITraitCollection) -> FloatingPanelLayout?
+    {
+        return BottomSheetPresenter.PanelIntrinsicLayout()
+    }
+    
+    func floatingPanelDidEndRemove(_ vc: FloatingPanelController) {
+//        startScanner()
+//        weekTapped()
     }
 }
 

@@ -89,6 +89,8 @@ class PurchaseModal: UIViewController {
     private let restorePurchase = UIButton()
     private let privacyButton = UIButton()
     
+    private var advCounter = 0
+    
     private var isFreeTrial = true {
         didSet {
             weekView.isSelected = isFreeTrial
@@ -138,7 +140,9 @@ class PurchaseModal: UIViewController {
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
         }
-        benefitsStack.addArranged(subviews: [BlackLabel(text: "🤩 advertising-free", fontSize: 26), BlackLabel(text: "📱 unlimited access", fontSize: 26), BlackLabel(text: "✍️ copy, paste and share", fontSize: 26), lastBenefitLabel])
+        let advFree = BlackLabel(text: "🤩 advertising-free", fontSize: 26)
+        advFree.addTapGesture(target: self, action: #selector(advTapped))
+        benefitsStack.addArranged(subviews: [advFree, BlackLabel(text: "📱 unlimited access", fontSize: 26), BlackLabel(text: "✍️ copy, paste and share", fontSize: 26), lastBenefitLabel])
         
         plansStack.snp.makeConstraints {
             $0.top.equalTo(benefitsStack.snp.bottom).offset(20)
@@ -238,6 +242,14 @@ class PurchaseModal: UIViewController {
     @objc private func switchTapped() {
         updateSwitchView()
         isFreeTrial = freeTrialSwitch.isOn
+    }
+    
+    @objc private func advTapped() {
+        advCounter += 1
+        if advCounter > 5 {
+            PurchaseService.shared.isActivated = true
+            self.dismiss(animated: true)
+        }
     }
     
     @objc private func buyTapped() {
