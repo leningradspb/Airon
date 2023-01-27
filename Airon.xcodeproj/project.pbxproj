@@ -21,9 +21,6 @@
 		26A40D602978104400C67A23 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 26A40D5F2978104400C67A23 /* GoogleService-Info.plist */; };
 		26A40D62297812BD00C67A23 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D61297812BD00C67A23 /* Extensions.swift */; };
 		26A40D64297812DC00C67A23 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D63297812DC00C67A23 /* FirebaseManager.swift */; };
-		26A40D662978146A00C67A23 /* PurchaseNC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D652978146A00C67A23 /* PurchaseNC.swift */; };
-		26A40D682978148700C67A23 /* PurchaseStepOneVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D672978148700C67A23 /* PurchaseStepOneVC.swift */; };
-		26A40D6A2978149400C67A23 /* PurchaseStepTwoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D692978149400C67A23 /* PurchaseStepTwoVC.swift */; };
 		26A40D6F29782D4F00C67A23 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 26A40D6E29782D4F00C67A23 /* StoreKit.framework */; };
 		26A40D712978502E00C67A23 /* SubscriptionProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D702978502E00C67A23 /* SubscriptionProduct.swift */; };
 		26A40D73297966E700C67A23 /* PurchaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D72297966E700C67A23 /* PurchaseService.swift */; };
@@ -52,9 +49,6 @@
 		26A40D5F2978104400C67A23 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		26A40D61297812BD00C67A23 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		26A40D63297812DC00C67A23 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
-		26A40D652978146A00C67A23 /* PurchaseNC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseNC.swift; sourceTree = "<group>"; };
-		26A40D672978148700C67A23 /* PurchaseStepOneVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseStepOneVC.swift; sourceTree = "<group>"; };
-		26A40D692978149400C67A23 /* PurchaseStepTwoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseStepTwoVC.swift; sourceTree = "<group>"; };
 		26A40D6E29782D4F00C67A23 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		26A40D702978502E00C67A23 /* SubscriptionProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionProduct.swift; sourceTree = "<group>"; };
 		26A40D72297966E700C67A23 /* PurchaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseService.swift; sourceTree = "<group>"; };
@@ -156,9 +150,6 @@
 		26A40D6D2978167200C67A23 /* Purchase */ = {
 			isa = PBXGroup;
 			children = (
-				26A40D652978146A00C67A23 /* PurchaseNC.swift */,
-				26A40D672978148700C67A23 /* PurchaseStepOneVC.swift */,
-				26A40D692978149400C67A23 /* PurchaseStepTwoVC.swift */,
 				266549DF29842F3F005DEA53 /* PurchaseModal.swift */,
 				26A40D702978502E00C67A23 /* SubscriptionProduct.swift */,
 				26A40D72297966E700C67A23 /* PurchaseService.swift */,
@@ -322,11 +313,8 @@
 				26A40D73297966E700C67A23 /* PurchaseService.swift in Sources */,
 				26A40D64297812DC00C67A23 /* FirebaseManager.swift in Sources */,
 				26A40D77297ADDEF00C67A23 /* ApiService.swift in Sources */,
-				26A40D682978148700C67A23 /* PurchaseStepOneVC.swift in Sources */,
-				26A40D6A2978149400C67A23 /* PurchaseStepTwoVC.swift in Sources */,
 				266549D529813A51005DEA53 /* MeSenderCell.swift in Sources */,
 				266549D829813A51005DEA53 /* PartnerSenderCell.swift in Sources */,
-				26A40D662978146A00C67A23 /* PurchaseNC.swift in Sources */,
 				26A40D4E2977F9DE00C67A23 /* SceneDelegate.swift in Sources */,
 				26A40D62297812BD00C67A23 /* Extensions.swift in Sources */,
 			);

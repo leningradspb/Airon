@@ -20,7 +20,7 @@ class TopicsVC: UIViewController {
     private let limit = 20
     private var isNeedFetch = true
     private let iconConfig = UIImage.SymbolConfiguration(scale: .large)
-    let nc = PurchaseNC()
+//    let nc = PurchaseNC()
     
     override func viewDidLoad() {
         super.viewDidLoad()
