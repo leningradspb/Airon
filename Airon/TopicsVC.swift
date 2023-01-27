@@ -26,6 +26,7 @@ class TopicsVC: UIViewController {
         super.viewDidLoad()
         
         setupUI()
+        checkOnboarding()
         checkForceUpdate()
         loadData()
         purchaseCheck()
@@ -158,18 +159,30 @@ class TopicsVC: UIViewController {
             
             do {
                 let model = try JSONDecoder().decode(ForceUpdateModel.self, from: data)
-                if appVersionDouble < model.supportedVersion {
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if appVersionDouble < model.supportedVersion {
                         let modal = ErrorModal(errorText: "force update required🤖 please update the app", isForceUpdate: true)
                         self.window.addSubview(modal)
+                        
+                    } else {
+                        
                     }
-                } else {
-                    
                 }
             } catch let error {
                 print(error)
                 
             }
+        }
+    }
+    
+    private func checkOnboarding() {
+        let onboardingWasShown = UserDefaults.standard.bool(forKey: UserDefaultsKeys.onboardingWasShown.rawValue)
+        if !onboardingWasShown {
+            //                            let nc = UINavigationController()
+            let vc = OnboardingVC(state: .step0(index: 0))
+            vc.modalPresentationStyle = .overFullScreen
+            print(onboardingWasShown, "onboardingWasShown")
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     

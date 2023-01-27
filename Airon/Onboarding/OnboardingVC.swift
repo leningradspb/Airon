@@ -8,22 +8,43 @@
 import UIKit
 
 class OnboardingVC: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+    private let imageView = UIImageView()
+    
+    private let state: State
+    init(state: State) {
+        self.state = state
+        super.init(nibName: nil, bundle: nil)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
-    */
-
+    
+    private func setupUI() {
+//        UserDefaults.standard.set(true, forKey: UserDefaultsKeys.onboardingWasShown.rawValue)
+        view.backgroundColor = .mainBlack
+        view.addSubviews([imageView])
+        
+        imageView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(30)
+            $0.leading.equalToSuperview().offset(30)
+            $0.trailing.equalToSuperview().offset(-30)
+            $0.bottom.equalToSuperview().offset(-60)
+        }
+        var imageName = "onboarding"
+        switch state {
+        case .step0(index: let index):
+            imageName += "\(index)"
+        case .step1(index: let index):
+            imageName += "\(index)"
+        case .step2(index: let index):
+            imageName += "\(index)"
+        }
+        imageView.image = UIImage(named: imageName)
+    }
+    
+    enum State {
+        case step0(index: Int), step1(index: Int), step2(index: Int)
+    }
 }
+
