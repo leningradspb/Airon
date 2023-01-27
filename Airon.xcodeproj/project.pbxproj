@@ -13,6 +13,7 @@
 		266549DC29829AEC005DEA53 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266549DB29829AEC005DEA53 /* SettingsVC.swift */; };
 		266549DE2982E38A005DEA53 /* dots.json in Resources */ = {isa = PBXBuildFile; fileRef = 266549DD2982E38A005DEA53 /* dots.json */; };
 		266549E029842F3F005DEA53 /* PurchaseModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266549DF29842F3F005DEA53 /* PurchaseModal.swift */; };
+		266549E2298449C0005DEA53 /* OnboardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 266549E1298449C0005DEA53 /* OnboardingVC.swift */; };
 		26A40D4C2977F9DE00C67A23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D4B2977F9DE00C67A23 /* AppDelegate.swift */; };
 		26A40D4E2977F9DE00C67A23 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D4D2977F9DE00C67A23 /* SceneDelegate.swift */; };
 		26A40D502977F9DE00C67A23 /* TopicsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A40D4F2977F9DE00C67A23 /* TopicsVC.swift */; };
@@ -39,6 +40,7 @@
 		266549DB29829AEC005DEA53 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		266549DD2982E38A005DEA53 /* dots.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = dots.json; sourceTree = "<group>"; };
 		266549DF29842F3F005DEA53 /* PurchaseModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseModal.swift; sourceTree = "<group>"; };
+		266549E1298449C0005DEA53 /* OnboardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingVC.swift; sourceTree = "<group>"; };
 		26A40D482977F9DE00C67A23 /* Airon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Airon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26A40D4B2977F9DE00C67A23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		26A40D4D2977F9DE00C67A23 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +109,14 @@
 			path = PartnerSender;
 			sourceTree = "<group>";
 		};
+		266549E3298449C4005DEA53 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				266549E1298449C0005DEA53 /* OnboardingVC.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		26A40D3F2977F9DE00C67A23 = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +142,7 @@
 				26A40D4D2977F9DE00C67A23 /* SceneDelegate.swift */,
 				26A40D4F2977F9DE00C67A23 /* TopicsVC.swift */,
 				266549DB29829AEC005DEA53 /* SettingsVC.swift */,
+				266549E3298449C4005DEA53 /* Onboarding */,
 				26A40D6D2978167200C67A23 /* Purchase */,
 				26A40D61297812BD00C67A23 /* Extensions.swift */,
 				26A40D74297A8F3A00C67A23 /* RoutingHelper.swift */,
@@ -310,6 +321,7 @@
 				26A40D75297A8F3A00C67A23 /* RoutingHelper.swift in Sources */,
 				26A40D712978502E00C67A23 /* SubscriptionProduct.swift in Sources */,
 				26A40D4C2977F9DE00C67A23 /* AppDelegate.swift in Sources */,
+				266549E2298449C0005DEA53 /* OnboardingVC.swift in Sources */,
 				26A40D73297966E700C67A23 /* PurchaseService.swift in Sources */,
 				26A40D64297812DC00C67A23 /* FirebaseManager.swift in Sources */,
 				26A40D77297ADDEF00C67A23 /* ApiService.swift in Sources */,
