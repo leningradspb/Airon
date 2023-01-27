@@ -32,7 +32,7 @@ class TopicsVC: UIViewController {
     }
     
     private func setupUI() {
-        title = "Chat GPT"
+        title = "ChatGPT"
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear", withConfiguration: iconConfig), style: .plain, target: self, action: #selector(settingsTapped))
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
