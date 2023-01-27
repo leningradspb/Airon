@@ -19,6 +19,7 @@ class ChatVC: UIViewController {
     private var isNeedContinueTypingAnimation = true
     
     private var firstMessageAnswer: String?
+    private var currentMessage: String?
     
     private var model: ChatInitModel
     init(model: ChatInitModel) {
@@ -180,6 +181,7 @@ class ChatVC: UIViewController {
     }
     
     @objc private func sendTapped() {
+        currentMessage = messageTextView.text
         sendMessage()
     }
     
@@ -188,12 +190,13 @@ class ChatVC: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
-    private func sendMessage(imageURL: String? = nil, imageSize: CGSize? = nil) {
+    private func sendMessage() {
 //        let timestamp: Double = Date().timeIntervalSince1970
-        let text = messageTextView.text ?? ""
+        let text = currentMessage ?? ""
 //        let myID: String = self.myID!
         let message = Message(formID: ReferenceKeys.meSender, toID: ReferenceKeys.aiSender, message: text)
         messages.append(message)
+        messageTextView.text = ""
         tableView.reloadData()
         if !self.messages.isEmpty {
             self.tableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
@@ -222,7 +225,7 @@ class ChatVC: UIViewController {
     
     private func requestToAI() {
         self.showTyping()
-        let text = messageTextView.text ?? ""
+        let text = currentMessage ?? ""
         let initPrompt = model.prompt ?? ""
         var prompt: String
         if let firstMessageAnswer = firstMessageAnswer {
@@ -246,7 +249,7 @@ class ChatVC: UIViewController {
 //                    self.firstMessageAnswer = nil
                     self.messages.append(message)
                     self.messageTextView.text = ""
-                    self.messageTextView.endEditing(true)
+//                    self.messageTextView.endEditing(true)
                     self.hideTyping()
                     self.tableView.reloadData()
                     if !self.messages.isEmpty {
