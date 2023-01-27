@@ -764,3 +764,14 @@ class ActivityHelper {
         }
     }
 }
+
+class AlertHelper {
+    static var window: UIWindow { UIApplication.shared.keyWindow ?? UIWindow() }
+
+    static func showAlert(title: String, subtitle: String?) {
+        let alert = UIAlertController(title: title, message: subtitle, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(ok)
+        window.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+}

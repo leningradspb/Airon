@@ -28,8 +28,7 @@ class PurchaseService: NSObject {
     
     func purchase(subscription: SubscriptionProduct) {
         guard SKPaymentQueue.canMakePayments(), let subscriptionToPurchase = products.first(where: { $0.productIdentifier == subscription.rawValue }) else {
-            let alert = UIAlertController(title: "You are can't make payments", message: "", preferredStyle: .alert)
-            //TODO: ERROR CAN NOT MAKE PAYMENTS
+            AlertHelper.showAlert(title: "You are can't make payments", subtitle: nil)
             return
         }
         
@@ -39,6 +38,7 @@ class PurchaseService: NSObject {
     }
     
     func restorePurchase() {
+        ActivityHelper.showActivity(animation: ActivityView.Animations.rainbowLoader)
         paymentQueue.restoreCompletedTransactions()
     }
     
@@ -107,9 +107,17 @@ extension PurchaseService: SKProductsRequestDelegate {
 //        }
     }
     
+    func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
+        ActivityHelper.removeActivity()
+        if queue.transactions.isEmpty {
+            AlertHelper.showAlert(title: "Nothing to restore 🤷‍♀️", subtitle: nil)
+        }
+        print(queue.transactions.count)
+    }
+    
 //    func requestDidFinish(_ request: SKRequest) {
 //        if request is SKReceiptRefreshRequest {
-//            checkIsPurchased()
+////            checkIsPurchased()
 ////            refreshSubscriptionsStatus(callback: self.successBlock ?? {}, failure: self.failureBlock ?? {\_ in})
 //        }
 //    }

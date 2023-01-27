@@ -182,8 +182,16 @@ class ChatVC: UIViewController {
     }
     
     private func showPurchaseModal() {
+        messageTextView.endEditing(true)
         let vc = PurchaseModal()
         let fpc = FloatingPanelController()
+        
+        PurchaseService.shared.purchaseCompletion = { [weak self] in
+            guard let self = self else { return }
+//            vc.dismiss(animated: true)
+            
+            fpc.dismiss(animated: true)
+        }
         
         fpc.delegate = self
         fpc.surfaceView.cornerRadius = 22
