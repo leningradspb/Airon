@@ -31,7 +31,7 @@ class TopicsVC: UIViewController {
     }
     
     private func setupUI() {
-        title = "Topics"
+        title = "Chat GPT"
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear", withConfiguration: iconConfig), style: .plain, target: self, action: #selector(settingsTapped))
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
@@ -47,7 +47,7 @@ class TopicsVC: UIViewController {
         collectionView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: Layout.leading, bottom: Layout.leading, right: Layout.leading)
-//        collectionView.register(ProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ProfileHeader.identifier)
+        collectionView.register(TopicHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TopicHeader.identifier)
         if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .vertical
             flowLayout.minimumLineSpacing = 10
@@ -186,30 +186,29 @@ class TopicsVC: UIViewController {
 //        navigationController?.pushViewController(vc, animated: true)
     }
     
+    @objc private func headerTapped() {
+        let chatInitModel = ChatVC.ChatInitModel(firstMessage: "Ask me anything", secondMessage: nil, prompt: "", topicName: "Ask anything")
+        let vc = ChatVC(model: chatInitModel)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
 }
 
 
 extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-//        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ProfileHeader.identifier, for: indexPath) as! ProfileHeader
-//        if let urlString = userModel?.profileImageURL, let url = URL(string: urlString) {
-//            header.configure(with: url, nickName: userModel?.nickName)
-//            header.imageClosure = { [weak self] image in
-//                guard let self = self else { return }
-//                self.headerImage = image
-//            }
-//        }
-//
-//        if header.gestureRecognizers == nil {
-//            setupTapRecognizer(for: header, action: #selector(headerTapped))
-//        }
-//
-//        return header
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-//        return CGSize(width: view.bounds.width, height: 280)
-//    }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: TopicHeader.identifier, for: indexPath) as! TopicHeader
+
+        if header.gestureRecognizers == nil {
+            setupTapRecognizer(for: header, action: #selector(headerTapped))
+        }
+
+        return header
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.bounds.width - (Layout.leading * 2), height: 120)
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         topics.count
@@ -263,6 +262,64 @@ extension TopicsVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
          if indexPath.row == topics.count - 1 {
              loadData()
          }
+    }
+}
+
+final class TopicHeader: UICollectionReusableView {
+    private let realContentView = GradientView()
+    private let imageView = UIImageView(image: UIImage(named: "comment-question")?.withRenderingMode(.alwaysTemplate))
+    private let nameLabel = UILabel()
+//    var imageClosure: ((UIImage)->())?
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        addSubview(realContentView)
+        backgroundColor = .mainBlack
+        realContentView.layer.cornerRadius = 8
+        realContentView.startLocation = 0
+        realContentView.endLocation = 0.9
+        realContentView.startColor = UIColor(hex: "1A1C1E")  //.black.withAlphaComponent(0.8) //UIColor(hex: "1A1C1E")  //UIColor(hex: "212427")
+        realContentView.endColor =  UIColor(hex: "121416") //UIColor(hex: "370258")
+
+        realContentView.diagonalMode = true
+        
+        realContentView.backgroundColor = .mainBlack
+        realContentView.layer.shadowOffset = CGSize(width: 6,
+                                                    height: 6)
+        realContentView.layer.shadowRadius = 8
+        realContentView.layer.shadowOpacity = 0.5
+        realContentView.layer.shadowColor = UIColor(hex: "292B2F").cgColor
+        
+        realContentView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(10)
+            $0.leading.equalToSuperview().offset(10)
+            $0.trailing.equalToSuperview().offset(-10)
+            $0.bottom.equalToSuperview().offset(-10)
+        }
+        
+        realContentView.addSubviews([imageView, nameLabel])
+        imageView.tintColor = .systemBlue
+        imageView.snp.makeConstraints {
+            $0.width.height.equalTo(55)
+            $0.leading.equalToSuperview().offset(20)
+            $0.centerY.equalToSuperview()
+        }
+        
+        nameLabel.textColor = .white
+        nameLabel.font = .systemFont(ofSize: 22, weight: .medium)
+        nameLabel.text = "Ask AI anything 🚀"
+//        nameLabel.textAlignment = .center
+        nameLabel.snp.makeConstraints {
+            $0.leading.equalTo(imageView.snp.trailing).offset(12)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
