@@ -14,6 +14,7 @@ class OnboardingVC: UIViewController {
     init(state: State) {
         self.state = state
         super.init(nibName: nil, bundle: nil)
+        setupUI()
     }
     
     required init?(coder: NSCoder) {
