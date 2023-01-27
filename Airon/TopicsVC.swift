@@ -26,7 +26,7 @@ class TopicsVC: UIViewController {
         super.viewDidLoad()
         
         setupUI()
-        checkOnboarding()
+//        checkOnboarding()
         checkForceUpdate()
         loadData()
         purchaseCheck()
