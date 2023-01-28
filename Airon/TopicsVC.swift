@@ -30,10 +30,11 @@ class TopicsVC: UIViewController {
         checkForceUpdate()
         loadData()
         purchaseCheck()
+        loadAIAPISettings()
     }
     
     private func setupUI() {
-        title = "ChatGPT"
+        title = "AI prompts"
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear", withConfiguration: iconConfig), style: .plain, target: self, action: #selector(settingsTapped))
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
@@ -168,6 +169,27 @@ class TopicsVC: UIViewController {
                         
                     }
                 }
+            } catch let error {
+                print(error)
+                
+            }
+        }
+    }
+    
+    private func loadAIAPISettings() {
+        FirebaseManager.shared.firestore.collection(ReferenceKeys.AIRequestSettings).document(ReferenceKeys.AIRequestSettings).getDocument { [weak self] snapshot, error in
+            guard let self = self else { return }
+            guard let snapshotData = snapshot?.data() else { return }
+            guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+            
+            do {
+                let model = try JSONDecoder().decode(AIRequestModel.self, from: data)
+                FirebaseManager.shared.model = model.model
+                FirebaseManager.shared.presence_penalty = model.presence_penalty
+                FirebaseManager.shared.top_p = model.top_p
+                FirebaseManager.shared.max_tokens = model.max_tokens
+                FirebaseManager.shared.temperature = model.temperature
+                FirebaseManager.shared.frequency_penalty = model.frequency_penalty
             } catch let error {
                 print(error)
                 

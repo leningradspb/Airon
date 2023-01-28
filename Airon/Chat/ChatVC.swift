@@ -150,7 +150,7 @@ class ChatVC: UIViewController {
         messageTextView.autocorrectionType = .no
         messageTextView.keyboardAppearance = .dark
         messageTextView.isScrollEnabled = false
-        messageTextView.font = UIFont.systemFont(ofSize: 14)
+        messageTextView.font = UIFont.systemFont(ofSize: 18)
         messageTextView.textContainerInset = UIEdgeInsets(top: 13, left: 10, bottom: 10, right: 40)
     }
     
@@ -273,7 +273,7 @@ class ChatVC: UIViewController {
             prompt = initPrompt + text
         }
         print("request prompt = \(prompt)")
-        let requestModel = AIRequestModel(prompt: prompt)
+        let requestModel = AIRequestModel(prompt: prompt, model: FirebaseManager.shared.model, temperature: FirebaseManager.shared.temperature, max_tokens: FirebaseManager.shared.max_tokens, top_p: FirebaseManager.shared.top_p, frequency_penalty: FirebaseManager.shared.frequency_penalty, presence_penalty: FirebaseManager.shared.presence_penalty)
         APIService.requestAI(model: requestModel) { [weak self] result, error in
             guard let self = self else { return }
             DispatchQueue.main.async {
@@ -461,12 +461,12 @@ extension APIService {
 
 struct AIRequestModel: Codable {
     let prompt: String
-    let model = "text-davinci-003"
-    let temperature = 0.5
-    let max_tokens = 60
-    let top_p = 1
-    let frequency_penalty = 0.5
-    let presence_penalty = 0.0
+    let model: String //= FirebaseManager.shared.model //"text-davinci-003"
+    let temperature: Double // = FirebaseManager.shared.temperature //0.5
+    let max_tokens: Double // = FirebaseManager.shared.max_tokens //60
+    let top_p: Double //  = FirebaseManager.shared.top_p //1
+    let frequency_penalty: Double //  = FirebaseManager.shared.frequency_penalty //0.5
+    let presence_penalty: Double //  = FirebaseManager.shared.presence_penalty //0.0
 //        {
 //          "model": "text-davinci-003",
 //          "prompt": "Correct this to standard English:\n\noenter text you want to get correction",

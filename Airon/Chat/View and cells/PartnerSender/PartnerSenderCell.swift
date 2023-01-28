@@ -47,7 +47,7 @@ class PartnerSenderCell: UITableViewCell {
         
         messageTextLabel.numberOfLines = 0
         messageTextLabel.lineBreakMode = .byWordWrapping
-        messageTextLabel.font = UIFont.systemFont(ofSize: 14)
+        messageTextLabel.font = UIFont.systemFont(ofSize: 18)
         messageTextLabel.textColor = .white
         messageTextLabel.textAlignment = .left
     }

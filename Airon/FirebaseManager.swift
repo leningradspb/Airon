@@ -17,6 +17,13 @@ final class FirebaseManager {
     let auth: Auth
     var isAdmin = false
     
+    var model = "text-davinci-003"
+    var temperature = 0.5
+    var max_tokens: Double = 500
+    var top_p: Double = 1
+    var frequency_penalty = 0.5
+    var presence_penalty = 0.0
+    
     static let shared = FirebaseManager()
     
     init() {
@@ -36,6 +43,7 @@ struct ReferenceKeys {
     static let aiSender = "aiSender"
     static let ForceUpdate = "ForceUpdate"
     static let AIauth = "AIauth"
+    static let AIRequestSettings = "AIRequestSettings"
 }
 
 
