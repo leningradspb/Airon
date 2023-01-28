@@ -737,6 +737,7 @@ class BlackLabel: UILabel {
 
 enum UserDefaultsKeys: String {
     case onboardingWasShown = "onboardingWasShown"
+    case isFreeRequestsEnded = "isFreeRequestsEnded"
 }
 
 

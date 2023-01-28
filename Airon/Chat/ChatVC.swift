@@ -212,8 +212,9 @@ class ChatVC: UIViewController {
     }
     
     @objc private func sendTapped() {
-        // todo coubter
-        guard PurchaseService.shared.isActivated else {
+        let isFreeRequestsEnded = PurchaseService.shared.isFreeRequestsEnded
+        
+        guard PurchaseService.shared.isActivated || !isFreeRequestsEnded else {
             showPurchaseModal()
             return
         }
@@ -292,6 +293,14 @@ class ChatVC: UIViewController {
                     self.tableView.reloadData()
                     if !self.messages.isEmpty {
                         self.tableView.scrollToRow(at: IndexPath(row: self.messages.count - 1, section: 0), at: .bottom, animated: true)
+                    }
+                    
+                    if !PurchaseService.shared.isActivated && !PurchaseService.shared.isFreeRequestsEnded && PurchaseService.shared.freeRequestCounter < 5 {
+                        PurchaseService.shared.freeRequestCounter += 1
+                        
+                        if PurchaseService.shared.freeRequestCounter > 4 {
+                            UserDefaults.standard.set(true, forKey: UserDefaultsKeys.isFreeRequestsEnded.rawValue)
+                        }
                     }
                 } else {
                     self.hideTyping()

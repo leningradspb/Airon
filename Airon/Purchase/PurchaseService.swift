@@ -13,6 +13,10 @@ class PurchaseService: NSObject {
     
     static let shared = PurchaseService()
     var isActivated = false
+    var freeRequestCounter = 0
+    var isFreeRequestsEnded: Bool {
+        UserDefaults.standard.bool(forKey: UserDefaultsKeys.isFreeRequestsEnded.rawValue)
+    }
     var products: [SKProduct] = []
     var purchaseCompletion: (()->())?
     private let paymentQueue = SKPaymentQueue.default()
