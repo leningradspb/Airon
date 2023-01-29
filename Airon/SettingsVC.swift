@@ -15,7 +15,7 @@ class SettingsVC: UIViewController {
         return UIImageView(image: UIImage(systemName: "xmark", withConfiguration: iconConfig))
     }()
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    private let settingsContent = [SettingsModel.privacy(name: "Privacy", url: "https://docs.google.com/document/d/1IEVqpzrH7jBk-e0faJp0UnHXns2b5yJ2ljzhdm0aH0k/edit?usp=sharing"), SettingsModel.contactUs(name: "Contact us", url: "https://t.me/edkanevsky")]
+    private let settingsContent = [SettingsModel.privacy(name: "Privacy", url: "https://docs.google.com/document/d/1IEVqpzrH7jBk-e0faJp0UnHXns2b5yJ2ljzhdm0aH0k/edit?usp=sharing"), SettingsModel.termsOfUse(name: "Terms of Use", url: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula"), SettingsModel.contactUs(name: "Contact us", url: "https://t.me/edkanevsky")]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +93,10 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
             guard let path = URL(string: url) else { return }
             let vc = SFSafariViewController(url: path)
             self.present(vc, animated: true)
+        case .termsOfUse(name: let name, url: let url):
+            guard let path = URL(string: url) else { return }
+            let vc = SFSafariViewController(url: path)
+            self.present(vc, animated: true)
         }
     }
     
@@ -122,6 +126,8 @@ class SettingsCell: UITableViewCell {
             nameLabel.text = name
         case .contactUs(name: let name, url: let url):
             nameLabel.text = name
+        case .termsOfUse(name: let name, url: let url):
+            nameLabel.text = name
         }
     }
     
@@ -143,4 +149,5 @@ class SettingsCell: UITableViewCell {
 enum SettingsModel {
     case privacy(name: String, url: String)
     case contactUs(name: String, url: String)
+    case termsOfUse(name: String, url: String)
 }

@@ -23,6 +23,7 @@ class PurchaseModal: UIViewController {
     private let buyButton = UIButton()
     private let restorePurchase = UIButton()
     private let privacyButton = UIButton()
+    private let termsOfUseButton = UIButton()
     
     private var advCounter = 0
     
@@ -58,7 +59,7 @@ class PurchaseModal: UIViewController {
             $0.bottom.equalToSuperview()
         }
         
-        modalView.addSubviews([choosePlanLabel, benefitsStack, plansStack, restorePurchase, privacyButton])
+        modalView.addSubviews([choosePlanLabel, benefitsStack, plansStack, restorePurchase, privacyButton, termsOfUseButton])
         
         choosePlanLabel.text = "Choose your plan"
         choosePlanLabel.textColor = .textBlack
@@ -143,9 +144,8 @@ class PurchaseModal: UIViewController {
         restorePurchase.setTitle("Restore purchase", for: .normal)
         restorePurchase.setTitleColor(.commonGrey, for: .normal)
         restorePurchase.titleLabel?.textAlignment = .center
+        restorePurchase.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         restorePurchase.addTarget(self, action: #selector(restoreTapped), for: .touchUpInside)
-        
-        
         
         privacyButton.snp.makeConstraints {
             $0.top.equalTo(plansStack.snp.bottom).offset(12)
@@ -155,7 +155,18 @@ class PurchaseModal: UIViewController {
         privacyButton.setTitle("Privacy Policy", for: .normal)
         privacyButton.setTitleColor(.commonGrey, for: .normal)
         privacyButton.titleLabel?.textAlignment = .center
+        privacyButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         privacyButton.addTarget(self, action: #selector(privacyTapped), for: .touchUpInside)
+        
+        termsOfUseButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview().offset(-10)
+            $0.bottom.equalToSuperview().offset(-20)
+        }
+        termsOfUseButton.setTitle("Terms of Use", for: .normal)
+        termsOfUseButton.setTitleColor(.commonGrey, for: .normal)
+        termsOfUseButton.titleLabel?.textAlignment = .center
+        termsOfUseButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+        termsOfUseButton.addTarget(self, action: #selector(termsTapped), for: .touchUpInside)
     }
     
     private func updateSwitchView() {
@@ -202,6 +213,14 @@ class PurchaseModal: UIViewController {
     
     @objc private func privacyTapped() {
         let vc = SFSafariViewController(url: URL(string: "https://docs.google.com/document/d/1IEVqpzrH7jBk-e0faJp0UnHXns2b5yJ2ljzhdm0aH0k/edit?usp=sharing")!)
+        
+        vc.isModalInPresentation = true
+        vc.modalPresentationStyle = .overFullScreen
+        present(vc, animated: true, completion: nil)
+    }
+    
+    @objc private func termsTapped() {
+        let vc = SFSafariViewController(url: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula")!)
         
         vc.isModalInPresentation = true
         vc.modalPresentationStyle = .overFullScreen
