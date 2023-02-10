@@ -15,7 +15,7 @@ class SettingsVC: UIViewController {
         return UIImageView(image: UIImage(systemName: "xmark", withConfiguration: iconConfig))
     }()
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
-    private let settingsContent = [SettingsModel.privacy(name: "Privacy", url: "https://docs.google.com/document/d/1IEVqpzrH7jBk-e0faJp0UnHXns2b5yJ2ljzhdm0aH0k/edit?usp=sharing"), SettingsModel.termsOfUse(name: "Terms of Use", url: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula"), SettingsModel.contactUs(name: "Contact us", url: "https://t.me/edkanevsky")]
+    private let settingsContent = [SettingsModel.privacy(name: "Privacy", url: "https://docs.google.com/document/d/1IEVqpzrH7jBk-e0faJp0UnHXns2b5yJ2ljzhdm0aH0k/edit?usp=sharing"), SettingsModel.termsOfUse(name: "Terms of Use", url: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula"), SettingsModel.contactUs(name: "Contact us", url: "https://ai-k.fun/#contact")]
     
     override func viewDidLoad() {
         super.viewDidLoad()
